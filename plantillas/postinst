@@ -1,70 +1,33 @@
 #!/bin/bash -e
 #
 # ==============================================================================
-# PAQUETE: canaima-bienvenido
+# PAQUETE: @PAQUETE@
 # ARCHIVO: postinst
 # DESCRIPCIÓN: Configura el sistema despues la instalación del paquete.
 # COPYRIGHT:
-#  (C) 2010 Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>
-#  (C) 2010 Diego Alberto Aguilera Zambrano <daguilera85@gmail.com>
-#  (C) 2010 Carlos Alejandro Guerrero Mora <guerrerocarlos@gmail.com>
-#  (C) 2010 Francisco Javier Vásquez Guerrero <franjvasquezg@gmail.com>
+#  (C) @YEAR@ @AUTHOR_NAME@ <@AUTHOR_MAIL@>
 # LICENCIA: GPL3
 # ==============================================================================
 #
 # Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los
 # términos de la Licencia Pública General de GNU (versión 3).
 
-PKG="canaima-bienvenido"
+PKG="@PAQUETE@"
 
 case ${1} in
 
 	configure)
 
-	# Para cada usuario en /home/ ...
-	for usuario in /home/*? ;
-	do
-
-		# Si existe la carpeta Escritorio
-		if [ -d $usuario/Escritorio ]
-		then
-
-			# Obteniendo sólo el nombre del usuario
-			usuario_min=$(basename ${usuario})
-
-			# Y en caso de que el usuario sea un usuario activo (existente en /etc/shadow) ...
-			case  $(grep ${usuario_min} /etc/shadow) in
-
-				'')
-				# No hace nada si no se encuentra en /etc/shadow
-				;;
-
-				*)
-					
-					echo '===== Instalando Canaima Bienvenido para el usuario "'$usuario_min'" ====='
-					#Copiamos el lanzador de escritorio al escritorio de cada usuario
-					cp /etc/skel/Escritorio/canaima-bienvenido.desktop /home/${usuario_min}/Escritorio/
-					#con permisos apropiados
-					chown ${usuario_min}:${usuario_min} /home/${usuario_min}/Escritorio/canaima-bienvenido.desktop
-
-					#Asegurando que el directorio .config/autostart esté creado
-					mkdir -p /home/${usuario_min}/.config/autostart/
-					#con permisos apropiados
-					chown ${usuario_min}:${usuario_min} /home/${usuario_min}/.config/autostart/
-
-					#Copia del lanzador automático de canaima-bienvenido a cada usuario
-					cp /etc/skel/.config/autostart/canaima-bienvenido-automatico.desktop /home/${usuario_min}/.config/autostart/
-					#con permisos apropiados
-					chown ${usuario_min}:${usuario_min} /home/${usuario_min}/.config/autostart/canaima-bienvenido-automatico.desktop
-
-				;;
-			esac
-		fi
-	done
+        # Aquí va lo que el paquete debe configurar/crear/borrar después de
+        # instalarse. Lenguaje a usar: BASH.
 
 	;;
 
         abort-upgrade|abort-remove|abort-deconfigure)
+
+        # Aquí va lo que el paquete debe configurar/crear/borrar en caso
+        # de abortarse la instalación. Lenguaje a usar: BASH.
+
         ;;
 
         *)

@@ -40,20 +40,21 @@ case ${1} in
 
 crear-proyecto|debianizar)
 
+opcion=${1}
 nombre=${2}
 version=${3}
-directorio=${4}
-destino=${5}
+destino=${4}
+licencia=${5}
 
 [ -z "${nombre}" ] && echo -e ${ROJO}"Olvidaste ponerle un nombre al paquete."${FIN} && exit 1
 
 [ $( echo "${nombre}" | grep -c "[\?\*\+\.\\\/\%\$\#\@\!\~\=\^\<\>]" ) != 0 ] && echo -e ${ROJO}"Caracteres no permitidos en el nombre del paquete. Trata algo con letras, \"-\" y \"_\" solamente."${FIN} && exit 1
 
-[ -z "${version}" ] && version="1.0+0" && echo -e ${AMARILLO}"Mensaje de commit vacío. Autogenerando."${FIN}
+[ -z "${version}" ] && version="1.0+0" && echo -e ${AMARILLO}"No me dijiste la versión. Asumiendo 1.0+0"${FIN}
 
-[ -z "${procesadores}" ] && procesadores=0 && echo -e ${AMARILLO}"No me dijiste si tenías más de un procesador. Asumiendo uno sólo."${FIN}
+[ -z "${destino}" ] && destino="personal" && echo -e ${AMARILLO}"No me dijiste si era un proyecto personal o para Canaima GNU/Linux. Asumo que es personal."${FIN}
 
-[ -z "${destino}" ] && destino="personal" && echo -e ${AMARILLO}"No me dijiste si era un proyecto personal o para Canaima GNU/Linux "${FIN}
+[ -z "${licencia}" ] && licencia="gpl3" && echo -e ${AMARILLO}"No especificaste la licencia del paquete. Asumiré que es GPL3."${FIN}
 
 CREAR-PROYECTO
 ;;
@@ -84,6 +85,19 @@ directorio=${DEV_DIR}${directorio}
 directorio_nombre=$( basename "${directorio}" )
 
 PUSH
+
+;;
+
+crear-fuente)
+
+directorio=${2}
+
+[ -z "${directorio}" ] && echo -e ${ROJO}"¡Se te olvidó decirme cual era el directorio del proyecto del cuál deseas generar el paquete fuente!"${FIN} && exit 1
+
+directorio=${DEV_DIR}${directorio}
+directorio_nombre=$( basename "${directorio}" )
+
+CREAR-FUENTE
 
 ;;
 

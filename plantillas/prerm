@@ -1,28 +1,33 @@
 #!/bin/bash -e
 #
 # ==============================================================================
-# PAQUETE: canaima-bienvenido
+# PAQUETE: @PAQUETE@
 # ARCHIVO: prerm
 # DESCRIPCIÓN: Prepara el sistema para que el paquete sea removido.
 # COPYRIGHT:
-#  (C) 2010 Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>
-#  (C) 2010 Diego Alberto Aguilera Zambrano <daguilera85@gmail.com>
-#  (C) 2010 Carlos Alejandro Guerrero Mora <guerrerocarlos@gmail.com>
-#  (C) 2010 Francisco Javier Vásquez Guerrero <franjvasquezg@gmail.com>
+#  (C) @YEAR@ @AUTHOR_NAME@ <@AUTHOR_MAIL@>
 # LICENCIA: GPL3
 # ==============================================================================
 #
 # Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los
 # términos de la Licencia Pública General de GNU (versión 3).
 
-PKG="canaima-bienvenido"
+PKG="@PAQUETE@"
 
 case ${1} in
 
 	remove|upgrade|deconfigure)
+
+        # Aquí va lo que el paquete debe configurar/crear/borrar antes de
+        # removerse. Lenguaje a usar: BASH.
+
 	;;
 
 	failed-upgrade)
+
+        # Aquí va lo que el paquete debe configurar/crear/borrar si la
+        # desinstalación falla. Lenguaje a usar: BASH.
+
 	;;
 
 	*)
