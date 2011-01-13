@@ -17,7 +17,19 @@
 
 PKG="canaima-desarrollador"
 
-function ESPACIOS() {
+function CHECK() {
+
+if [ ! -e "${CONF}" ] || [ -z "${REPO}" ] || [ -z "${REPO_USER}" ] || [ -z "${REPO_DIR}" ] || [ -z "${DEV_DIR}" ] || [ -z "${DEV_NAME}" ] || [ -z "${DEV_MAIL}" ] || [ -z "${DEV_GPG}" ]
+then
+echo -e ${ROJO}"Tu archivo de configuración ${CONF} presenta inconsistencias. Abortando."${FIN}
+exit 1
+fi
+
+ultimo_char_dev=${DEV_DIR#${DEV_DIR%?}}
+ultimo_char_pla=${PLANTILLAS#${PLANTILLAS%?}}
+
+[ ${ultimo_char_dev} != "/" ] && DEV_DIR="${DEV_DIR}/"
+[ ${ultimo_char_pla} != "/" ] && PLANTILLAS="${PLANTILLAS}/"
 
 if [ $( find ${DEV_DIR} -maxdepth 1 -name '* *' | wc -l ) != 0 ]
 then
@@ -104,7 +116,7 @@ set_repos_exec=1
 
 function COMMIT() {
 
-DATOS-PROYECTO
+[ ${datos_proyecto_exec} == 0 ] && DATOS-PROYECTO
 
 if [ -d "${directorio}" ]
 then
@@ -148,6 +160,7 @@ fi
 git checkout upstream
 git merge master > /dev/null 2>&1
 git checkout master
+echo -e ${AMARILLO}"Haciendo merge master -> upstream"${FIN}
 
 fi
 
@@ -224,7 +237,7 @@ then
 
 echo -e ${AMARILLO}"Enviando proyecto ${directorio_nombre} ..."${FIN}
 
-SET-REPOS
+[ ${set_repos_exec} == 0] && SET-REPOS
 
 [ $( git branch -l | grep -wc "upstream" ) == 0 ] && echo -e ${ROJO}"Al proyecto le falta la rama upstream, creando ..."${FIN} && git branch upstream
 [ $( git branch -l | grep -wc "master" ) == 0 ] && echo -e ${ROJO}"Al proyecto le falta la rama master, creando ..."${FIN} && git branch master
@@ -247,12 +260,15 @@ fi
 
 function EMPAQUETAR() {
 
+cd ${directorio}
+
 COMMIT
 GIT-DCH
 COMMIT
 CREAR-SOURCE
 PUSH
 
+git-buildpackage -tc --git-tag -j${procesadores}
 
 }
 
@@ -381,34 +397,39 @@ echo -e ${AMARILLO}"Lee los comentarios en los archivos creados para mayor infor
 
 }
 
-function CREAR-SOURCE() {
+function CREAR-FUENTE() {
 
-
+slash=${directorio#${directorio%?}}
+[ ${slash} == "/" ] && directorio=${directorio%?}
+cd ${DEV_DIR}
+rm -rf "${directorio}.orig"
+cp -r ${directorio} "${directorio}.orig"
+dpkg-source --format="1.0" -i.git/ -I.git -b ${directorio}
 
 }
 
 function COMMIT-TODO() {
 
-ESPACIOS
-
-ACCION="Haciendo commit de los cambios en los proyectos git de ${DEV_DIR}"
-
-echo -e ${VERDE}"===== ${ACCION} ====="${FIN}
+echo -e ${AMARILLO}"Haciendo commit de los cambios en todos los proyectos git de ${DEV_DIR} ..."${FIN}
 
 [ $( ls -d ${DEV_DIR} | wc -l ) == 0 ] && echo -e ${ROJO}"No existen directorios. Nada a que hacer commit."${FIN} && exit 1
 
+${COMMIT_NUMBER}=0
 for directorio in $( ls -A ${DEV_DIR} )
 do
 
+directorio=${DEV_DIR}${directorio}
+directorio_nombre=$( basename "${directorio}" )
 COMMIT
+[ ${COMMIT_DONE} == 1 ] && ${COMMIT_NUMBER}=$[ ${COMMIT_NUMBER}+1 ]
 
 done
+
+echo -e ${VERDE}"¡${COMMIT_NUMBER} commit completados!"${FIN}
 
 }
 
 function PUSH-TODO() {
-
-ESPACIOS
 
 ACCION="Subiendo proyectos git en ${DEV_DIR}"
 
@@ -424,3 +445,63 @@ PUSH
 done
 
 }
+
+function DESCARGAR() {
+
+cd ${DEV_DIR}
+
+wget "http://gitorious.org/canaima-gnu-linux" > /dev/null 2>&1
+
+FUENTE=$( cat "canaima-gnu-linux" | grep "git clone git://gitorious.org/canaima-gnu-linux/" | awk '{print $3}' )
+
+if [ $( echo ${FUENTE} | grep -wc "git://gitorious.org/canaima-gnu-linux/${proyecto}.git" ) != 0 ]
+then
+descarga="git://gitorious.org/canaima-gnu-linux/${proyecto}.git"
+git clone ${descarga}
+else
+echo -e ${VE}"¡${COMMIT_NUMBER} commit completados!"${FIN}
+fi
+
+rm canaima-gnu-linux
+
+}
+
+function LISTAR-DESCARGAS() {
+
+RESULTADO=$( wget --no-verbose "http://gitorious.org/canaima-gnu-linux" )
+
+FUENTE=$( cat "canaima-gnu-linux" | grep "git clone git://gitorious.org/canaima-gnu-linux/" | awk '{print $3}' )
+
+for descarga in ${FUENTE}
+do
+nombre=${descarga#"git://gitorious.org/canaima-gnu-linux/"}
+nombre=${nombre%".git"}
+echo -e "${VERDE}Nombre:${FIN} ${nombre} | ${VERDE}Fuente:${FIN} ${descarga}"
+done
+
+rm canaima-gnu-linux
+echo $RESULTADO
+}
+
+function DESCARGAR-TODO() {
+
+wget --nv "http://gitorious.org/canaima-gnu-linux"
+
+FUENTE=$( cat "canaima-gnu-linux" | grep "git clone git://gitorious.org/canaima-gnu-linux/" | awk '{print $3}' )
+
+cd ${DEV_DIR}
+
+for descarga in ${FUENTE}
+do
+nombre=${descarga#"git://gitorious.org/canaima-gnu-linux/"}
+nombre=${nombre%".git"}
+echo -e ${AMARILLO}"Descargando ${nombre} ..."${FIN}
+git clone ${descarga}
+[ -e "${DEV_DIR}${nombre}" ] && echo -e ${VERDE}"¡Descargado!"${FIN}
+[ ! -e "${DEV_DIR}${nombre}" ] && echo -e ${ROJO}"Ooops...! Algo falló"${FIN}
+done
+
+rm canaima-gnu-linux
+
+}
+
