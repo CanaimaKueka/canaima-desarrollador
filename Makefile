@@ -25,11 +25,11 @@ build:
 install:
 
 	mkdir -p $(DESTDIR)/usr/bin/
-	mkdir -p $(DESTDIR)/usr/share/canaima-bienvenido/
-	mkdir -p $(DESTDIR)/etc/skel/Escritorio/
-	mkdir -p $(DESTDIR)/etc/skel/.config/autostart/
+	mkdir -p $(DESTDIR)/usr/share/canaima-desarrollador/
+	mkdir -p $(DESTDIR)/etc/skel/.config/canaima-desarrollador/
 	mkdir -p $(DESTDIR)/usr/share/applications/
-	cp -r desktop/canaima-bienvenido.desktop $(DESTDIR)/usr/share/applications/
+	cp -r desktop/canaima-desarrollador-gui.desktop $(DESTDIR)/usr/share/applications/
+	cp -r desktop/manual-desarrollador.desktop $(DESTDIR)/usr/share/applications/
 	cp -r desktop/canaima-bienvenido.desktop $(DESTDIR)/etc/skel/Escritorio/
 	cp -r desktop/canaima-bienvenido-automatico.desktop $(DESTDIR)/etc/skel/.config/autostart/
 	cp -r images/ $(DESTDIR)/usr/share/canaima-bienvenido/

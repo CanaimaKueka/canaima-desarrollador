@@ -1,1 +1,17 @@
-Debes escribir las cosas que consideras deben hacerse en un futuro con éste paquete.
+ANOTACIONES MISCELÁNEAS
+
+* 
+
+GRANDES MODIFICACIONES
+
+* 
+
+PEQUEÑAS MODIFICACIONES
+
+* Now running lintian...
+W: canaima-bienvenido source: non-native-package-with-native-version
+E: canaima-bienvenido: copyright-should-refer-to-common-license-file-for-gpl
+E: canaima-bienvenido: menu-icon-not-in-xpm-format /usr/share/icons/canaima-iconos/scalable/places/start-here.svg
+W: canaima-bienvenido: binary-without-manpage usr/bin/canaima-bienvenido
+W: canaima-bienvenido: binary-without-manpage usr/bin/canaima-bienvenido-automatico
+
