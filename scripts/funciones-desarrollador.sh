@@ -19,6 +19,12 @@ PKG="canaima-desarrollador"
 
 function CHECK() {
 
+[ -d ${DEV_DIR} ] && echo -e ${ROJO}"¡La carpeta del desarrollador ${DEV_DIR} no existe!"${FIN} && exit 1
+
+[ ! -e ${DEPOSITO_LOGS} ] && mkdir -p ${DEPOSITO_LOGS}
+[ ! -e ${DEPOSITO_SOURCES} ] && mkdir -p ${DEPOSITO_SOURCES}
+[ ! -e ${DEPOSITO_DEBS} ] && mkdir -p ${DEPOSITO_DEBS}
+
 if [ ! -e "${CONF}" ] || [ -z "${REPO}" ] || [ -z "${REPO_USER}" ] || [ -z "${REPO_DIR}" ] || [ -z "${DEV_DIR}" ] || [ -z "${DEV_NAME}" ] || [ -z "${DEV_MAIL}" ] || [ -z "${DEV_GPG}" ]
 then
 echo -e ${ROJO}"Tu archivo de configuración ${CONF} presenta inconsistencias. Abortando."${FIN}

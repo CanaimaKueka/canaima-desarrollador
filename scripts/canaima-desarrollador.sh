@@ -15,7 +15,7 @@
 # Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los
 # términos de la Licencia Pública General de GNU (versión 3).
 
-VARIABLES="/home/desarrollo/canaima-desarrollador-1.0+0/conf/variables.conf"
+VARIABLES="/home/luis/desarrollo/canaima-desarrollador-1.0+0/conf/variables.conf"
 
 # Inicializando variables
 . ${VARIABLES}
