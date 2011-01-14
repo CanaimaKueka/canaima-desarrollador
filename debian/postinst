@@ -1,0 +1,58 @@
+#!/bin/bash -e
+#
+# ==============================================================================
+# PAQUETE: canaima-base
+# ARCHIVO: postinst
+# DESCRIPCIÓN: Configura el sistema despues la instalación del paquete.
+# COPYRIGHT:
+#  (C) 2010 Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>
+#  (C) 2010 Diego Alberto Aguilera Zambrano <daguilera85@gmail.com>
+#  (C) 2010 Carlos Alejandro Guerrero Mora <guerrerocarlos@gmail.com>
+#  (C) 2010 Francisco Javier Vásquez Guerrero <franjvasquezg@gmail.com>
+# LICENCIA: GPL3
+# ==============================================================================
+#
+# Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los
+# términos de la Licencia Pública General de GNU (versión 3).
+
+PKG="canaima-base"
+
+case ${1} in
+
+	configure)
+
+	dpkg-reconfigure localepurge
+
+	for NUMBER in {1..5}
+	do
+
+	sed -i 's/allow-hotplug eth'$NUMBER'/# allow-hotplug eth'$NUMBER'/g' /etc/network/interfaces
+	sed -i 's/auto eth'$NUMBER'/# auto eth'$NUMBER'/g' /etc/network/interfaces
+	sed -i 's/iface eth'$NUMBER' inet dhcp/# iface eth'$NUMBER' inet dhcp/g' /etc/network/interfaces
+
+	done
+
+	if [ -x /usr/share/update-notifier/notify-reboot-required ]
+	then
+
+		/usr/share/update-notifier/notify-reboot-required
+
+	fi
+
+	;;
+
+	abort-upgrade|abort-remove|abort-deconfigure)
+	;;
+
+	*)
+
+		echo "postinst no reconoce el argumento '"${1}"'" >&2
+		exit 1
+
+	;;
+
+esac
+
+#DEBHELPER#
+
+exit 0

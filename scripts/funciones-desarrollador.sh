@@ -19,17 +19,18 @@ PKG="canaima-desarrollador"
 
 function CHECK() {
 
-[ -d ${DEV_DIR} ] && echo -e ${ROJO}"¡La carpeta del desarrollador ${DEV_DIR} no existe!"${FIN} && exit 1
+[ -d "${DEV_DIR}" ] && echo -e ${ROJO}"¡La carpeta del desarrollador ${DEV_DIR} no existe!"${FIN} && exit 1
+
+[ ! -e "${CONF}" ] && echo -e ${ROJO}"¡Tu archivo de configuración ${CONF} no existe!"${FIN} && exit 1
+
+if [ -z "${REPO}" ] || [ -z "${REPO_USER}" ] || [ -z "${REPO_DIR}" ] || [ -z "${DEV_DIR}" ] || [ -z "${DEV_NAME}" ] || [ -z "${DEV_MAIL}" ] || [ -z "${DEV_GPG}" ] || [ -z "${DEPOSITO_LOGS}" ] || [ -z "${DEPOSITO_SOURCES}" ] || [ -z "${DEPOSITO_DEBS}" ]
+then
+echo -e ${ROJO}"Tu archivo de configuración ${CONF} presenta inconsistencias. Todas las variables deben estar llenas."${FIN} && exit 1
+fi
 
 [ ! -e ${DEPOSITO_LOGS} ] && mkdir -p ${DEPOSITO_LOGS}
 [ ! -e ${DEPOSITO_SOURCES} ] && mkdir -p ${DEPOSITO_SOURCES}
 [ ! -e ${DEPOSITO_DEBS} ] && mkdir -p ${DEPOSITO_DEBS}
-
-if [ ! -e "${CONF}" ] || [ -z "${REPO}" ] || [ -z "${REPO_USER}" ] || [ -z "${REPO_DIR}" ] || [ -z "${DEV_DIR}" ] || [ -z "${DEV_NAME}" ] || [ -z "${DEV_MAIL}" ] || [ -z "${DEV_GPG}" ]
-then
-echo -e ${ROJO}"Tu archivo de configuración ${CONF} presenta inconsistencias. Abortando."${FIN}
-exit 1
-fi
 
 ultimo_char_dev=${DEV_DIR#${DEV_DIR%?}}
 ultimo_char_pla=${PLANTILLAS#${PLANTILLAS%?}}
@@ -315,8 +316,6 @@ CONTROL_HOMEPAGE="Desconocido"
 CONTROL_VCSGIT="Desconocido"
 CONTROL_VCSBROWSER="Desconocido"
 
-else
-echo -e ${ROJO}"Sólo conozco los destinos \"personal\" y \"canaima\". ¿Para quien carrizo es \"${destino}\"?"${FIN} && rm -rf "${DEV_DIR}${nombre}-${version}" && exit 1
 fi
 
 CONTROL_DESCRIPTION="Insertar una descripción de no más de 60 caracteres."

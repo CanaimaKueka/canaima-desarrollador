@@ -2,13 +2,18 @@
 
 SHELL := sh -e
 
-SCRIPTS = "debian/preinst install" "debian/postinst configure" "debian/prerm remove" "debian/postrm remove"
+SCRIPTS =	"debian/preinst install" \
+		"debian/postinst configure" \
+		"debian/prerm remove" \
+		"debian/postrm remove" \
+		"scripts/canaima-desarrollador.sh" \
+		"scripts/funciones-desarrollador.sh"
 
-all: test build
+all: clean build test
 
 test:
 
-	@echo -n "\n===== Comprobando posibles errores de sintaxis en los scripts de mantenedor =====\n\n"
+	@echo -n "\n===== Comprobando posibles errores de sintaxis en los scripts de mantenedor =====\n"
 
 	@for SCRIPT in $(SCRIPTS); \
 	do \
@@ -16,11 +21,11 @@ test:
 		bash -n $${SCRIPT}; \
 	done
 
-	@echo -n "\n=================================================================================\nHECHO!\n\n"
+	@echo -n "¡TODO BIEN!\n=================================================================================\n\n"
 
 build:
 
-	@echo "Nada para compilar!"
+	
 
 install:
 
@@ -28,13 +33,11 @@ install:
 	mkdir -p $(DESTDIR)/usr/share/canaima-desarrollador/
 	mkdir -p $(DESTDIR)/etc/skel/.config/canaima-desarrollador/
 	mkdir -p $(DESTDIR)/usr/share/applications/
-	cp -r desktop/canaima-desarrollador-gui.desktop $(DESTDIR)/usr/share/applications/
 	cp -r desktop/manual-desarrollador.desktop $(DESTDIR)/usr/share/applications/
-	cp -r desktop/canaima-bienvenido.desktop $(DESTDIR)/etc/skel/Escritorio/
-	cp -r desktop/canaima-bienvenido-automatico.desktop $(DESTDIR)/etc/skel/.config/autostart/
-	cp -r images/ $(DESTDIR)/usr/share/canaima-bienvenido/
-	cp -r scripts/canaima-bienvenido.py $(DESTDIR)/usr/share/canaima-bienvenido/
-	cp -r scripts/interfaz.glade $(DESTDIR)/usr/share/canaima-bienvenido/
+	cp -r scripts/canaima-desarrollador.sh $(DESTDIR)/usr/bin/canaima-desarrollador
+	cp -r scripts/manual-desarrollador.sh $(DESTDIR)/usr/bin/manual-desarrollador
+	cp -r scripts/* $(DESTDIR)/usr/share/canaima-desarrollador/scripts/
+	cp -r plantillas/* $(DESTDIR)/usr/share/canaima-desarrollador/plantillas/
 	cp -r scripts/canaima-bienvenido.sh $(DESTDIR)/usr/bin/canaima-bienvenido
 	cp -r scripts/canaima-bienvenido-automatico.sh $(DESTDIR)/usr/bin/canaima-bienvenido-automatico
 
@@ -46,6 +49,7 @@ uninstall:
 	rm -f $(DESTDIR)/etc/skel/Escritorio/canaima-bienvenido.desktop
 	rm -f $(DESTDIR)/etc/skel/.config/autostart/canaima-bienvenido-automatico.desktop
 	rm -f $(DESTDIR)/usr/share/applications/canaima-bienvenido.desktop
+
 clean:
 
 distclean:
