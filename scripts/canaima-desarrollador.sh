@@ -68,13 +68,20 @@ CREAR-PROYECTO
 ;;
 
 crear-fuente)
-
+# Guardando directorio en variable para utilizarlo después
 directorio=${2}
 
-[ -z "${directorio}" ] && echo -e ${ROJO}"¡Se te olvidó decirme cual era el directorio del proyecto del cuál deseas generar el paquete fuente!"${FIN} && exit 1
-
-directorio=${DEV_DIR}${directorio}
+# Homogeneicemos los directorios
+directorio=${DEV_DIR}${directorio#${DEV_DIR}}
 directorio_nombre=$( basename "${directorio}" )
+
+# Comprobaciones varias
+# El directorio está vacío
+[ -z "${directorio#${DEV_DIR}}" ] && echo -e ${ROJO}"¡Se te olvidó decirme cual era el directorio del proyecto del cuál deseas generar el paquete fuente!"${FIN} && exit 1
+# El directorio no existe
+[ ! -d "${directorio}" ] && echo -e ${ROJO}"El directorio no existe o no es un directorio."${FIN} && exit 1
+# ¿Tenemos debian/changelog?
+[ ! -e "${directorio}/debian/changelog" ] && echo -e ${ROJO}"Ésto no parece ser un proyecto de empaquetamiento. Debianizalo."${FIN} && exit 1
 
 CREAR-FUENTE
 ;;

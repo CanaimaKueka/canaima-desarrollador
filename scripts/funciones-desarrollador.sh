@@ -17,9 +17,12 @@
 
 PKG="canaima-desarrollador"
 
+#------ FUNCIONES COMPLEMENTARIAS --------------------------------------------------------------------------------------#
+#=======================================================================================================================#
+
 function CHECK() {
 
-[ -d "${DEV_DIR}" ] && echo -e ${ROJO}"¡La carpeta del desarrollador ${DEV_DIR} no existe!"${FIN} && exit 1
+[ ! -d "${DEV_DIR}" ] && echo -e ${ROJO}"¡La carpeta del desarrollador ${DEV_DIR} no existe!"${FIN} && exit 1
 
 [ ! -e "${CONF}" ] && echo -e ${ROJO}"¡Tu archivo de configuración ${CONF} no existe!"${FIN} && exit 1
 
@@ -118,6 +121,158 @@ echo -e ${ROJO}"No se verificarán los repositorios de éste proyecto, no está 
 fi
 
 set_repos_exec=1
+
+}
+
+function MOVER-DEBS() {
+mv ${DEV_DIR}*.deb ${DEPOSITO_DEBS}
+}
+
+function MOVER-LOGS() {
+mv ${DEV_DIR}*.build ${DEPOSITO_LOGS}
+}
+
+function MOVER-SOURCES() {
+mv ${DEV_DIR}*.diff ${DEV_DIR}*.changes ${DEV_DIR}*.dsc ${DEV_DIR}*.tar.gz ${DEPOSITO_SOURCES}
+}
+
+#------ AYUDANTES CREADORES --------------------------------------------------------------------------------------------#
+#=======================================================================================================================#
+
+function CREAR-PROYECTO() {
+
+[ ! -e "${DEV_DIR}${nombre}-${version}" ] && mkdir -p "${DEV_DIR}${nombre}-${version}"
+
+cd "${DEV_DIR}${nombre}-${version}"
+
+echo "enter" | dh_make --createorig --cdbs --copyright ${licencia} --email ${DEV_MAIL} > /dev/null 2>&1
+
+echo "Nombre del Paquete: ${nombre}"
+echo "Versión: ${version}"
+echo "Mantenedor: ${DEV_NAME}"
+echo "Correo del Mantenedor: ${DEV_MAIL}"
+echo "Licencia: ${licencia}"
+
+rm -rf "${DEV_DIR}${nombre}-${version}.orig"
+mkdir -p "${DEV_DIR}${nombre}-${version}/debian/ejemplos"
+mv ${DEV_DIR}${nombre}-${version}/debian/*.* ${DEV_DIR}${nombre}-${version}/debian/ejemplos/
+
+if [ ${destino} == "canaima" ]
+then
+
+CONTROL_MAINTAINER="Equipo de Desarrollo de Canaima GNU/Linux <desarrolladores@canaima.softwarelibre.gob.ve>"
+CONTROL_UPLOADERS="José Miguel Parrella Romero <jparrella@onuva.com>, Carlos David Marrero <cdmarrero2040@gmail.com>, Orlando Andrés Fiol Carballo <ofiol@indesoft.org.ve>, Carlos Alejandro Guerrero Mora <guerrerocarlos@gmail.com>, Diego Alberto Aguilera Zambrano <diegoaguilera85@gmail.com>, Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>, Francisco Javier Vásquez Guerrero <franjvasquezg@gmail.com>"
+CONTROL_STANDARDS="3.9.1"
+CONTROL_HOMEPAGE="http://canaima.softwarelibre.gob.ve/"
+CONTROL_VCSGIT="git://gitorious.org/canaima-gnu-linux/${nombre}.git"
+CONTROL_VCSBROWSER="git://gitorious.org/canaima-gnu-linux/${nombre}.git"
+
+elif [ ${destino} == "personal" ]
+then
+
+CONTROL_MAINTAINER="${DEV_NAME} <${DEV_MAIL}>"
+CONTROL_UPLOADERS="${CONTROL_MAINTAINER}"
+CONTROL_HOMEPAGE="Desconocido"
+CONTROL_VCSGIT="Desconocido"
+CONTROL_VCSBROWSER="Desconocido"
+
+fi
+
+CONTROL_DESCRIPTION="Insertar una descripción de no más de 60 caracteres."
+CONTROL_LONG_DESCRIPTION="Insertar descripción larga, iniciando con un espacio."
+CONTROL_ARCH="all"
+
+case ${licencia} in
+gpl3) LICENSE="GPL-3" ;;
+apache) LICENSE="Apache-2.0" ;;
+artistic) LICENSE="Artistic" ;;
+bsd) LICENSE="BSD" ;;
+gpl) LICENSE="GPL-3" ;;
+gpl2) LICENSE="GPL-2" ;;
+gpl3) LICENSE="GPL-3" ;;
+lgpl) LICENSE="LGPL-3" ;;
+lgpl2) LICENSE="LGPL-2" ;;
+lgpl3) LICENSE="LGPL-3" ;;
+esac
+
+COPIAR_PLANTILLAS_DEBIAN="preinst postinst prerm postrm rules copyright"
+COPIAR_PLANTILLAS_PROYECTO="AUTHORS README TODO COPYING THANKS ${LICENSE} Makefile"
+
+FECHA=$( date +%Y )
+
+for plantillas_debian in ${COPIAR_PLANTILLAS_DEBIAN}
+do
+
+[ ! -e "${DEV_DIR}${nombre}-${version}/debian/${plantillas_debian}" ] && cp -r "${PLANTILLAS}${plantillas_debian}" "${DEV_DIR}${nombre}-${version}/debian/"
+
+sed -i "s/@AUTHOR_NAME@/${DEV_NAME}/g" "${DEV_DIR}${nombre}-${version}/debian/${plantillas_debian}"
+sed -i "s/@AUTHOR_MAIL@/${DEV_MAIL}/g" "${DEV_DIR}${nombre}-${version}/debian/${plantillas_debian}"
+sed -i "s/@YEAR@/${FECHA}/g" "${DEV_DIR}${nombre}-${version}/debian/${plantillas_debian}"
+sed -i "s/@PAQUETE@/${nombre}/g" "${DEV_DIR}${nombre}-${version}/debian/${plantillas_debian}"
+
+done
+
+for plantillas_proyecto in ${COPIAR_PLANTILLAS_PROYECTO}
+do
+
+[ ! -e "${DEV_DIR}${nombre}-${version}/${plantillas_proyecto}" ] && cp -r "${PLANTILLAS}${plantillas_proyecto}" "${DEV_DIR}${nombre}-${version}/"
+
+sed -i "s/@AUTHOR_NAME@/${DEV_NAME}/g" "${DEV_DIR}${nombre}-${version}/${plantillas_proyecto}"
+sed -i "s/@AUTHOR_MAIL@/${DEV_MAIL}/g" "${DEV_DIR}${nombre}-${version}/${plantillas_proyecto}"
+sed -i "s/@YEAR@/${FECHA}/g" "${DEV_DIR}${nombre}-${version}/${plantillas_proyecto}"
+sed -i "s/@PAQUETE@/${nombre}/g" "${DEV_DIR}${nombre}-${version}/${plantillas_proyecto}"
+
+done
+
+mv "${DEV_DIR}${nombre}-${version}/${LICENSE}" "${DEV_DIR}${nombre}-${version}/LICENSE"
+
+sed -i "s/#Vcs-Browser:.*/#Vcs-Browser: ${CONTROL_VCSBROWSER}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
+sed -i "s/Homepage:.*/Homepage: ${CONTROL_HOMEPAGE}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
+sed -i "s/Maintainer:.*/Maintainer: ${CONTROL_MAINTAINER}\nUploaders: ${CONTROL_UPLOADERS}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
+sed -i "s/Description:.*/Description: ${CONTROL_DESCRIPTION}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
+sed -i "s/<insert long description, indented with spaces>/${CONTROL_LONG_DESCRIPTION}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
+sed -i "s/Architecture:.*/Architecture: ${CONTROL_ARCH}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
+
+sed -i "s/Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>/Versión inicial de ${nombre} para Canaima GNU\/Linux/g" "${DEV_DIR}${nombre}-${version}/debian/changelog"
+sed -i "s/(.*)/(${version})/g" "${DEV_DIR}${nombre}-${version}/debian/changelog"
+
+echo "3.0 (quilt)" > ${DEV_DIR}${nombre}-${version}/debian/source/format
+echo "7" > ${DEV_DIR}${nombre}-${version}/debian/compat
+
+if [ ! -e "${DEV_DIR}${nombre}-${version}/.git/" ]
+then
+
+git init > /dev/null 2>&1
+
+echo -e ${AMARILLO}"Repositorio git inicializado"${FIN}
+
+directorio="${DEV_DIR}${nombre}-${version}"
+directorio_nombre=$( basename "${directorio}" )
+
+[ ${set_repos_exec} == 0 ] && SET-REPOS
+
+fi
+
+if [ ${opcion} == "crear-proyecto" ]; then
+echo -e ${VERDE}"¡Proyecto ${nombre} creado!"${FIN}
+elif [ ${opcion} == "debianizar" ]; then
+echo -e ${VERDE}"¡Proyecto ${nombre} debianizado correctamente!"${FIN}
+fi
+
+echo -e ${AMARILLO}"Lee los comentarios en los archivos creados para mayor información"${FIN}
+
+}
+
+function CREAR-FUENTE() {
+
+slash=${directorio#${directorio%?}}
+[ ${slash} == "/" ] && directorio=${directorio%?}
+cd ${DEV_DIR}
+rm -rf "${directorio}.orig"
+cp -r ${directorio} "${directorio}.orig"
+dpkg-source --format="1.0" -i.git/ -I.git -b ${directorio}
+MOVER-SOURCES
+echo -e ${VERDE}"¡Fuente ${directorio_nombre} creada y movida a ${DEPOSITO_SOURCES}!"${FIN}
 
 }
 
@@ -276,140 +431,6 @@ CREAR-SOURCE
 PUSH
 
 git-buildpackage -tc --git-tag -j${procesadores}
-
-}
-
-function CREAR-PROYECTO() {
-
-[ ! -e "${DEV_DIR}${nombre}-${version}" ] && mkdir -p "${DEV_DIR}${nombre}-${version}"
-
-cd "${DEV_DIR}${nombre}-${version}"
-
-echo "enter" | dh_make --createorig --cdbs --copyright ${licencia} --email ${DEV_MAIL} > /dev/null 2>&1
-
-echo "Nombre del Paquete: ${nombre}"
-echo "Versión: ${version}"
-echo "Mantenedor: ${DEV_NAME}"
-echo "Correo del Mantenedor: ${DEV_MAIL}"
-echo "Licencia: ${licencia}"
-
-rm -rf "${DEV_DIR}${nombre}-${version}.orig"
-mkdir -p "${DEV_DIR}${nombre}-${version}/debian/ejemplos"
-mv ${DEV_DIR}${nombre}-${version}/debian/*.* ${DEV_DIR}${nombre}-${version}/debian/ejemplos/
-
-if [ ${destino} == "canaima" ]
-then
-
-CONTROL_MAINTAINER="Equipo de Desarrollo de Canaima GNU/Linux <desarrolladores@canaima.softwarelibre.gob.ve>"
-CONTROL_UPLOADERS="José Miguel Parrella Romero <jparrella@onuva.com>, Carlos David Marrero <cdmarrero2040@gmail.com>, Orlando Andrés Fiol Carballo <ofiol@indesoft.org.ve>, Carlos Alejandro Guerrero Mora <guerrerocarlos@gmail.com>, Diego Alberto Aguilera Zambrano <diegoaguilera85@gmail.com>, Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>, Francisco Javier Vásquez Guerrero <franjvasquezg@gmail.com>"
-CONTROL_STANDARDS="3.9.1"
-CONTROL_HOMEPAGE="http://canaima.softwarelibre.gob.ve/"
-CONTROL_VCSGIT="git://gitorious.org/canaima-gnu-linux/${nombre}.git"
-CONTROL_VCSBROWSER="git://gitorious.org/canaima-gnu-linux/${nombre}.git"
-
-elif [ ${destino} == "personal" ]
-then
-
-CONTROL_MAINTAINER="${DEV_NAME} <${DEV_MAIL}>"
-CONTROL_UPLOADERS="${CONTROL_MAINTAINER}"
-CONTROL_HOMEPAGE="Desconocido"
-CONTROL_VCSGIT="Desconocido"
-CONTROL_VCSBROWSER="Desconocido"
-
-fi
-
-CONTROL_DESCRIPTION="Insertar una descripción de no más de 60 caracteres."
-CONTROL_LONG_DESCRIPTION="Insertar descripción larga, iniciando con un espacio."
-CONTROL_ARCH="all"
-
-case ${licencia} in
-gpl3) LICENSE="GPL-3" ;;
-apache) LICENSE="Apache-2.0" ;;
-artistic) LICENSE="Artistic" ;;
-bsd) LICENSE="BSD" ;;
-gpl) LICENSE="GPL-1" ;;
-gpl2) LICENSE="GPL-2" ;;
-lgpl) LICENSE="LGPL-3" ;;
-lgpl2) LICENSE="LGPL-2" ;;
-lgpl3) LICENSE="LGPL-3" ;;
-esac
-
-COPIAR_PLANTILLAS_DEBIAN="preinst postinst prerm postrm rules copyright"
-COPIAR_PLANTILLAS_PROYECTO="AUTHORS README TODO COPYING THANKS ${LICENSE} Makefile"
-
-FECHA=$( date +%Y )
-
-for plantillas_debian in ${COPIAR_PLANTILLAS_DEBIAN}
-do
-
-[ ! -e "${DEV_DIR}${nombre}-${version}/debian/${plantillas_debian}" ] && cp -r "${PLANTILLAS}${plantillas_debian}" "${DEV_DIR}${nombre}-${version}/debian/"
-
-sed -i "s/@AUTHOR_NAME@/${DEV_NAME}/g" "${DEV_DIR}${nombre}-${version}/debian/${plantillas_debian}"
-sed -i "s/@AUTHOR_MAIL@/${DEV_MAIL}/g" "${DEV_DIR}${nombre}-${version}/debian/${plantillas_debian}"
-sed -i "s/@YEAR@/${FECHA}/g" "${DEV_DIR}${nombre}-${version}/debian/${plantillas_debian}"
-sed -i "s/@PAQUETE@/${nombre}/g" "${DEV_DIR}${nombre}-${version}/debian/${plantillas_debian}"
-
-done
-
-for plantillas_proyecto in ${COPIAR_PLANTILLAS_PROYECTO}
-do
-
-[ ! -e "${DEV_DIR}${nombre}-${version}/${plantillas_proyecto}" ] && cp -r "${PLANTILLAS}${plantillas_proyecto}" "${DEV_DIR}${nombre}-${version}/"
-
-sed -i "s/@AUTHOR_NAME@/${DEV_NAME}/g" "${DEV_DIR}${nombre}-${version}/${plantillas_proyecto}"
-sed -i "s/@AUTHOR_MAIL@/${DEV_MAIL}/g" "${DEV_DIR}${nombre}-${version}/${plantillas_proyecto}"
-sed -i "s/@YEAR@/${FECHA}/g" "${DEV_DIR}${nombre}-${version}/${plantillas_proyecto}"
-sed -i "s/@PAQUETE@/${nombre}/g" "${DEV_DIR}${nombre}-${version}/${plantillas_proyecto}"
-
-done
-
-mv "${DEV_DIR}${nombre}-${version}/${LICENSE}" "${DEV_DIR}${nombre}-${version}/LICENSE"
-
-sed -i "s/#Vcs-Browser:.*/#Vcs-Browser: ${CONTROL_VCSBROWSER}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
-sed -i "s/Homepage:.*/Homepage: ${CONTROL_HOMEPAGE}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
-sed -i "s/Maintainer:.*/Maintainer: ${CONTROL_MAINTAINER}\nUploaders: ${CONTROL_UPLOADERS}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
-sed -i "s/Description:.*/Description: ${CONTROL_DESCRIPTION}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
-sed -i "s/<insert long description, indented with spaces>/${CONTROL_LONG_DESCRIPTION}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
-sed -i "s/Architecture:.*/Architecture: ${CONTROL_ARCH}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
-
-sed -i "s/Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>/Versión inicial de ${nombre} para Canaima GNU\/Linux/g" "${DEV_DIR}${nombre}-${version}/debian/changelog"
-sed -i "s/(.*)/(${version})/g" "${DEV_DIR}${nombre}-${version}/debian/changelog"
-
-echo "3.0 (quilt)" > ${DEV_DIR}${nombre}-${version}/debian/source/format
-echo "7" > ${DEV_DIR}${nombre}-${version}/debian/compat
-
-if [ ! -e "${DEV_DIR}${nombre}-${version}/.git/" ]
-then
-
-git init > /dev/null 2>&1
-
-echo -e ${AMARILLO}"Repositorio git inicializado"${FIN}
-
-directorio="${DEV_DIR}${nombre}-${version}"
-directorio_nombre=$( basename "${directorio}" )
-
-SET-REPOS
-
-fi
-
-if [ ${opcion} == "crear-proyecto" ]; then
-echo -e ${VERDE}"¡Proyecto ${nombre} creado!"${FIN}
-elif [ ${opcion} == "debianizar" ]; then
-echo -e ${VERDE}"¡Proyecto ${nombre} debianizado correctamente!"${FIN}
-fi
-
-echo -e ${AMARILLO}"Lee los comentarios en los archivos creados para mayor información"${FIN}
-
-}
-
-function CREAR-FUENTE() {
-
-slash=${directorio#${directorio%?}}
-[ ${slash} == "/" ] && directorio=${directorio%?}
-cd ${DEV_DIR}
-rm -rf "${directorio}.orig"
-cp -r ${directorio} "${directorio}.orig"
-dpkg-source --format="1.0" -i.git/ -I.git -b ${directorio}
 
 }
 
