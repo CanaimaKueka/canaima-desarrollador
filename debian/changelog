@@ -1,48 +1,6 @@
-canaima-base (3.0+7) unstable; urgency=low
+canaima-desarrollador (1.0+0) testing; urgency=low
 
-  * [7961975] Corrigiendo lo que se escribe en el sources.list
+  * Primera versión para Canaima GNU/Linux
+  * [99ae97e] Documentando, mejorando funciones
 
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Fri, 17 Dec 2010 11:53:42 -0430
-
-canaima-base (3.0+6) unstable; urgency=low
-
-  * [0ac0751] Agregando dependencia a desktop-base y corrigiendo otros
-    detalles
-
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Wed, 15 Dec 2010 04:50:29 -0430
-
-canaima-base (3.0+5) unstable; urgency=low
-
-  * [738bc47] Corrigiendo error en el preinst
-
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Tue, 07 Dec 2010 15:24:52 -0430
-
-canaima-base (3.0+4) unstable; urgency=low
-
-  * [e875392] Agragando validaciones diversas
-
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Tue, 07 Dec 2010 14:11:45 -0430
-
-canaima-base (3.0+3) unstable; urgency=low
-
-  * [511b937] Corrigiendo scripts del mantenedor
-
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Wed, 01 Dec 2010 11:12:32 -0430
-
-canaima-base (3.0+2) unstable; urgency=low
-
-  * [118b0c3] Corrigiendo scripts del mantenedor
-
- -- Luis Alejandro Martez Faneyth <martinez.faneyth@gmail.com>  Mon, 29 Nov 2010 11:40:54 -0430
-
-canaima-base (3.0+1) unstable; urgency=low
-
-  * [a20920b] Versión Inicial
-
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Fri, 26 Nov 2010 16:53:19 -0430
-
-canaima-base (3.0+0) unstable; urgency=low
-
-  * Reconstrucción del paquete canaima-base de acuerdo con las nuevas políticas de desarrollo de Canaima GNU/Linux
-
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Fri, 19 Nov 2010 16:51:09 -0430
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Fri, 14 Jan 2011 01:30:39 -0430
