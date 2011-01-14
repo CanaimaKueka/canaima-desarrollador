@@ -1,4 +1,4 @@
-Documentación para el Ayudante "crear-proyecto" de Canaima Desarrollador
+Documentación para el Ayudante "empaquetar" de Canaima Desarrollador
 
 Uso:
   canaima-desarrollador crear-proyecto <nombre> <versión> <destino> <licencia>

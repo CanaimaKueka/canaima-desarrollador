@@ -265,6 +265,7 @@ echo -e ${AMARILLO}"Lee los comentarios en los archivos creados para mayor infor
 
 function CREAR-FUENTE() {
 
+MOVER-SOURCES
 slash=${directorio#${directorio%?}}
 [ ${slash} == "/" ] && directorio=${directorio%?}
 cd ${DEV_DIR}
@@ -272,7 +273,12 @@ rm -rf "${directorio}.orig"
 cp -r ${directorio} "${directorio}.orig"
 dpkg-source --format="1.0" -i.git/ -I.git -b ${directorio}
 MOVER-SOURCES
+
+if [ -e "${DEPOSITO_SOURCES}${directorio_nombre}.orig.tar.gz" ]; then
 echo -e ${VERDE}"¡Fuente ${directorio_nombre} creada y movida a ${DEPOSITO_SOURCES}!"${FIN}
+else
+echo -e ${ROJO}"¡Epa! algo pasó durante la creación de ${directorio_nombre}.orig.tar.gz"${FIN}
+fi
 
 }
 

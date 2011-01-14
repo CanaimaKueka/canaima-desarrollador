@@ -1,4 +1,3 @@
-CANAIMA-DESARROLLADOR - ¡Tu abuela empaqueta! (Versión: )
 Canaima Desarrollador es una herramienta destinada a facilitar la creación de
 software para Canaima GNU/Linux.
 Para mayor información, consulta la documentación de cada ayudante o la entrada
@@ -10,8 +9,8 @@ Uso:
 AYUDANTES CREADORES
   crear-proyecto	Crea un proyecto de empaquetamiento al estilo Canaima.
   debianizar		Alista un proyecto de software existente para ser empaquetado.
-  empaquetar		Crea un paquete binario a partir de un proyecto de software.
   crear-fuente		Crea un paquete fuente a partir de un proyecto de software.
+  empaquetar            Crea un paquete binario a partir de un proyecto de software.
 
 AYUDANTES GIT
   clonar		Descarga un proyecto existente en el repositorio de código y lo
