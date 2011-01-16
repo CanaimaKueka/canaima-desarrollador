@@ -40,6 +40,9 @@ DEV-DATA
 # canaima-desarrollador y ejecutar la función correspondiente
 case ${1} in
 
+#------ AYUDANTES CREADORES --------------------------------------------------------------------------------------------#
+#=======================================================================================================================#
+
 crear-proyecto|debianizar)
 # Guardemos los parámetros en variables para usarlos después
 opcion=${1}
@@ -71,7 +74,7 @@ crear-fuente)
 # Guardando directorio en variable para utilizarlo después
 directorio=${2}
 
-# Homogeneicemos los directorios
+# Garanticemos que el directorio siempre tiene escrita la ruta completa
 directorio=${DEV_DIR}${directorio#${DEV_DIR}}
 directorio_nombre=$( basename "${directorio}" )
 
@@ -81,32 +84,39 @@ directorio_nombre=$( basename "${directorio}" )
 # El directorio no existe
 [ ! -d "${directorio}" ] && echo -e ${ROJO}"El directorio no existe o no es un directorio."${FIN} && exit 1
 # ¿Tenemos debian/changelog?
-[ ! -e "${directorio}/debian/changelog" ] && echo -e ${ROJO}"Ésto no parece ser un proyecto de empaquetamiento. Debianizalo."${FIN} && exit 1
+[ ! -e "${directorio}/debian/changelog" ] && echo -e ${ROJO}"Ésto no parece ser un proyecto de empaquetamiento. Debianizalo antes de continuar."${FIN} && exit 1
 
 CREAR-FUENTE
 ;;
 
 empaquetar)
-
+# Guardamos los parámetros en variables para usarlas después
 directorio=${2}
 mensaje=${3}
 procesadores=${4}
 
-[ -z "${directorio}" ] && echo -e ${ROJO}"Éste programa es espectacular... Pero no te lee la mente. Especifica un proyecto a empaquetar."${FIN} && exit 1
+# Garanticemos que el directorio siempre tiene escrita la ruta completa
+directorio=${DEV_DIR}${directorio#${DEV_DIR}}
+directorio_nombre=$( basename "${directorio}" )
 
-[ $( echo "${directorio}" | grep -c " " ) != 0 ] && echo -e ${ROJO}"Algo me dice que pusiste el mensaje del commit, pero no el proyecto."${FIN} && exit 1
-
+# Comprobaciones varias
+# No especificaste el directorio
+[ -z "${directorio#${DEV_DIR}}" ] && echo -e ${ROJO}"Éste programa es espectacular... Pero no te lee la mente. Especifica un proyecto a empaquetar."${FIN} && exit 1
+# Tal vez te comiste el parámetro directoriorio o especificaste un directorio con espacios
+[ $( echo "${directorio#${DEV_DIR}}" | grep -c " " ) != 0 ] && echo -e ${ROJO}"Sospecho dos cosas: o te saltaste el nombre del directorio, o especificaste un directorio con espacios."${FIN} && exit 1
+# No especificaste un mensaje para el commit
 [ -z "${mensaje}" ] && mensaje="auto" && echo -e ${AMARILLO}"Mensaje de commit vacío. Autogenerando."${FIN}
-
+# No especificaste número de procesadores
 [ -z "${procesadores}" ] && procesadores=0 && echo -e ${AMARILLO}"No me dijiste si tenías más de un procesador. Asumiendo uno sólo."${FIN}
 
+# cálculo de los threads (n+1)
 procesadores=$[ ${procesadores}+1 ]
-
-directorio=${DEV_DIR}${directorio}
-directorio_nombre=$( basename "${directorio}" )
 
 EMPAQUETAR
 ;;
+
+#------ AYUDANTES GIT --------------------------------------------------------------------------------------------#
+#=======================================================================================================================#
 
 descargar|clonar|clone)
 # Guardemos el segundo argumento en la varible "proyecto"

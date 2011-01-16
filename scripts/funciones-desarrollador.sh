@@ -21,50 +21,71 @@ PKG="canaima-desarrollador"
 #=======================================================================================================================#
 
 function CHECK() {
+#-------------------------------------------------------------#
+# Nombre de la Función: CHECK
+# Propósito: Comprobar que ciertos parámetros se cumplan al
+#            inicio del script canaima-desarrollador.sh
+# Dependencias:
+#	- Requiere la carga del archivo ${VARIABLES} y ${CONF}
+#-------------------------------------------------------------#
 
+# La carpeta del desarrollador ${DEV_DIR} no existe
 [ ! -d "${DEV_DIR}" ] && echo -e ${ROJO}"¡La carpeta del desarrollador ${DEV_DIR} no existe!"${FIN} && exit 1
-
+# El archivo de configuración personal ${CONF} no existe
 [ ! -e "${CONF}" ] && echo -e ${ROJO}"¡Tu archivo de configuración ${CONF} no existe!"${FIN} && exit 1
-
+# Faltan variables por definir en el archivo de configuración ${CONF}
 if [ -z "${REPO}" ] || [ -z "${REPO_USER}" ] || [ -z "${REPO_DIR}" ] || [ -z "${DEV_DIR}" ] || [ -z "${DEV_NAME}" ] || [ -z "${DEV_MAIL}" ] || [ -z "${DEV_GPG}" ] || [ -z "${DEPOSITO_LOGS}" ] || [ -z "${DEPOSITO_SOURCES}" ] || [ -z "${DEPOSITO_DEBS}" ]
 then
 echo -e ${ROJO}"Tu archivo de configuración ${CONF} presenta inconsistencias. Todas las variables deben estar llenas."${FIN} && exit 1
 fi
 
+# Asegurando que existan las carpetas de depósito
 [ ! -e ${DEPOSITO_LOGS} ] && mkdir -p ${DEPOSITO_LOGS}
 [ ! -e ${DEPOSITO_SOURCES} ] && mkdir -p ${DEPOSITO_SOURCES}
 [ ! -e ${DEPOSITO_DEBS} ] && mkdir -p ${DEPOSITO_DEBS}
 
+# Asegurando que la carpeta del desarrollador y de las plantillas
+# terminen con un slash (/) al final
 ultimo_char_dev=${DEV_DIR#${DEV_DIR%?}}
 ultimo_char_pla=${PLANTILLAS#${PLANTILLAS%?}}
-
 [ ${ultimo_char_dev} != "/" ] && DEV_DIR="${DEV_DIR}/"
 [ ${ultimo_char_pla} != "/" ] && PLANTILLAS="${PLANTILLAS}/"
 
-if [ $( find ${DEV_DIR} -maxdepth 1 -name '* *' | wc -l ) != 0 ]
-then
-echo -e ${ROJO}"${DEV_DIR} contiene directorios con espacios en su nombre. Abortando."${FIN} && exit 1
-fi
+# Verificando que no hayan carpetas con nombres que contengan espacios
+[ $( find ${DEV_DIR} -type d -maxdepth 1 -name '* *' | wc -l ) != 0 ] && echo -e ${ROJO}"${DEV_DIR} contiene directorios con espacios en su nombre. Abortando."${FIN} && exit 1
 
 }
 
-function DEV-DATA {
+function DEV-DATA() {
+#-------------------------------------------------------------#
+# Nombre de la Función: DEV-DATA
+# Propósito: Establecer el nombre y correo del desarrollador
+#            tanto para versionamiento como empaquetamiento.
+# Dependencias:
+#       - Requiere la carga del archivo ${CONF}
+#	- Requiere la instalación del paquete git-core
+#-------------------------------------------------------------#
 
-if [ -n "${DEV_NAME}" ] && [ -n "${DEV_MAIL}" ]
-then
-
+# Configurando git para que use los datos del desarrollador
+git config --system user.name "${DEV_NAME}"
+git config --system user.email "${DEV_MAIL}"
 git config --global user.name "${DEV_NAME}"
 git config --global user.email "${DEV_MAIL}"
+# Estableciendo las variables de entorno que utilizan los métodos de
+# empaquetamiento.
 export DEBFULLNAME="${DEV_NAME}"
-export DEBEMAIL="${DEV_NAME}"
-
-else
-echo -e ${ROJO}"No has definido tu nombre de usuario ni correo. Edita ${CONF} para hacerlo."${FIN} && exit 1
-fi
+export DEBEMAIL="${DEV_MAIL}"
 
 }
 
 function DATOS-PROYECTO() {
+#-------------------------------------------------------------#
+# Nombre de la Función: DATOS-PROYECTO
+# Propósito: Comprobar que ciertos parámetros se cumplan al
+#            inicio del script canaima-desarrollador.sh
+# Dependencias:
+#       - Requiere la carga del archivo ${VARIABLES} y ${CONF}
+#-------------------------------------------------------------#
 
 CHANGELOG_PROYECTO="${directorio}/debian/changelog"
 
@@ -438,6 +459,7 @@ PUSH
 
 git-buildpackage -tc --git-tag -j${procesadores}
 
+MOVER-DEBS
 }
 
 function COMMIT-TODO() {

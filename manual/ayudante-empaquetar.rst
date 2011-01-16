@@ -1,33 +1,30 @@
 Documentación para el Ayudante "empaquetar" de Canaima Desarrollador
 
 Uso:
-  canaima-desarrollador crear-proyecto <nombre> <versión> <destino> <licencia>
-  canaima-desarrollador debianizar <nombre> <versión> <destino> <licencia>
+  canaima-desarrollador empaquetar <directorio> <mensaje> <procesadores>
 
-Para crear un proyecto desde cero o debianizar uno existente, debes especificar
-lo siguiente:
+Éste ayudante te permite empaquetar un proyecto de forma automatizada, siguiendo
+la metodología git-buildpackage, que se centra en el siguiente diagrama:
 
-  nombre	Un nombre para tu proyecto, que puede contener letras, números,
-		puntos y guiones. Cualquier otro caracter no está permitido.
+COMMIT > REFLEJAR CAMBIOS > COMMIT > CREAR PAQUETE > PUSH > GIT-BUILDPACKAGE
+         EN EL CHANGELOG             FUENTE
 
-  versión	La versión inicial de tu proyecto. Se permiten números, guiones,
-		puntos, letras o dashes (~).
+Parámetros:
 
-  destino	[canaima|personal]
-		Especifica si es un proyecto de empaquetamiento para Canaima
-		GNU/Linux o si es un proyecto personal.
+  directorio		Nombre de la carpeta dentro del directorio del 
+			desarrollador donde se encuentra el proyecto a empaquetar.
 
-  licencia	[apache|artistic|bsd|gpl|gpl2|gpl3|lgpl|lgpl2|lgpl3]
-		Especifica el tipo de licencia bajo el cuál distribuirás tu
-		trabajo.
+  mensaje		[auto|*]
+			Mensaje representativo de los cambios para el primer
+			commit. El segundo commit es sólo para el changelog.
+			Colocando la palabra "auto", se autogenera el mensaje.
+
+  procesadores		[1-n]
+			Número de procesadores con que cuenta tu computadora para
+			optimizar el proceso de empaquetamiento.
 
 NOTA: TODOS LOS PARÁMETROS SON NECESARIOS. LA ALTERACIÓN DEL ORDEN O LA OMISIÓN
 DE ALGUNO PUEDE TRAER CONSECUENCIAS GRAVES. PRESTA ATENCIÓN.
-
-Si estás debianizando un proyecto existente, lo que ingreses en <nombre> y
-<versión> se utilizará para determinar cuál es el nomnre de la carpeta a
-debianizar dentro del directorio del desarrollador, suponiendo que tiene el
-nombre <nombre>-<versión>. Si no se llama así, habrá un error.
 
 Opciones de Ayuda:
   --ayuda			Muestra ésta ayuda.
