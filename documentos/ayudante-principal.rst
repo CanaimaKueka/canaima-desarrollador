@@ -13,7 +13,7 @@ AYUDANTES CREADORES
   empaquetar            Crea un paquete binario a partir de un proyecto de software.
 
 AYUDANTES GIT
-  clonar		Descarga un proyecto existente en el repositorio de código y lo
+  descargar		Descarga un proyecto existente en el repositorio de código y lo
 			ubica en la carpeta del desarrollador.
   registrar		Registra los cambios hechos localmente para un proyecto específico.
   enviar		Envía los cambios al repositorio de código de un proyecto específico.
@@ -21,18 +21,18 @@ AYUDANTES GIT
 			un proyecto en específico.
 
 AYUDANTES MASIVOS
-  empaquetar-todo	Empaqueta todo lo existente en la carpeta del desarrollador.
-  enviar-todo		Envía todo lo existente en la carpeta del desarrollador al
-			repositorio de código.
+
+  descargar-todo		Descarga todo lo existente en el repositorio de código y lo coloca en
+			la carpeta del desarrollador.
   registrar-todo	Registra todo lo existente en la carpeta del desarrollador al
 			repositorio de código.
-  reg-env-todo		Registra y envía todo lo existente en la carpeta del desarrollador al
+  enviar-todo		Envía todo lo existente en la carpeta del desarrollador al
 			repositorio de código.
-  clonar-todo		Descarga todo lo existente en el repositorio de código y lo coloca en
-			la carpeta del desarrollador.
   actualizar-todo	Actualiza todo lo existente en la carpeta del desarrollador con lo
 			encontrado en el repositorio de código.
-
+  empaquetar-varios	Crea los paquetes binarios de los proyectos especificados.
+  empaquetar-todo	Empaqueta todo lo existente en la carpeta del desarrollador.
+  
 AYUDANTES INFORMATIVOS
   listar-fuentes	Lista los proyectos existentes en el repositorio de código.
   listar-locales	Lista los proyectos existentes en la carpeta del desarrollador.
