@@ -7,9 +7,10 @@ SCRIPTS =	"debian/preinst install" \
 		"debian/prerm remove" \
 		"debian/postrm remove" \
 		"scripts/canaima-desarrollador.sh" \
-		"scripts/funciones-desarrollador.sh"
+		"scripts/funciones-desarrollador.sh" \
+		"scripts/manual-desarrollador.sh"
 
-all: clean build test
+all: clean build clean
 
 test:
 
@@ -25,7 +26,13 @@ test:
 
 build:
 
-	
+	# Generar la documentación con python-sphinx
+	cd documentos
+	$(MAKE) latex
+	$(MAKE) html
+	$(MAKE) man
+	cd latex
+	$(MAKE) all-pdf
 
 install:
 
@@ -35,11 +42,11 @@ install:
 	mkdir -p $(DESTDIR)/usr/share/applications/
 	cp -r desktop/manual-desarrollador.desktop $(DESTDIR)/usr/share/applications/
 	cp -r scripts/canaima-desarrollador.sh $(DESTDIR)/usr/bin/canaima-desarrollador
+	cp -r scripts/canaima-desarrollador.sh $(DESTDIR)/usr/bin/c-d
 	cp -r scripts/manual-desarrollador.sh $(DESTDIR)/usr/bin/manual-desarrollador
-	cp -r scripts/* $(DESTDIR)/usr/share/canaima-desarrollador/scripts/
-	cp -r plantillas/* $(DESTDIR)/usr/share/canaima-desarrollador/plantillas/
-	cp -r scripts/canaima-bienvenido.sh $(DESTDIR)/usr/bin/canaima-bienvenido
-	cp -r scripts/canaima-bienvenido-automatico.sh $(DESTDIR)/usr/bin/canaima-bienvenido-automatico
+	cp -r scripts plantillas $(DESTDIR)/usr/share/canaima-desarrollador/
+	cp -r conf/variables.conf $(DESTDIR)/usr/share/canaima-desarrollador/
+	cp -r conf/usuario.conf $(DESTDIR)/etc/skel/.config/canaima-desarrollador/
 
 uninstall:
 
