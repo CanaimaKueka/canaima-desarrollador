@@ -1,40 +1,76 @@
-===============================================================
-¿Cómo empiezo a desarrollar software con Canaima Desarrollador?
-===============================================================
+=====================
+canaima-desarrollador
+=====================
 
-El uso de C-D gira entorno a su aplicación principal y sus ayudantes. Para ello, dependiendo de la actividad que desees realizar, debes escoger el que más se adapte a tus necesidades.
+-------------------------------------------------------------
+Herramienta que facilita la creación de Software para Canaima
+-------------------------------------------------------------
 
-Uso::
+:Author: martinez.faneyth@gmail.com
+:Date:   2011-01-22
+:Copyright: Libre uso, modificación y distribución (GPL3)
+:Version: 1.0+0
+:Manual section: 1
+:Manual group: Empaquetamiento
 
-  canaima-desarrollador [AYUDANTE] [PARÁMETRO-1] [PARÁMETRO-2] ... [PARÁMETRO-N]
-  c-d [AYUDANTE] [PARÁMETRO-1] [PARÁMETRO-2] ... [PARÁMETRO-N]
+MODO DE USO
+===========
 
-Opciones de Ayuda::
+**canaima-desarrollador [AYUDANTE] [PARÁMETRO-1] [PARÁMETRO-2] ... [PARÁMETRO-N] [--ayuda]**
 
-  --ayuda			Muestra la documentación para el ayudante.
+**c-d [AYUDANTE] [PARÁMETRO-1] [PARÁMETRO-2] ... [PARÁMETRO-N] [--ayuda]**
 
-Ayudantes Creadores
--------------------
+DESCRIPCIÓN
+===========
+
+Canaima Desarrollador (C-D) es un compendio de herramientas y ayudantes que facilitan el proceso de desarrollo de software para Canaima GNU/Linux. Está diseñado para **facilitar el trabajo** a aquellas personas que participan en dicho proceso con regularidad, como también para **iniciar a los que deseen aprender** de una manera rápida y práctica.
+
+C-D sigue dos líneas de acción principales para lograr éste cometido: **la práctica** y **la formativa**. La práctica permite:
+
+* Agilizar los procesos para la creación de paquetes binarios canaima a partir de paquetes fuentes correctamente estructurados.
+* Automatización personalizada de la creación de Paquetes Fuentes acordes a las Políticas de Canaima GNU/Linux.
+* Creación de un depósito personal, por usuario, donde se guardan automáticamente y en carpetas separadas los siguientes tipos de archivo:
+
+  - Proyectos en proceso de empaquetamiento
+  - Paquetes Binarios (\*.deb)
+  - Paquetes Fuente (\*.tar.gz, \*.dsc, \*.changes, \*.diff)
+  - Registros provenientes de la creación de paquetes binarios (\*.build)
+
+* Versionamiento asistido (basado en git) en los proyectos, brindando herramientas para realizar las siguientes operaciones, con un alto nivel de automatización y detección de posibles errores:
+
+  - git clone
+  - git commit
+  - git push
+  - git pull
+
+* Ejecución de tareas en masa (empaquetar, hacer pull, push, commit, entre otros), para agilizar procesos repetitivos.
+
+En el otro aspecto, el formativo, C-D incluye:
+
+* El Manual del Desarrollador, resumen técnico-práctico de las herramientas cognitivas necesarias para desarrollar paquetes funcionales para Canaima GNU/Linux.
+* La Guía de Referencia para el Desarrollador, compendio extenso y detallado que extiende y complementa el contenido del Manual del Desarrollador.
+* Éste manual para el uso de Canaima Desarrollador.
+
+AYUDANTES DE C-D
+================
 
 CREAR PROYECTO
-~~~~~~~~~~~~~~
+--------------
 
 Uso::
 
-  canaima-desarrollador crear-proyecto <nombre> <versión> <destino> <licencia>
-  canaima-desarrollador debianizar <nombre> <versión> <destino> <licencia>
-  c-d crear-proyecto <nombre> <versión> <destino> <licencia>
-  c-d debianizar <nombre> <versión> <destino> <licencia>
+canaima-desarrollador crear-proyecto <nombre> <versión> <destino> <licencia>
+canaima-desarrollador debianizar <nombre> <versión> <destino> <licencia>
 
 Para crear un proyecto desde cero o debianizar uno existente, debes especificar lo siguiente:
 
-  nombre	Un nombre para tu proyecto, que puede contener letras, números, puntos y guiones. Cualquier otro caracter no está permitido.
+:nombre: Un nombre para tu proyecto, que puede contener letras, números, puntos y guiones. Cualquier otro caracter no está permitido.
 
-  versión	La versión inicial de tu proyecto. Se permiten números, guiones, puntos, letras o dashes (~).
+:versión: La versión inicial de tu proyecto. Se permiten números, guiones, puntos, letras o dashes (~).
 
-  destino	[canaima|personal] Especifica si es un proyecto de empaquetamiento para Canaima GNU/Linux o si es un proyecto personal.
+:destino: [canaima|personal] Especifica si es un proyecto de empaquetamiento para Canaima GNU/Linux o si es un proyecto personal.
 
-  licencia	[apache|artistic|bsd|gpl|gpl2|gpl3|lgpl|lgpl2|lgpl3] Especifica el tipo de licencia bajo el cuál distribuirás tu	trabajo.
+:licencia: [apache|artistic|bsd|gpl|gpl2|gpl3|lgpl|lgpl2|lgpl3] Especifica el tipo de licencia bajo el cuál distribuirás tu trabajo.
 
 Si estás debianizando un proyecto existente, lo que ingreses en <nombre> y <versión> se utilizará para determinar cuál es el nomnre de la carpeta a debianizar dentro del directorio del desarrollador, suponiendo que tiene el nombre <nombre>-<versión>. Si no se llama así, habrá un error.
 

@@ -28,11 +28,12 @@ build:
 
 	# Generar la documentación con python-sphinx
 	cd documentos
+	rst2man --language="es" --title="CANAIMA DESARROLLADOR" man-canaima-desarrollador.rst canaima-desarrollador.1
 	$(MAKE) latex
 	$(MAKE) html
-	$(MAKE) man
 	cd latex
 	$(MAKE) all-pdf
+	
 
 install:
 
