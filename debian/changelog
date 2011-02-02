@@ -1,3 +1,9 @@
+canaima-desarrollador (1.0+2) testing; urgency=low
+
+  * [9c11a2e] Corrigiendo debian/rules
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Wed, 02 Feb 2011 09:09:27 -0430
+
 canaima-desarrollador (1.0+1) testing; urgency=low
 
   * [2725117] Modificando scripts del mantenedor
