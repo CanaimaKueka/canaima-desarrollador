@@ -12,5 +12,6 @@ canaima-desarrollador (1.0+0) testing; urgency=low
     gitorious.org:canaima-gnu-linux/canaima-desarrollador
   * [bec681e] Mejorando el esquema de generación de documentación,
     agregando el lanzador del manual del desarrollador, docs y manpages
+  * [96e16ce] Renombrando entrada del desktop
 
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Wed, 02 Feb 2011 07:40:04 -0430
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Wed, 02 Feb 2011 07:43:20 -0430
