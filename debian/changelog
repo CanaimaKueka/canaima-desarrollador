@@ -2,5 +2,13 @@ canaima-desarrollador (1.0+0) testing; urgency=low
 
   * Primera versión para Canaima GNU/Linux
   * [99ae97e] Documentando, mejorando funciones
+  * [5d77a4e] Borrando rastros .swp
+  * [1a73e3f] Agragando documentación y agregando comentarios en los
+    scripts para describir su funcionamiento
+  * [4841219] Agregando fuentes RST para diversas partes del manual
+  * [85c4e4f] Últimos detalles a la documentación
+  * [3a143cd] Actualizando documentación
+  * [dea4022] Merge branches 'master' and 'upstream' of
+    gitorious.org:canaima-gnu-linux/canaima-desarrollador
 
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Fri, 14 Jan 2011 01:30:39 -0430
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Wed, 02 Feb 2011 01:06:56 -0430
