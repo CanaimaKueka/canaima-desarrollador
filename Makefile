@@ -27,12 +27,10 @@ test:
 build:
 
 	# Generar la documentación con python-sphinx
-	cd documentos
-	rst2man --language="es" --title="CANAIMA DESARROLLADOR" man-canaima-desarrollador.rst canaima-desarrollador.1
-	$(MAKE) latex
-	$(MAKE) html
-	cd latex
-	$(MAKE) all-pdf
+	rst2man --language="es" --title="CANAIMA DESARROLLADOR" documentos/man-canaima-desarrollador.rst documentos/canaima-desarrollador.1
+	$(MAKE) -C documentos latex
+	$(MAKE) -C documentos html
+	$(MAKE) -C documentos/_build/latex all-pdf
 	
 
 install:
@@ -59,6 +57,9 @@ uninstall:
 	rm -f $(DESTDIR)/usr/share/applications/canaima-bienvenido.desktop
 
 clean:
+
+	rm -rf documentos/_build
+	rm -rf documentos/canaima-desarrollador.1
 
 distclean:
 
