@@ -20,4 +20,4 @@ VARIABLES="/usr/share/canaima-desarrollador/conf/variables.conf"
 # Inicializando variables
 . ${VARIABLES}
 
-${NAVEGADOR} 
+${NAVEGADOR} /usr/share/doc/canaima-desarrollador/html/index.html

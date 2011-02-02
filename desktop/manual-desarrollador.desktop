@@ -1,17 +1,17 @@
 #!/usr/bin/env xdg-open
 
 [Desktop Entry]
-Name=Bienvenido a Canaima GNU/Linux
-Name[es_VE]=Bienvenido a Canaima GNU/Linux
-GenericName=Bienvenido a Canaima GNU/Linux
-GenericName[es_VE]=Bienvenido a Canaima GNU/Linux
-Comment=Menu de Bienvenida de Canaima GNU/Linux
-Comment[es_VE]=Menu de Bienvenida de Canaima GNU/Linux
-Exec=canaima-bienvenido
+Name=Manual del Desarrollador
+Name[es_VE]=Manual del Desarrollador
+GenericName=Manual del Desarrollador
+GenericName[es_VE]=Manual del Desarrollador
+Comment=Abre el Manual del Desarrollador
+Comment[es_VE]=Abre el Manual del Desarrollador
+Exec=manual-desarrollador
 Terminal=false
 Type=Application
 StartupNotify=true
-Icon=/usr/share/icons/canaima-iconos/places/48/distributor-logo.png
+Icon=/usr/share/icons/canaima-iconos/categories/scalable/applications-other.svg
 Categories=GNOME;GTK;Utility;
-X-GNOME-FullName=Bienvenido a Canaima GNU/Linux
-X-GNOME-FullName[es]=Bienvenido a Canaima GNU/Linux
+X-GNOME-FullName=Manual del Desarrollador
+X-GNOME-FullName[es]=Manual del Desarrollador

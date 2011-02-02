@@ -1,7 +1,7 @@
 #!/bin/bash -e
 #
 # ==============================================================================
-# PAQUETE: canaima-base
+# PAQUETE: canaima-desarrollador
 # ARCHIVO: preinst
 # DESCRIPCIÓN: Configura el sistema antes de la instalación del paquete.
 # COPYRIGHT:
@@ -15,136 +15,11 @@
 # Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los
 # términos de la Licencia Pública General de GNU (versión 3).
 
-PKG="canaima-base"
-ARCHIVOS="/etc/bash.bashrc \
-/etc/skel/.mozilla/firefox/canaima.default/prefs.js \
-/etc/skel/.mozilla/firefox/profiles.ini \
-/etc/skel/.mozilla/firefox/canaima.default/places.sqlite \
-/var/run/motd \
-/etc/skel/.bashrc \
-/etc/skel/.mozilla/firefox/canaima.default/cert8.db \
-/etc/issue.net \
-/etc/issue"
+PKG="canaima-desarrollador"
 
 case ${1} in
 
 	install|upgrade)
-
-		echo 'LANG="es_VE.UTF-8"' > /etc/default/locale
-		echo 'LANGUAGE="es_VE:es"' >> /etc/default/locale
-		echo 'LC_ALL="es_VE.UTF-8"' >> /etc/default/locale
-		echo 'es_VE.UTF-8 UTF-8' > /etc/locale.gen
-		export LC_ALL="es_VE.UTF-8"
-		export LANGUAGE="es_VE:es"
-		export LANG="es_VE.UTF-8"
-
-		locale-gen
-		
-		sed -i "s/$( grep 'XKBMODEL' /etc/default/keyboard )/XKBMODEL='pc105'/g" /etc/default/keyboard
-		sed -i "s/$( grep 'XKBLAYOUT' /etc/default/keyboard )/XKBLAYOUT='latam'/g" /etc/default/keyboard
-
-		setxkbmap latam
-
-		echo "===== ADVERTENCIA: Su archivo /etc/apt/sources.list será respaldado ====="
-		echo "===== en /etc/apt/sources.list.respaldo, el archivo original será   ====="
-		echo "===== reescrito con las fuentes de software para Canaima GNU/Linux  ====="
-
-		[ -e /etc/apt/preferences ] && mv /etc/apt/sources.list /etc/apt/sources.list.respaldo
-
-cat <<EOF >/etc/apt/sources.list
-#
-# Repositorios de Canaima GNU/Linux
-#
-
-# Repositorios Estables
-#deb http://repositorio.canaima.softwarelibre.gob.ve/ estable usuarios
-
-# Repositorio de Pruebas
-#deb http://repositorio.canaima.softwarelibre.gob.ve/ pruebas usuarios
-
-# Repositorio de Desarrollo
-deb http://repositorio.canaima.softwarelibre.gob.ve/ desarrollo usuarios
-
-# Repositorio de la Base (Debian)
-deb http://universo.canaima.softwarelibre.gob.ve/ squeeze main contrib non-free
-
-# Repositorio de actualizaciones de Emergencia
-deb http://seguridad.canaima.softwarelibre.gob.ve/ seguridad usuarios
-
-EOF
-
-		[ -e /etc/apt/preferences ] && mv /etc/apt/preferences /etc/apt/preferences.respaldo
-
-cat <<EOF >/etc/apt/preferences
-Package: *
-Pin: release o=Canaima
-Pin-Priority: 900
-
-Package: *
-Pin: release o=Debian
-Pin-Priority: 100
-
-EOF
-
-		[ -e /etc/locale.nopurge ] && mv /etc/locale.nopurge /etc/locale.nopurge.respaldo
-
-cat <<EOF >/etc/locale.nopurge
-####################################################
-# This is the configuration file for localepurge(8).
-####################################################
-
-####################################################
-# Uncommenting this string enables removal of localized
-# man pages based on the configuration information for
-# locale files defined below:
-
-MANDELETE
-
-####################################################
-# Uncommenting this string causes localepurge to simply delete
-# locales which have newly appeared on the system without
-# bothering you about it:
-
-DONTBOTHERNEWLOCALE
-
-####################################################
-# Uncommenting this string enables display of freed disk
-# space if localepurge has purged any superfluous data:
-
-SHOWFREEDSPACE
-
-#####################################################
-# Commenting out this string enables faster but less
-# accurate calculation of freed disk space:
-
-#QUICKNDIRTYCALC
-
-#####################################################
-# Commenting out this string disables verbose output:
-
-#VERBOSE
-
-#####################################################
-# Following locales won't be deleted from this system
-# after package installations done with apt-get(8):
-
-es
-es_ES.UTF-8
-es_VE
-es_VE.UTF-8
-
-EOF
-
-		for archivo in ${ARCHIVOS}
-		do
-
-			# Removiendo diverts obsoletos de Canaima 2.1
-
-			BASE=$(basename ${archivo})
-
-			dpkg-divert --package ${PKG} --remove --divert /var/lib/${PKG}/diverts/${BASE} ${archivo}
-
-		done
 	;;
 
 	abort-upgrade)

@@ -10,7 +10,7 @@ SCRIPTS =	"debian/preinst install" \
 		"scripts/funciones-desarrollador.sh" \
 		"scripts/manual-desarrollador.sh"
 
-all: clean build clean
+all: clean build test clean
 
 test:
 
@@ -31,7 +31,6 @@ build:
 	$(MAKE) -C documentos latex
 	$(MAKE) -C documentos html
 	$(MAKE) -C documentos/_build/latex all-pdf
-	
 
 install:
 
@@ -39,7 +38,9 @@ install:
 	mkdir -p $(DESTDIR)/usr/share/canaima-desarrollador/
 	mkdir -p $(DESTDIR)/etc/skel/.config/canaima-desarrollador/
 	mkdir -p $(DESTDIR)/usr/share/applications/
+	mkdir -p $(DESTDIR)/etc/skel/Escritorio/
 	cp -r desktop/manual-desarrollador.desktop $(DESTDIR)/usr/share/applications/
+	cp -r desktop/manual-desarrollador.desktop $(DESTDIR)/etc/skel/Escritorio/
 	cp -r scripts/canaima-desarrollador.sh $(DESTDIR)/usr/bin/canaima-desarrollador
 	cp -r scripts/canaima-desarrollador.sh $(DESTDIR)/usr/bin/c-d
 	cp -r scripts/manual-desarrollador.sh $(DESTDIR)/usr/bin/manual-desarrollador
@@ -49,13 +50,13 @@ install:
 
 uninstall:
 
-	rm -rf $(DESTDIR)/usr/share/canaima-bienvenido/
-	rm -rf $(DESTDIR)/usr/bin/canaima-bienvenido
-	rm -rf $(DESTDIR)/usr/bin/canaima-bienvenido-automatico
-	rm -f $(DESTDIR)/etc/skel/Escritorio/canaima-bienvenido.desktop
-	rm -f $(DESTDIR)/etc/skel/.config/autostart/canaima-bienvenido-automatico.desktop
-	rm -f $(DESTDIR)/usr/share/applications/canaima-bienvenido.desktop
-
+	rm -rf $(DESTDIR)/usr/share/canaima-desarrollador
+	rm -rf $(DESTDIR)/usr/bin/canaima-desarrollador
+	rm -rf $(DESTDIR)/usr/bin/c-d
+	rm -rf $(DESTDIR)/usr/bin/manual-desarrollador
+	rm -rf $(DESTDIR)/etc/skel/Escritorio/manual-desarrollador.desktop
+	rm -rf $(DESTDIR)/etc/skel/.config/canaima-desarrollador/
+	rm -rf $(DESTDIR)/usr/share/applications/manual-desarrollador.desktop
 clean:
 
 	rm -rf documentos/_build
