@@ -4,4 +4,4 @@
 	dh ${@}
 
 override_dh_auto_install:
-	$(MAKE) DESTDIR=$(CURDIR)/debian/canaima-desarrollo install
+	$(MAKE) DESTDIR=$(CURDIR)/debian/canaima-desarrollador install
