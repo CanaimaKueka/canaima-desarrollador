@@ -1,3 +1,9 @@
+canaima-desarrollador (1.0+3) testing; urgency=low
+
+  * [7aafd29] Corrigiendo error de chequeo en funciones-desarrollador.sh
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Thu, 03 Feb 2011 14:27:04 -0430
+
 canaima-desarrollador (1.0+2) testing; urgency=low
 
   * [9c11a2e] Corrigiendo debian/rules
