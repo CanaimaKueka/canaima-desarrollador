@@ -1,6 +1,6 @@
-========================
-Manual del Desarrollador
-========================
+============================
+Manual para el Desarrollador
+============================
 
 Es bien sabido que Canaima GNU/Linux es una de las distribuciones de Software Libre más importantes de Venezuela. Actualmente se incluye en más de 880 mil portátiles del proyecto Canaima Educativo, ha sido descargado más de 120 mil veces del portal oficial y se planea extender el Proyecto a toda la Administración Pública Nacional.
 
@@ -14,14 +14,14 @@ Podemos decir que básicamente el ciclo de desarrollo de Canaima sigue un flujo 
 [[Imagen:Manual-desarrollador-2.png|800px|center|thumb]]
 
 ¿Quienes son los actores?
-=========================
+-------------------------
 
 La comunidad canaima está conformada por un gran número de personas que tienen intereses comunes y que comparten un mismo espacio virtual conformado por una serie de herramientas y servicios condensados en una plataforma pública. Éstos actores provienen de distintas organizaciones y colectivos, a saber: el [http://www.cnti.gob.ve/ CNTI], Instituciones Públicas en general, Unidades Productivas, Cooperativas, Empresas Privadas, Activistas Sociales y Usuarios en general.
 
 Éste conjunto de personas poseen una dinámica propia, característica de sus realidades particulares; sin embargo, es posible diferenciar un ciclo que se ejecuta cada vez que se publica una nueva versión de Canaima GNU/Linux.
 
 Cocinando una nueva versión de Canaima GNU/Linux
-================================================
+------------------------------------------------
 
 En teoría, una versión de Canaima es publicada cada ~6 meses en sincronía con la [http://cayapa.canaima.softwarelibre.gob.ve/ Cayapa]. Para que ésto se cumpla, ciertos hitos deben ser alcanzados.
 
@@ -37,6 +37,7 @@ En teoría, una versión de Canaima es publicada cada ~6 meses en sincronía con
 Es importante añadir tu proyecto en el [http://canaima.softwarelibre.gob.ve/descargas/canaima-dvdnvivo/mapa-de-ruta Mapa de ruta de la próxima versión de Canaima].
 
 Etapas de Desarrollo
+--------------------
 
 Las etapas de desarrollo iniciales de un producto son locales e involucran casi cualquier elemento que al desarrollador se le ocurra, en fin, es producto de un proceso creativo que se parece mucho a un proceso artístico. Cuando tu proyecto tenga una estructura más o menos definida, es hora de versionarlo con git e ir publicando tu código; en ésta etapa entra en juego [http://forja.softwarelibre.gob.ve/ forja.softwarelibre.gob.ve].
 
@@ -63,20 +64,24 @@ Cuando sientas que haz llegado a una versión estable de tu paquete, es hora de 
 Finalmente, cuando todos los objetivos establecidos en el mapa de ruta se hayan cumplido, todos los paquetes de la rama pruebas serán pasados a estable, generando así una nueva versión de Canaima. Los medios vivos instalables serán generados a través de canaima-semilla.
 
 Versionando con GIT
+===================
 
 GIT es una herramienta de desarrollo muy útil. Con ella cualquier persona podrá manejar de una manera sencilla y práctica el versionamiento de su trabajo.
 
 ¿Por qué necesito versionamiento?
+---------------------------------
 
 Muchas veces pasa que queremos devolver uno o varios cambios en archivos que ya guardamos y cerramos y nos encontramos con que no tenemos forma de hacerlo.
 
 Con el control de versiones o versionamiento, tenemos la facilidad de gestionar los diferentes cambios que se hacen en el contenido, configuración y propiedades de los archivos de un determinado proyecto. Ésta característica nos permite devolver cambios hacia versiones anteriores, además de facilitar el acceso y distribución de código fuente mediante la utilización de repositorios locales o remotos.
 
 ¿Y por qué GIT?
+---------------
 
 GIT es una herramienta de versionamiento creada por Linus Torvalds, desarrollador del Kernel Linux. Entre sus beneficios con respecto a otros sistemas de versionamiento tenemos que es un sistema distribuido que permite el trabajo con repositorios locales que luego pueden ser fusionados con el repositorio principal.
 
 ¿Cómo uso GIT?
+--------------
 
 Lo primero que se debe hacer es instalarlo. Es muy fácil, -como es de costumbre en Linux-, escribimos lo siguiente en una consola con permisos de superusuario:
 
