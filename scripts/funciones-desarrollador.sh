@@ -626,14 +626,14 @@ function CHECK() {
 #	- Paquetes: findutils
 #-------------------------------------------------------------#
 
-# La carpeta del desarrollador ${DEV_DIR} no existe
-[ ! -d "${DEV_DIR}" ] && echo -e ${ROJO}"¡La carpeta del desarrollador ${DEV_DIR} no existe!"${FIN} && exit 1
-# El archivo de configuración personal ${CONF} no existe
-[ ! -e "${CONF}" ] && echo -e ${ROJO}"¡Tu archivo de configuración ${CONF} no existe!"${FIN} && exit 1
 # Faltan variables por definir en el archivo de configuración ${CONF}
 if [ -z "${REPO}" ] || [ -z "${REPO_USER}" ] || [ -z "${REPO_DIR}" ] || [ -z "${DEV_DIR}" ] || [ -z "${DEV_NAME}" ] || [ -z "${DEV_MAIL}" ] || [ -z "${DEV_GPG}" ] || [ -z "${DEPOSITO_LOGS}" ] || [ -z "${DEPOSITO_SOURCES}" ] || [ -z "${DEPOSITO_DEBS}" ]; then
 echo -e ${ROJO}"Tu archivo de configuración ${CONF} presenta inconsistencias. Todas las variables deben estar llenas."${FIN} && exit 1
 fi
+# La carpeta del desarrollador ${DEV_DIR} no existe
+[ ! -d "${DEV_DIR}" ] && echo -e ${ROJO}"¡La carpeta del desarrollador ${DEV_DIR} no existe!"${FIN} && exit 1
+# El archivo de configuración personal ${CONF} no existe
+[ ! -e "${CONF}" ] && echo -e ${ROJO}"¡Tu archivo de configuración ${CONF} no existe!"${FIN} && exit 1
 # Asegurando que existan las carpetas de depósito
 [ ! -e ${DEPOSITO_LOGS} ] && mkdir -p ${DEPOSITO_LOGS}
 [ ! -e ${DEPOSITO_SOURCES} ] && mkdir -p ${DEPOSITO_SOURCES}
