@@ -3,8 +3,9 @@ canaima-desarrollador (1.0+3) testing; urgency=low
   * [7aafd29] Corrigiendo error de chequeo en funciones-desarrollador.sh
   * [0a756b6] Mejorando la documentación
   * [c747b3d] Mejorando el formato de los archivos rst
+  * [efb5501] Removiendo basura de compilación anterior
 
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Fri, 04 Feb 2011 15:37:21 -0430
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Fri, 04 Feb 2011 15:41:39 -0430
 
 canaima-desarrollador (1.0+2) testing; urgency=low
 
