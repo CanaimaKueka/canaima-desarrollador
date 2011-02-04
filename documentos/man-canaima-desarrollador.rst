@@ -61,19 +61,19 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``NOMBRE``
-	``Un nombre para tu proyecto, que puede contener letras, números, puntos y guiones. Cualquier otro caracter no está permitido.``
+	Un nombre para tu proyecto, que puede contener letras, números, puntos y guiones. Cualquier otro caracter no está permitido.
 
 ``VERSIÓN``
-	``La versión inicial de tu proyecto. Se permiten números, guiones, puntos, letras o dashes (~).``
+	La versión inicial de tu proyecto. Se permiten números, guiones, puntos, letras o dashes (~).
 
 ``DESTINO``
-	``Especifica si es un proyecto de empaquetamiento para Canaima GNU/Linux o si es un proyecto personal. Las opciones disponibles son "canaima" y "personal".``
+	Especifica si es un proyecto de empaquetamiento para Canaima GNU/Linux o si es un proyecto personal. Las opciones disponibles son "canaima" y "personal".
 
 ``LICENCIA``
-	``Especifica el tipo de licencia bajo el cuál distribuirás tu trabajo. Las licencias soportadas son: apache, artistic, bsd, gpl, gpl2, gpl3, lgpl, lgpl2 y lgpl3.``
+	Especifica el tipo de licencia bajo el cuál distribuirás tu trabajo. Las licencias soportadas son: apache, artistic, bsd, gpl, gpl2, gpl3, lgpl, lgpl2 y lgpl3.
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 Si estás debianizando un proyecto existente, lo que ingreses en NOMBRE y VERSIÓN se utilizará para determinar cuál es el nombre de la carpeta a debianizar dentro del directorio del desarrollador, suponiendo que tiene el nombre NOMBRE-VERSIÓN. Si no se llama así, habrá un error.
 
@@ -93,10 +93,10 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``DIRECTORIO``
-	``Nombre del directorio dentro de la carpeta del desarrollador donde se encuentra el proyecto. El directorio debe contener un proyecto debianizado.``
+	Nombre del directorio dentro de la carpeta del desarrollador donde se encuentra el proyecto. El directorio debe contener un proyecto debianizado.
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 **EMPAQUETAR**
 --------------
@@ -116,16 +116,16 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``DIRECTORIO``
-	``Nombre de la carpeta dentro del directorio del desarrollador donde se encuentra el proyecto a empaquetar.``
+	Nombre de la carpeta dentro del directorio del desarrollador donde se encuentra el proyecto a empaquetar.
 
 ``MENSAJE``
-	``Mensaje representativo de los cambios para el primer commit. El segundo commit es sólo para el changelog. Colocando la palabra "auto" o dejando el campo vacío, se autogenera el mensaje.``
+	Mensaje representativo de los cambios para el primer commit. El segundo commit es sólo para el changelog. Colocando la palabra "auto" o dejando el campo vacío, se autogenera el mensaje.
 
 ``PROCESADORES``
-	``Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.``
+	Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 
 **DESCARGAR**
@@ -146,10 +146,10 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``PROYECTO``
-	``Nombre del proyecto (en caso de que éste se encuentre en el repositorio de Canaima GNU/Linux) o la dirección git pública del proyecto.``
+	Nombre del proyecto (en caso de que éste se encuentre en el repositorio de Canaima GNU/Linux) o la dirección git pública del proyecto.
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 **REGISTRAR**
 -------------
@@ -168,19 +168,19 @@ USO
 
 ::
 
-	canaima-desarrollador registrar **DIRECTORIO MENSAJE [--ayuda]**
+	canaima-desarrollador registrar DIRECTORIO MENSAJE [--ayuda]
 
 PARÁMETROS
 ~~~~~~~~~~
 
 ``DIRECTORIO``
-	``Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer commit.``
+	Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer commit.
 
 ``MENSAJE``
-	``Mensaje representativo de los cambios para el commit. Colocando la palabra "auto" o dejando el campo vacío, se autogenera el mensaje.``
+	Mensaje representativo de los cambios para el commit. Colocando la palabra "auto" o dejando el campo vacío, se autogenera el mensaje.
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 **ENVIAR**
 ----------
@@ -203,10 +203,10 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``DIRECTORIO``
-	``Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer push.``
+	Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer push.
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 **ACTUALIZAR**
 --------------
@@ -229,10 +229,10 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``DIRECTORIO``
-	``Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer git pull.``
+	Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer git pull.
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 **DESCARGAR TODO**
 ------------------
@@ -250,7 +250,7 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 **REGISTRAR TODO**
 ------------------
@@ -268,7 +268,7 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 **ENVIAR TODO**
 ---------------
@@ -286,7 +286,7 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 **ACTUALIZAR TODO**
 -------------------
@@ -304,7 +304,7 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 **EMPAQUETAR VARIOS**
 ---------------------
@@ -322,13 +322,13 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``PARA-EMPAQUETAR``
-	``Lista de los directorios dentro de la carpeta del desarrollador que contienen los proyectos que se quieren empaquetar, agrupados entre comillas.``
+	Lista de los directorios dentro de la carpeta del desarrollador que contienen los proyectos que se quieren empaquetar, agrupados entre comillas.
 
 ``PROCESADORES``
-	``Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.``
+	Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 **EMPAQUETAR TODO**
 -------------------
@@ -346,10 +346,10 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``PROCESADORES``
-	``Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.``
+	Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 **LISTAR REMOTOS**
 ------------------
@@ -367,7 +367,7 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.
 
 **LISTAR LOCALES**
 ------------------
@@ -385,4 +385,4 @@ PARÁMETROS
 ~~~~~~~~~~
 
 ``--ayuda``
-	``Muestra la documentación para el ayudante.``
+	Muestra la documentación para el ayudante.

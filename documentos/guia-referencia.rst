@@ -260,8 +260,8 @@ Entonces cámbiala a lo siguiente, y funcionará casi con seguridad::
 
 (El autor se ha dado cuenta de que éste no es el mejor ejemplo ya que ahora el paquete libncurses incluye un enlace simbólico a libcurses.so, pero no puedo pensar uno mejor. Cualquier sugerencia sería muy bien recibida :-)
 
-Las cosas necesarias bajo debian
-================================
+**Las cosas necesarias bajo debian**
+====================================
 
 Ahora hay un nuevo subdirectorio bajo el directorio principal del programa (*«gentoo-0.9.12»*), que se llama *«debian»*. Hay algunos ficheros en este directorio que debemos editar para adaptar el comportamiento del paquete. La parte más importante es modificar los ficheros *«control»*, *«rules»*, *«changelog»*, y *«copyright»* que son necesarios en todos los paquetes.
 
