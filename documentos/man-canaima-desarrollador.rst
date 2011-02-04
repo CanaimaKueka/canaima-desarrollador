@@ -51,20 +51,19 @@ C-D puede ayudarte a:
 
 * Crear Proyecto / Debianizar
 * Crear Fuente
-* Actualizar Todo
+* Empaquetar
+* Descargar
+* Registrar
+* Enviar
 * Actualizar
 * Descargar Todo
-* Descargar
-* Empaquetar Todo
-* Empaquetar Varios
-* Empaquetar
-* Enviar Todo
-* Enviar
-* Listar Locales
-* Listar Remotos
 * Registrar Todo
-* Registrar
-
+* Enviar Todo
+* Actualizar Todo
+* Empaquetar Varios
+* Empaquetar Todo
+* Listar Remotos
+* Listar Locales
 
 **CREAR PROYECTO / DEBIANIZAR**
 ===============================
