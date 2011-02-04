@@ -1,6 +1,6 @@
-========================================
-Guía de Referencia para el Desarrollador
-========================================
+============================================
+**Guía de Referencia para el Desarrollador**
+============================================
 
 Este documento tratará de describir cómo se construye un paquete Canaima GNU/Linux para el usuario común de Canaima y para futuros desarrolladores en un lenguaje informal, y con multitud de ejemplos. Hay un antiguo dicho romano que dice, Longum iter est per preaecepta, breve et efficax per exempla! (¡Es un largo camino con las reglas, pero corto y eficiente con ejemplos!) 
 
@@ -10,28 +10,28 @@ Este documento explicará cada pequeño paso (al principio quizás irrelevantes)
  
 Este documento se basa en la "Guía del nuevo desarrollador de Debian". se pueden obtener versiones nuevas de este documento en línea en http://www.debian.org/doc/maint-guide/ y en el paquete «maint-guide-es». 
 
-Programas que necesitas para el desarrollo
-==========================================
+**Programas que necesitas para el desarrollo**
+==============================================
 
 Antes de empezar nada, deberías asegurarte de que tienes instalados algunos paquetes adicionales necesarios para el desarrollo. Observa que en la lista no están incluidos paquetes cuyas prioridades son «esencial» o «requerido», que se suponen ya instalados. 
 
 Los siguientes paquetes vienen en una instalación estándar de Canaima, así que probablemente ya los tengas (junto con los paquetes de los que dependen). Aún así, deberías comprobarlo con::
 
-  # dpkg -s <paquete>»
+	dpkg -s <paquete>
 
-*dpkg-dev*: este paquete contiene las herramientas necesarias para desempaquetar, construir y enviar paquetes fuente de Canaima. 
+:dpkg-dev: este paquete contiene las herramientas necesarias para desempaquetar, construir y enviar paquetes fuente de Canaima. 
 
-*file*: este útil programa puede determinar de qué tipo es un fichero
+:file: este útil programa puede determinar de qué tipo es un fichero
 
-*gcc*: el compilador de C de GNU, necesario si el programa, como la gran mayoría, está escrito en el lenguaje de programación C. Este paquete también vendrá con otros paquetes como *binutils* que incluye programas para ensamblar y enlazar ficheros objeto y el preprocesador de C en el paquete cpp.
+:gcc: el compilador de C de GNU, necesario si el programa, como la gran mayoría, está escrito en el lenguaje de programación C. Este paquete también vendrá con otros paquetes como **binutils** que incluye programas para ensamblar y enlazar ficheros objeto y el preprocesador de C en el paquete cpp.
 
-*libc6-dev*: las bibliotecas y archivos de cabecera de C que gcc necesita para enlazar y crear ficheros objeto.
+:libc6-dev: las bibliotecas y archivos de cabecera de C que gcc necesita para enlazar y crear ficheros objeto.
 
-*make*: habitualmente la creación de un programa consta de varios pasos. En lugar de ejecutar las mismas órdenes una y otra vez, puedes utilizar este programa para automatizar el proceso, creando ficheros *«Makefile»*
+:make: habitualmente la creación de un programa consta de varios pasos. En lugar de ejecutar las mismas órdenes una y otra vez, puedes utilizar este programa para automatizar el proceso, creando ficheros **«Makefile»**
 
-*patch*: esta utilidad es muy práctica, ya que permite tomar un fichero que contiene un listado de diferencias (producido por el programa diff) y aplicárselas al fichero original, produciendo una versión "parcheada".
+:patch: esta utilidad es muy práctica, ya que permite tomar un fichero que contiene un listado de diferencias (producido por el programa diff) y aplicárselas al fichero original, produciendo una versión "parcheada".
 
-*perl*: Perl es uno de los lenguajes interpretados para hacer guiones (o *«scripts»*) más usados en los sistemas Un*x de hoy en día, comúnmente se refiere a él como la *«navaja suiza de Unix»*. 
+:perl: Perl es uno de los lenguajes interpretados para hacer guiones (o *«scripts»*) más usados en los sistemas Un*x de hoy en día, comúnmente se refiere a él como la **«navaja suiza de Unix»**. 
 
 
 *Probablemente, necesitarás instalar además los siguientes paquetes:*
@@ -60,8 +60,8 @@ Los siguientes paquetes vienen en una instalación estándar de Canaima, así qu
 Las breves descripciones dadas anteriormente sólo sirven para introducirte a lo que hace cada paquete. Antes de continuar, por favor, lee la documentación de cada programa, al menos para su uso normal. Puede parecerte algo duro ahora, pero más adelante estarás muy contento de haberla leído. 
 Nota: debmake es un paquete que incluye otros programas con funciones similares a dh-make, pero su uso específico no está cubierto en este documento porque se trata de una herramienta obsoleta. 
 
-Desarrollador oficial de Canaima
-================================
+**Desarrollador oficial de Canaima**
+====================================
 
 Puede que te quieras convertir en un desarrollador oficial de Canaima una vez hayas construido tu paquete (o incluso mientras lo estás haciendo) para que el paquete se introduzca en la nueva distribución (si el programa es útil, ¿por qué no?). 
 
@@ -76,8 +76,8 @@ Puedes construir dos tipos de paquetes: fuentes y binarios. Un paquete fuente co
 
 Canaima usa el término *desarrollador* se utiliza para referirse a la persona que hace paquetes, y el termino *autor original* para la persona que hizo el programa, y *desarrollador original* para la persona que actualmente mantiene el programa fuera de Debian. Generalmente el autor y el desarrollador fuente son la misma persona - y algunas veces incluso el desarrollador es el mismo. Si haces un programa, y quieres incluirlo en Debian, tienes total libertad para solicitar convertirte en desarrollador.
 
-Primeros Pasos
-==============
+**Primeros Pasos**
+==================
 
 Elige el programa
 -----------------
@@ -111,9 +111,6 @@ Lo primero que debes hacer es encontrar y descargar el paquete original. A parti
 
 Como ejemplo, usaré el programa conocido como «gentoo», un gestor de ficheros de X11 en GTK+. Observa que el programa ya ha sido empaquetado previamente pero ha cambiado sustancialmente de versión desde que este texto se escribió. 
 
-  Descargar programa de ejemplo
-  [[Media:Gentoo.zip]]
-
 Crea un subdirectorio bajo tu directorio personal llamado «debian» o «deb» o lo que creas apropiado (por ejemplo ~/gentoo/ estaría bien en este caso). Mueve a él el archivo que has descargado, y descomprímelo de la siguiente forma: «tar xzf gentoo-0.9.12.tar.gz». Asegúrate de que no hay errores, incluso errores «irrelevantes», porque es muy probable que haya problemas al desempaquetarlo en sistemas de otras personas, cuyas herramientas de desempaquetado puede que no ignoren estas anomalías.
 
 Ahora tienes otro subdirectorio, llamado «gentoo-0.9.12». Muévete a ese directorio y lee en profundidad la documentación que encuentres. Generalmente se encuentra en ficheros que se llaman *README*, *INSTALL*, \*.lsm o \*.html. Allí encontrarás instrucciones de cómo compilar e instalar el programa (muy probablemente asumirán que lo quieres instalar en el directorio /usr/local/bin, no harás esto, pero eso lo veremos más adelante en Instalación en un subdirectorio, Sección 3.1).
@@ -140,9 +137,9 @@ Aún así habrá algunos programas que ni siquiera estén numerados, en cuyo cas
 «Debianización» inicial
 -----------------------
 
-Asegúrate que te encuentras en el directorio donde están las fuentes del programa y ejecuta lo siguiente:
+Asegúrate que te encuentras en el directorio donde están las fuentes del programa y ejecuta lo siguiente::
 
-   dh_make -e tu.dirección@de.desarrollador -f ../gentoo-0.9.12.tar.gz
+	dh_make -e tu.dirección@de.desarrollador -f ../gentoo-0.9.12.tar.gz
 
 Por supuesto, cambia la cadena «tu.dirección@de.desarrollador» por tu dirección de correo electrónico para que se incluya en la entrada del fichero de cambios así como en otros ficheros, y el nombre de fichero de tu archivo fuente original.
 
@@ -192,19 +189,19 @@ Esto será sencillo con los de programas que utilicen la herramienta GNU *autoco
 
 Esta es la parte importante del *Makefile* de gentoo::
 
-       # ¿Dónde poner el binario cuando se ejecute «make install»?
-       BIN     = /usr/local/bin
-       
-       # ¿Dónde poner los iconos cuando se ejecute «make install»? 
-       ICONS   = /usr/local/share/gentoo/
+	# ¿Dónde poner el binario cuando se ejecute «make install»?
+	BIN     = /usr/local/bin
+
+	# ¿Dónde poner los iconos cuando se ejecute «make install»? 
+	ICONS   = /usr/local/share/gentoo/
 
 Vemos que los ficheros están configurados para instalarse bajo /usr/local. Cambia estas rutas a::
 
-       # ¿Dónde poner el binario cuando se ejecute «make install»?
-       BIN     = $(DESTDIR)/usr/bin
-     
-       # ¿Dónde poner los iconos cuando se ejecute «make install»? 
-       ICONS   = $(DESTDIR)/usr/share/gentoo
+	# ¿Dónde poner el binario cuando se ejecute «make install»?
+	BIN     = $(DESTDIR)/usr/bin
+
+	# ¿Dónde poner los iconos cuando se ejecute «make install»? 
+	ICONS   = $(DESTDIR)/usr/share/gentoo
 
 Pero: ¿por qué en este directorio y no en otro? Porque los paquetes de Debian nunca se instalan bajo */usr/local*, este árbol de directorio, está reservado para el uso del administrador del sistema. Así que estos ficheros deben instalarse en */usr*.
 
@@ -239,8 +236,8 @@ Seguramente has notado que ahora hay una orden *install -d* antes de las demás 
 
 También podemos añadir otras cosas al final de la regla, como la instalación de documentación adicional que los desarrolladores originales a veces omiten::
 
-                       install -d $(DESTDIR)/usr/share/doc/gentoo/html
-                       cp -a docs/* $(DESTDIR)/usr/share/doc/gentoo/html
+	install -d $(DESTDIR)/usr/share/doc/gentoo/html
+	cp -a docs/* $(DESTDIR)/usr/share/doc/gentoo/html
 
 Un lector atento se dará cuenta de que he cambiado *«gentoo»* a *«gentoo-target»* en la línea *«install:»*. A eso se le llama arreglar un fallo en el programa. 
 
@@ -379,11 +376,11 @@ Usa esto si tu programa reemplaza ficheros de otro paquete o reemplaza totalment
 
 :Los campos pueden restringir su aplicación a versiones determinadas de cada paquete nombrado. Esto se hace listando después de cada nombre de paquete individual las versiones entre paréntesis, e indicando antes del número de versión una relación de la siguiente lista. Las relaciones permitidas son: <<, <=, =, >= y >> para estrictamente anterior, anterior o igual, exactamente igual, posterior o igual o estrictamente posterior, respectivamente. Por ejemplo::
 
-       Depends: foo (>= 1.2), libbar1 (= 1.3.4)
-       Conflicts: baz
-       Recommends: libbaz4 (>> 4.0.7)
-       Suggests: quux
-       Replaces: quux (<< 5), quux-foo (<= 7.6)
+	:Depends: foo (>= 1.2), libbar1 (= 1.3.4)
+	:Conflicts: baz
+	:Recommends: libbaz4 (>> 4.0.7)
+	:Suggests: quux
+	:Replaces: quux (<< 5), quux-foo (<= 7.6)
 
 La última funcionalidad que necesitas conocer es $(shlibs:Depends). Después de que tu paquete se compile y se instale en el directorio temporal, dh_shlibdeps(1) lo escaneará en busca de binarios y bibliotecas para determinar las dependencias de bibliotecas compartidas y en qué paquetes están, tales como como libc6 o xlib6g. Luego pasará la lista a dh_gencontrol(1) que rellenará estas dependencias en el lugar adecuado. De esta forma no tendrás que preocuparte por esto.
 
@@ -620,8 +617,8 @@ La sección binary-arch es en una de las que deberías comentar o eliminar las l
 
 Las últimas dos líneas (junto con otras que no se explican) son cosas más o menos necesarias, sobre las que puedes leer en el manual de *make*, y las normas. Por ahora no es importante que sepas nada de ellas.
 
-Otros ficheros en el directorio debian
-======================================
+**Otros ficheros en el directorio debian**
+==========================================
 
 Verás que existen otros ficheros en el subdirectorio debian/, muchas de los cuales tendrán el sufijo «.ex», que indica que son ejemplos. Echale un vistazo a todos. Si lo deseas o necesitas usar alguna de estas características:
 
@@ -717,8 +714,8 @@ También podemos eliminar este fichero y en su lugar listar estos ficheros en la
 
 Es posible que no tengas ninguno de estos ficheros en las fuentes de tu paquete. Puedes eliminar este fichero si este es tú caso. Pero no elimines la llamada a *dh_installdocs* desde el fichero rules porque también se usa para instalar el fichero copyright entre otras cosas.
 
-emacsen-*.ex
-------------
+emacsen-\*.ex
+-------------
 
 Si tu paquete proporciona ficheros Emacs que pueden ser compilados a bytes en el momento de la instalación, puede usar estos ficheros.
 
@@ -832,8 +829,8 @@ Estos ficheros se llaman *guiones del desarrollador*  o *«maintainer scripts»*
 
 Por ahora, deberías intentar evitar editar manualmente estos guiones si puedes porque suelen hacerse muy complejos. Es recomendable echar un vistazo a los ejemplos dados por *dh_make*.
 
-Construir el paquete
-====================
+**Construir el paquete**
+========================
 
 Deberíamos estar preparados para construir el paquete.
 
@@ -938,8 +935,8 @@ Incluir orig.tar.gz para subir
 
 Cuando subes por primera vez un paquete al archivo, necesitas incluir las fuentes originales orig.tar.gz. Si la versión del paquete no es una revisión de Debian -0 o -1, debes proporcionarle la opción *«-sa»* a la orden *dpkg-buildpackage*. Por otro lado, la opción *«-sd»* forzará la exclusión del código original *orig.tar.gz*. 
 
-Cómo comprobar tu paquete para encontrar fallos
-===============================================
+**Cómo comprobar tu paquete para encontrar fallos**
+===================================================
 
 Los paquetes lintian
 --------------------
@@ -955,9 +952,9 @@ Observa que puedes construir el paquete con *dpkg-buildpackage* y ejecutar *lint
 La orden mc
 -----------
 
-Puedes descomprimir el contenido del paquete **.deb* con la orden *dpkg-deb*. Puedes listar el contenido de un paquete Debian con *debc*.
+Puedes descomprimir el contenido del paquete *\*.deb* con la orden *dpkg-deb*. Puedes listar el contenido de un paquete Debian con *debc*.
 
-Este proceso puede ser muy intuitivo si empleamos un gestor de ficheros como *mc*, que permite visionar tanto el contenido del paquete **.deb*, como el de los ficheros **.diff.gz* y **.tar.gz*.
+Este proceso puede ser muy intuitivo si empleamos un gestor de ficheros como *mc*, que permite visionar tanto el contenido del paquete *\*.deb*, como el de los ficheros *\*.diff.gz* y *\*.tar.gz*.
 
 Vigila que no haya ficheros innecesarios extra o de tamaño cero, tanto en el binario como en el paquete fuente. A veces, hay cosas que no se limpiaron adecuadamente, debes ajustar tu fichero *«rules»* para arreglar esto.
 
@@ -966,7 +963,7 @@ Pista: *«zgrep ^+++ ../gentoo_0.9.12-1.diff.gz»* te dará una lista de tus cam
 La orden debdiff
 ----------------
 
-Puedes comparar la lista de ficheros de dos paquetes binarios de Debian con la orden *debdiff*. Este programa es útil para verificar que no hay ficheros que se hayan cambiado de sitio o eliminado por error, y que no se ha realizado ningún otro cambio no deseado al actualizar el paquete. Puedes comprobar un grupo de ficheros **.deb* simplemente con *«debdiff paquete-viejo.change paquete-nuevo.change»*.
+Puedes comparar la lista de ficheros de dos paquetes binarios de Debian con la orden *debdiff*. Este programa es útil para verificar que no hay ficheros que se hayan cambiado de sitio o eliminado por error, y que no se ha realizado ningún otro cambio no deseado al actualizar el paquete. Puedes comprobar un grupo de ficheros *\*.deb* simplemente con *«debdiff paquete-viejo.change paquete-nuevo.change»*.
 
 La orden interdiff
 ------------------
@@ -985,8 +982,8 @@ El paquete *pbuilder* es muy útil para conseguir un entorno limpio (chroot) don
 
 El uso más básico del paquete pbuilder es la ejecución directa de la orden *pbuilder* como administrador. Por ejemplo, puedes construir un paquete si escribes las siguientes órdenes en el directorio donde se encuentran los ficheros *.orig.tar.gz*, *.diff.gz* y *.dsc*::
 
-       root # pbuilder create # si se ejecuta por segunda vez, pbuilder update
-       root # pbuilder build foo.dsc
+	pbuilder create # si se ejecuta por segunda vez, pbuilder update
+	pbuilder build foo.dsc
 
 Los paquetes recién construidos se pueden encontrar en /var/cache/pbuilder/result/ y el propietario será el usuario administrador.
 
@@ -1003,8 +1000,8 @@ Si deseas añadir fuentes de apt para que las utilice el paquete pbuilder, confi
 
 Es necesario el uso de *--override-config* para actualizar las fuentes de apt dentro del entorno chroot.
 
-Actualizar el paquete
-=====================
+**Actualizar el paquete**
+=========================
 
 Nueva revisión Debian del paquete
 ---------------------------------
@@ -1055,8 +1052,8 @@ Cuando prepares paquetes para el archivo de Debian, debes comprobar los paquetes
 * orden «svn merge» si gestionas el código con un repositorio Subversion o,
 * simplemente copia el directorio debian/ del árbol de código viejo si se empaquetó con dpatch o quilt.
 * Conserva las entradas viejas del fichero *«changelog»* (puede parecer obvio, pero se han dado casos...)
-* La nueva versión del paquete es la versión original añadiéndole el número de revisión de Canaima, por ejemplo, `0.9.13-canaima1'.
-* Añade una entrada en el fichero *«changelog»* para esta nueva versión al comienzo *debian/changelog* que ponga *«New upstream release»* (nueva versión original). Por ejemplo, «*dch -v 0.9.13-1*».
+* La nueva versión del paquete es la versión original añadiéndole el número de revisión de Canaima, por ejemplo, "0.9.13-canaima1".
+* Añade una entrada en el fichero *«changelog»* para esta nueva versión al comienzo *debian/changelog* que ponga *«New upstream release»* (nueva versión original). Por ejemplo, *«dch -v 0.9.13-1»*.
 * Describe de forma resumida los cambios en la nueva versión del código fuente que arreglan fallos de los que ya se ha informado y cierra esos fallos en el fichero *«changelog»*.
 * Describe de forma resumida los cambios hechos a la nueva versión del código por el mantenedor para arreglar fallos de los que se ha informado y cierra esos fallos en el fichero «changelog».
 * Si el parche/fusión no se aplicó limpiamente, inspecciona la situación para determinar qué ha fallado (la clave está en los ficheros .rej). A menudo el problema es que un parche que has aplicado a las fuentes se ha integrado en el código fuente original, y, por lo tanto, el parche ya no es necesario.
@@ -1085,11 +1082,11 @@ La orden cvs-buildpackage y similares
 Deberías considerar el utilizar algún sistema de administración de código para gestión del proceso de empaquetado. Hay varios guiones adaptados para que puedan utilizarse en algunos de los sistemas de control de versiones más populares.
 
 * CVS
-** cvs-buildpackage
+	* cvs-buildpackage
 * Subversion
-** svn-buildpackage
+	* svn-buildpackage
 * GIT
-** git-buildpackage
+	* git-buildpackage
 
 Estas órdenes también automatizan el empaquetado de nuevas versiones del código fuente.
 

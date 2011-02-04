@@ -10,7 +10,7 @@ SCRIPTS =	"debian/preinst install" \
 		"scripts/funciones-desarrollador.sh" \
 		"scripts/manual-desarrollador.sh"
 
-all: clean build test clean
+all: build install
 
 test:
 
@@ -25,12 +25,15 @@ test:
 	@echo -n "¡TODO BIEN!\n=================================================================================\n\n"
 
 build:
+	$(MAKE) clean
 
 	# Generar la documentación con python-sphinx
 	rst2man --language="es" --title="CANAIMA DESARROLLADOR" documentos/man-canaima-desarrollador.rst documentos/canaima-desarrollador.1
 	$(MAKE) -C documentos latex
 	$(MAKE) -C documentos html
 	$(MAKE) -C documentos/_build/latex all-pdf
+
+	$(MAKE) test
 
 install:
 
@@ -59,7 +62,7 @@ uninstall:
 	rm -rf $(DESTDIR)/usr/share/applications/manual-desarrollador.desktop
 clean:
 
-	rm -rf documentos/_build
+	rm -rf documentos/_build/*
 	rm -rf documentos/canaima-desarrollador.1
 
 distclean:
