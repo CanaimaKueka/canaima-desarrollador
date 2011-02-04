@@ -1,6 +1,10 @@
-===========================================================
-**Manual de uso para la herramienta canaima-desarrollador**
-===========================================================
+=========================
+**CANAIMA-DESARROLLADOR**
+=========================
+
+----------------------------------------------------------------------------
+Un conjunto de herramientas para la eliminación de las barreras tecnológicas
+----------------------------------------------------------------------------
 
 :Author: Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>
 :Date:   2011-01-22
@@ -42,23 +46,40 @@ C-D puede ayudarte a:
 * Ejecución de tareas en masa (empaquetar, hacer pull, push, commit, entre otros), para agilizar procesos repetitivos.
 
 
-**AYUDANTES DE C-D**
-====================
+**AYUDANTES DE CANAIMA DESARROLLADOR**
+======================================
+
+* Crear Proyecto / Debianizar
+* Crear Fuente
+* Actualizar Todo
+* Actualizar
+* Descargar Todo
+* Descargar
+* Empaquetar Todo
+* Empaquetar Varios
+* Empaquetar
+* Enviar Todo
+* Enviar
+* Listar Locales
+* Listar Remotos
+* Registrar Todo
+* Registrar
+
 
 **CREAR PROYECTO / DEBIANIZAR**
--------------------------------
+===============================
 
 Crea un proyecto de empaquetamiento desde cero o debianiza uno existente.
 
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador crear-proyecto|debianizar NOMBRE VERSIÓN DESTINO LICENCIA [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``NOMBRE``
 	Un nombre para tu proyecto, que puede contener letras, números, puntos y guiones. Cualquier otro caracter no está permitido.
@@ -78,19 +99,19 @@ PARÁMETROS
 Si estás debianizando un proyecto existente, lo que ingreses en NOMBRE y VERSIÓN se utilizará para determinar cuál es el nombre de la carpeta a debianizar dentro del directorio del desarrollador, suponiendo que tiene el nombre NOMBRE-VERSIÓN. Si no se llama así, habrá un error.
 
 **CREAR FUENTE**
-----------------
+================
 
 Crea un paquete fuente a partir de un proyecto de empaquetamiento existente. El resultado es guardado en el depósito de fuentes.
 
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador crear-fuente DIRECTORIO [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``DIRECTORIO``
 	Nombre del directorio dentro de la carpeta del desarrollador donde se encuentra el proyecto. El directorio debe contener un proyecto debianizado.
@@ -99,21 +120,21 @@ PARÁMETROS
 	Muestra la documentación para el ayudante.
 
 **EMPAQUETAR**
---------------
+==============
 
 Éste ayudante te permite empaquetar un proyecto de forma automatizada, siguiendo la metodología git-buildpackage, que se centra en el siguiente diagrama:
 
 **COMMIT > REFLEJAR CAMBIOS EN EL CHANGELOG > COMMIT > CREAR PAQUETE FUENTE > PUSH > GIT-BUILDPACKAGE**
 
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador empaquetar DIRECTORIO MENSAJE PROCESADORES [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``DIRECTORIO``
 	Nombre de la carpeta dentro del directorio del desarrollador donde se encuentra el proyecto a empaquetar.
@@ -129,21 +150,21 @@ PARÁMETROS
 
 
 **DESCARGAR**
--------------
+=============
 
 Éste ayudante te permite copiar a tu disco duro un proyecto que se encuentre en el repositorio remoto para que puedas modificarlo según consideres. Utiliza git clone para realizar tal operación. Éste ayudante se encarga además de realizar las siguientes operaciones por ti:
 
   - Verifica e informa sobre el éxito de la descarga.
   
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador descargar PROYECTO [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``PROYECTO``
 	Nombre del proyecto (en caso de que éste se encuentre en el repositorio de Canaima GNU/Linux) o la dirección git pública del proyecto.
@@ -152,7 +173,7 @@ PARÁMETROS
 	Muestra la documentación para el ayudante.
 
 **REGISTRAR**
--------------
+=============
 
 Éste ayudante te permite registar (o hacer commit de) los cambios hechos en un proyecto mediante el versionamiento basado en git. Utiliza git commit para lograr éste propósito. Éste ayudante se encarga además de realizar las siguientes operaciones por ti:
 
@@ -164,14 +185,14 @@ PARÁMETROS
   - Hace un git merge de la rama master a la upstream, inmediatamente depués del commit.
   
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador registrar DIRECTORIO MENSAJE [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``DIRECTORIO``
 	Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer commit.
@@ -183,7 +204,7 @@ PARÁMETROS
 	Muestra la documentación para el ayudante.
 
 **ENVIAR**
-----------
+==========
 
 Éste ayudante te permite enviar los cambios realizados al repositorio remoto especificado en las configuraciones personales, mediante el uso de la acción git push. Éste ayudante se encarga además de realizar las siguientes operaciones por ti:
 
@@ -193,14 +214,14 @@ PARÁMETROS
   - Configura el repositorio remoto para el proyecto, de acuerdo a los parámetros establecidos en ~/.config/canaima-desarrollador/usuario.conf
 
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador enviar DIRECTORIO [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``DIRECTORIO``
 	Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer push.
@@ -209,7 +230,7 @@ PARÁMETROS
 	Muestra la documentación para el ayudante.
 
 **ACTUALIZAR**
---------------
+==============
 
 Éste ayudante te permite actualizar el código fuente de un determinado proyecto, mediante la ejecución de "git pull" en la carpeta del proyecto. Éste ayudante se encarga además de realizar las siguientes operaciones por ti:
 
@@ -219,14 +240,14 @@ PARÁMETROS
   - Configura el repositorio remoto para el proyecto, de acuerdo a los parámetros establecidos en ~/.config/canaima-desarrollador/usuario.conf
 
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador actualizar DIRECTORIO [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``DIRECTORIO``
 	Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer git pull.
@@ -235,91 +256,91 @@ PARÁMETROS
 	Muestra la documentación para el ayudante.
 
 **DESCARGAR TODO**
-------------------
+==================
 
 Éste ayudante te permite copiar a tu disco duro todos los proyectos de Canaima GNU/Linux que se encuentren en el repositorio remoto oficial. Utiliza git clone para realizar tal operación.
 
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador descargar-todo [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``--ayuda``
 	Muestra la documentación para el ayudante.
 
 **REGISTRAR TODO**
-------------------
+==================
 
 Éste ayudante te permite registar (o hacer commit de) todos los cambios hechos en todos los proyectos existentes en la carpeta del desarrollador. Utiliza git commit para lograr éste propósito. Asume un mensaje de commit automático para todos.
 
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador registrar-todo [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``--ayuda``
 	Muestra la documentación para el ayudante.
 
 **ENVIAR TODO**
----------------
+===============
 
 Éste ayudante te permite enviar todos los cambios realizados en todos los proyectos ubicados en la carpeta del desarrollador al repositorio remoto especificado en las configuraciones personales, mediante el uso de la acción git push.
 
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador enviar-todo [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``--ayuda``
 	Muestra la documentación para el ayudante.
 
 **ACTUALIZAR TODO**
--------------------
+===================
 
 Éste ayudante te permite actualizar el código fuente de todos los proyectos ubicados en la carpeta del desarrollador, mediante la ejecución de "git pull" en la carpeta del proyecto.
 
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador actualizar-todo [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``--ayuda``
 	Muestra la documentación para el ayudante.
 
 **EMPAQUETAR VARIOS**
----------------------
+=====================
 
 Éste ayudante te permite empaquetar varios proyectos.
 
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador empaquetar-varios PARA-EMPAQUETAR PROCESADORES [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``PARA-EMPAQUETAR``
 	Lista de los directorios dentro de la carpeta del desarrollador que contienen los proyectos que se quieren empaquetar, agrupados entre comillas.
@@ -331,19 +352,19 @@ PARÁMETROS
 	Muestra la documentación para el ayudante.
 
 **EMPAQUETAR TODO**
--------------------
+===================
 
 Éste ayudante te permite empaquetar todos los proyectos existentes en la carpeta del desarrollador.
 
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador empaquetar-todo PROCESADORES [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``PROCESADORES``
 	Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.
@@ -352,37 +373,37 @@ PARÁMETROS
 	Muestra la documentación para el ayudante.
 
 **LISTAR REMOTOS**
-------------------
+==================
 
 Muestra todos los proyectos contenidos en el repositorio remoto y muestra su dirección git.
 
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador listar-remotos [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``--ayuda``
 	Muestra la documentación para el ayudante.
 
 **LISTAR LOCALES**
-------------------
+==================
 
 Muestra todos los proyectos contenidos en la carpeta del desarrollador y los clasifica según su tipo.
 
 USO
-~~~
+---
 
 ::
 
 	canaima-desarrollador listar-locales [--ayuda]
 
 PARÁMETROS
-~~~~~~~~~~
+----------
 
 ``--ayuda``
 	Muestra la documentación para el ayudante.
