@@ -10,7 +10,7 @@ SCRIPTS =	"debian/preinst install" \
 		"scripts/funciones-desarrollador.sh" \
 		"scripts/manual-desarrollador.sh"
 
-all: build install
+all:
 
 test:
 
