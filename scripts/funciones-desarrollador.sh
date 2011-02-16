@@ -133,6 +133,7 @@ done
 mv "${DEV_DIR}${nombre}-${version}/${LICENSE}" "${DEV_DIR}${nombre}-${version}/LICENSE"
 # Sustituimos algunos campos de debian/control, por los valores que establecimos antes
 sed -i "s/#Vcs-Git:.*/#Vcs-Git: ${CONTROL_VCSGIT}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
+sed -i "s/Standards-Version:.*/Standards-Version: 3.9.1/g" "${DEV_DIR}${nombre}-${version}/debian/control"
 sed -i "s/#Vcs-Browser:.*/#Vcs-Browser: ${CONTROL_VCSBROWSER}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
 sed -i "s/Homepage:.*/#Homepage: ${CONTROL_HOMEPAGE}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
 sed -i "s/Maintainer:.*/Maintainer: ${CONTROL_MAINTAINER}\nUploaders: ${CONTROL_UPLOADERS}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
@@ -204,8 +205,10 @@ dpkg-source --format="1.0" -i.git/ -I.git -b ${directorio}
 # lugar en el depósito
 [ "${1}" != "no-mover" ] && MOVER fuentes
 # Emitimos la notificación
-if [ -e "${DEPOSITO_SOURCES}${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz" ]; then
+if [ -e "${DEPOSITO_SOURCES}${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz" ] && [ "${1}" != "no-mover" ]; then
 echo -e ${VERDE}"¡Fuente del proyecto ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz creada y movida a ${DEPOSITO_SOURCES}!"${FIN}
+elif [ -e "${DEV_DIR}${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz" ] && [ "${1}" == "no-mover" ];
+echo -e ${VERDE}"¡Fuente del proyecto ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz creada!"${FIN}
 else
 echo -e ${ROJO}"¡Epa! algo pasó durante la creación de ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz"${FIN}
 fi
@@ -220,6 +223,8 @@ function EMPAQUETAR() {
 # 	- Requiere la carga del archivo ${CONF}
 #	- git-buildpackage
 #-------------------------------------------------------------#
+
+[ -z ${DEV_GPG} ] && FIRMAR="-us -uc"
 
 # Garanticemos que el directorio siempre tiene escrita la ruta completa
 directorio=${DEV_DIR}${directorio#${DEV_DIR}}
@@ -240,16 +245,16 @@ cd ${directorio}
 # Hacemos commit de los (posibles) cambios hechos
 REGISTRAR
 # Lo reflejamos en debian/changelog
-GIT-DCH
+[ -z ${NO_COMMIT} ] && GIT-DCH
 # Volvemos a hacer commit
-REGISTRAR
+[ -z ${NO_COMMIT} ] && REGISTRAR
 # Creamos el paquete fuente (formato 1.0)
 CREAR-FUENTE no-mover
 # Hacemos push
 ENVIAR
 cd ${directorio}
 # Empaquetamos
-git-buildpackage -tc --git-tag -j${procesadores}
+git-buildpackage ${FIRMAR} -tc --git-tag -j${procesadores}
 # Movemos todo a sus depósitos
 MOVER debs
 MOVER logs
@@ -350,6 +355,7 @@ git add .
 # Verificando que haya algún cambio desde el último commit
 if [ $( git status | grep -c "nothing to commit (working directory clean)" ) == 1 ]; then
 echo -e ${VERDE}"No hay nada a que hacer commit"${FIN}
+NO_COMMIT=1
 else
 # Si el mensaje de commit está vacío, o está configurado en modo "auto"
 if [ -z "${mensaje}" ] || [ "${mensaje}" == "auto" ]; then
@@ -631,7 +637,7 @@ function CHECK() {
 #-------------------------------------------------------------#
 
 # Faltan variables por definir en el archivo de configuración ${CONF}
-if [ -z "${REPO}" ] || [ -z "${REPO_USER}" ] || [ -z "${REPO_DIR}" ] || [ -z "${DEV_DIR}" ] || [ -z "${DEV_NAME}" ] || [ -z "${DEV_MAIL}" ] || [ -z "${DEV_GPG}" ] || [ -z "${DEPOSITO_LOGS}" ] || [ -z "${DEPOSITO_SOURCES}" ] || [ -z "${DEPOSITO_DEBS}" ]; then
+if [ -z "${REPO}" ] || [ -z "${REPO_USER}" ] || [ -z "${REPO_DIR}" ] || [ -z "${DEV_DIR}" ] || [ -z "${DEV_NAME}" ] || [ -z "${DEV_MAIL}" ] || [ -z "${DEPOSITO_LOGS}" ] || [ -z "${DEPOSITO_SOURCES}" ] || [ -z "${DEPOSITO_DEBS}" ]; then
 echo -e ${ROJO}"Tu archivo de configuración ${CONF} presenta inconsistencias. Todas las variables deben estar llenas."${FIN} && exit 1
 fi
 # La carpeta del desarrollador ${DEV_DIR} no existe
