@@ -44,7 +44,7 @@ case ${1} in
 #=================================================================================================================#
 
 crear-proyecto|debianizar)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 echo "Documentación para el Ayudante \"crear-proyecto\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -98,7 +98,7 @@ fi
 ;;
 
 crear-fuente)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 echo "Documentación para el Ayudante \"crear-fuente\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -125,7 +125,7 @@ fi
 ;;
 
 empaquetar)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 echo "Documentación para el Ayudante \"empaquetar\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -176,7 +176,7 @@ fi
 #------ AYUDANTES GIT --------------------------------------------------------------------------------------------#
 #=================================================================================================================#
 descargar|clonar|clone)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 echo "Documentación para el Ayudante \"descargar\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -218,7 +218,7 @@ fi
 ;;
 
 registrar|commit)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 echo "Documentación para el Ayudante \"registrar\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -274,7 +274,7 @@ fi
 ;;
 
 enviar|push)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 echo "Documentación para el Ayudante \"enviar\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -321,7 +321,7 @@ fi
 ;;
 
 actualizar|pull)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 echo "Documentación para el Ayudante \"actualizar\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -370,7 +370,7 @@ fi
 #=================================================================================================================#
 
 descargar-todo|clonar-todo)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ]; then
+if [ "${2}" == "--ayuda" ] || [ $"{2}" == "--help" ]; then
 echo "Documentación para el Ayudante \"descargar-todo\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -395,7 +395,7 @@ fi
 ;;
 
 registrar-todo|commit-todo)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ]; then
+if [ "${2}" == "--ayuda" ] || [ $"{2}" == "--help" ]; then
 echo "Documentación para el Ayudante \"registrar-todo\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -422,7 +422,7 @@ fi
 ;;
 
 enviar-todo|push-todo)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ]; then
+if [ "${2}" == "--ayuda" ] || [ $"{2}" == "--help" ]; then
 echo "Documentación para el Ayudante \"enviar-todo\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -448,7 +448,7 @@ fi
 ;;
 
 actualizar-todo|pull-todo)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ]; then
+if [ "${2}" == "--ayuda" ] || [ $"{2}" == "--help" ]; then
 echo "Documentación para el Ayudante \"actualizar-todo\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -473,7 +473,7 @@ fi
 ;;
 
 empaquetar-varios)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 echo "Documentación para el Ayudante \"empaquetar-varios\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -513,7 +513,7 @@ fi
 ;;
 
 empaquetar-todo)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 echo "Documentación para el Ayudante \"empaquetar-todo\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -552,7 +552,7 @@ fi
 #=======================================================================================================================#
 
 listar-remotos)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ]; then
+if [ "${2}" == "--ayuda" ] || [ $"{2}" == "--help" ]; then
 echo "Documentación para el Ayudante \"listar-remotos\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -576,7 +576,7 @@ fi
 ;;
 
 listar-locales)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ]; then
+if [ "${2}" == "--ayuda" ] || [ $"{2}" == "--help" ]; then
 echo "Documentación para el Ayudante \"listar-locales\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"

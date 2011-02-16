@@ -340,7 +340,6 @@ cd ${directorio}
 # Emitir la notificación
 echo -e ${AMARILLO}"Haciendo commit en el proyecto ${directorio_nombre} ..."${FIN}
 # Asegurando que existan las ramas necesarias
-[ $( git branch -l | grep -wc "master" ) == 0 ] && echo -e ${AMARILLO}"No existe la rama master, creando ..."${FIN} && git branch master
 [ $( git branch -l | grep -wc "upstream" ) == 0 ] && echo -e ${AMARILLO}"No existe la rama upstream, creando ..."${FIN} && git branch upstream
 [ $( git branch -l | grep -wc "* master" ) == 0 ] && echo -e ${AMARILLO}"No estás en la rama master. Te voy a pasar para allá."${FIN} && git checkout master
 # Agregando todos los cambios
@@ -553,9 +552,9 @@ for directorio in $( ls -A ${DEV_DIR} );do EMPAQUETAR;done
 #------ AYUDANTES INFORMATIVOS -----------------------------------------------------------------------------------#
 #=======================================================================================================================#
 
-function LISTAR-FUENTES() {
+function LISTAR-REMOTOS() {
 #-------------------------------------------------------------#
-# Nombre de la Función: LISTAR-FUENTES
+# Nombre de la Función: LISTAR-REMOTOS
 # Propósito: Lista los proyectos existentes en el repositorio
 #            oficial git de Canaima GNU/Linux
 # Dependencias:
@@ -777,10 +776,46 @@ function MOVER() {
 #-------------------------------------------------------------#
 case ${1} in
 # Mover .debs
-debs) [ $( ls ${DEV_DIR}*.deb | wc -l ) != 0 ] && mv ${DEV_DIR}*.deb ${DEPOSITO_DEBS} ;;
+debs)
+if [ $( ls ${DEV_DIR}*.deb | wc -l ) != 0 ]; then
+mv ${DEV_DIR}*.deb ${DEPOSITO_DEBS}
+EXITO "Paquetes Binarios .deb movidos a ${DEPOSITO_DEBS}"
+else
+ERROR "Ningún paquete .deb para mover"
+fi
+;;
+
 # Mover .diff .changes .dsc .tar.gz
-fuentes) [ $( ls ${DEV_DIR}*.tar.gz | wc -l ) != 0 ] && mv ${DEV_DIR}*.diff ${DEV_DIR}*.changes ${DEV_DIR}*.dsc ${DEV_DIR}*.tar.gz ${DEPOSITO_SOURCES} ;;
+fuentes)
+[ $( ls ${DEV_DIR}*.tar.gz | wc -l ) != 0 ] && mv ${DEV_DIR}*.tar.gz ${DEPOSITO_SOURCES}
+[ $( ls ${DEV_DIR}*.diff.gz | wc -l ) != 0 ] && mv ${DEV_DIR}*.diff.gz ${DEPOSITO_SOURCES}
+[ $( ls ${DEV_DIR}*.changes | wc -l ) != 0 ] && mv ${DEV_DIR}*.changes ${DEPOSITO_SOURCES}
+[ $( ls ${DEV_DIR}*.dsc | wc -l ) != 0 ] && mv ${DEV_DIR}*.dsc ${DEPOSITO_SOURCES}
+EXITO "Fuentes *.tar.gz *.diff.gz *.changes *.dsc movidas a ${DEPOSITO_SOURCES}"
+;;
+
 # Mover .build
-logs) [ $( ls ${DEV_DIR}*.build | wc -l ) != 0 ] && mv ${DEV_DIR}*.build ${DEPOSITO_LOGS} ;;
+logs)
+if [ $( ls ${DEV_DIR}*.build | wc -l ) != 0 ]; then
+mv ${DEV_DIR}*.build ${DEPOSITO_LOGS}
+EXITO "Logs .build movidos a ${DEPOSITO_LOGS}"
+else
+ERROR "Ningún log .build para mover"
+fi
+;;
 esac
 }
+
+function ERROR() {
+echo -e ${ROJO}${1}${FIN}
+exit 1
+}
+
+function ADVERTENCIA() {
+echo -e ${AMARILLO}${1}${FIN}
+}
+
+function EXITO() {
+echo -e ${VERDE}${1}${FIN}
+}
+

@@ -50,10 +50,14 @@ case ${1} in
 					# con permisos apropiados
 					chown ${usuario_min}:${usuario_min} /home/${usuario_min}/Escritorio/manual-desarrollador.desktop
 
-					# Copia del archivo de configuración que determina si debe ejecutarse canaima-bienvenido al inicio o no
-					cp /etc/skel/.config/canaima-desarrollador/usuario.conf /home/${usuario_min}/.config/canaima-desarrollador/
-					# con permisos apropiados
-					chown ${usuario_min}:${usuario_min} /home/${usuario_min}/.config/canaima-desarrollador/usuario.conf
+					if [ ! -e /home/${usuario_min}/.config/canaima-desarrollador/usuario.conf ]; then
+
+						# Copia del archivo de configuración que determina si debe ejecutarse canaima-bienvenido al inicio o no
+						cp /etc/skel/.config/canaima-desarrollador/usuario.conf /home/${usuario_min}/.config/canaima-desarrollador/
+						# con permisos apropiados
+						chown ${usuario_min}:${usuario_min} /home/${usuario_min}/.config/canaima-desarrollador/usuario.conf
+
+					fi
 
 				;;
 			esac
