@@ -156,6 +156,8 @@ directorio="${DEV_DIR}${nombre}-${version}"
 directorio_nombre=$( basename "${directorio}" )
 # Configuramos el repositorio remoto
 SET-REPOS
+git add .
+git commit -a -m "Versión inicial de ${nombre}-${version} para Canaima GNU/Linux"
 fi
 # Enviamos la notificación apropiada, dependiendo del target
 # "crear-proyecto" o "debianizar"
@@ -340,6 +342,7 @@ cd ${directorio}
 # Emitir la notificación
 echo -e ${AMARILLO}"Haciendo commit en el proyecto ${directorio_nombre} ..."${FIN}
 # Asegurando que existan las ramas necesarias
+[ $( git branch -l | grep -wc "master" ) == 0 ] && echo -e ${AMARILLO}"No existe la rama upstream, creando ..."${FIN} && git branch master
 [ $( git branch -l | grep -wc "upstream" ) == 0 ] && echo -e ${AMARILLO}"No existe la rama upstream, creando ..."${FIN} && git branch upstream
 [ $( git branch -l | grep -wc "* master" ) == 0 ] && echo -e ${AMARILLO}"No estás en la rama master. Te voy a pasar para allá."${FIN} && git checkout master
 # Agregando todos los cambios
@@ -777,7 +780,7 @@ function MOVER() {
 case ${1} in
 # Mover .debs
 debs)
-if [ $( ls ${DEV_DIR}*.deb | wc -l ) != 0 ]; then
+if [ $( ls ${DEV_DIR}*.deb 2>/dev/null | wc -l ) != 0 ]; then
 mv ${DEV_DIR}*.deb ${DEPOSITO_DEBS}
 EXITO "Paquetes Binarios .deb movidos a ${DEPOSITO_DEBS}"
 else
@@ -787,16 +790,16 @@ fi
 
 # Mover .diff .changes .dsc .tar.gz
 fuentes)
-[ $( ls ${DEV_DIR}*.tar.gz | wc -l ) != 0 ] && mv ${DEV_DIR}*.tar.gz ${DEPOSITO_SOURCES}
-[ $( ls ${DEV_DIR}*.diff.gz | wc -l ) != 0 ] && mv ${DEV_DIR}*.diff.gz ${DEPOSITO_SOURCES}
-[ $( ls ${DEV_DIR}*.changes | wc -l ) != 0 ] && mv ${DEV_DIR}*.changes ${DEPOSITO_SOURCES}
-[ $( ls ${DEV_DIR}*.dsc | wc -l ) != 0 ] && mv ${DEV_DIR}*.dsc ${DEPOSITO_SOURCES}
+[ $( ls ${DEV_DIR}*.tar.gz 2>/dev/null | wc -l ) != 0 ] && mv ${DEV_DIR}*.tar.gz ${DEPOSITO_SOURCES}
+[ $( ls ${DEV_DIR}*.diff.gz 2>/dev/null | wc -l ) != 0 ] && mv ${DEV_DIR}*.diff.gz ${DEPOSITO_SOURCES}
+[ $( ls ${DEV_DIR}*.changes 2>/dev/null | wc -l ) != 0 ] && mv ${DEV_DIR}*.changes ${DEPOSITO_SOURCES}
+[ $( ls ${DEV_DIR}*.dsc 2>/dev/null | wc -l ) != 0 ] && mv ${DEV_DIR}*.dsc ${DEPOSITO_SOURCES}
 EXITO "Fuentes *.tar.gz *.diff.gz *.changes *.dsc movidas a ${DEPOSITO_SOURCES}"
 ;;
 
 # Mover .build
 logs)
-if [ $( ls ${DEV_DIR}*.build | wc -l ) != 0 ]; then
+if [ $( ls ${DEV_DIR}*.build 2>/dev/null | wc -l ) != 0 ]; then
 mv ${DEV_DIR}*.build ${DEPOSITO_LOGS}
 EXITO "Logs .build movidos a ${DEPOSITO_LOGS}"
 else
