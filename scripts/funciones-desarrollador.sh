@@ -70,7 +70,7 @@ mv ${DEV_DIR}${nombre}-${version}/debian/*.* ${DEV_DIR}${nombre}-${version}/debi
 
 # Si el proyecto es para Canaima GNU/Linux, entonces éstos son los campos a sustituir
 # en debian/control
-if [ ${destino} == "canaima" ];then
+if [ ${destino} == "canaima" ]; then
 CONTROL_MAINTAINER="Equipo de Desarrollo de Canaima GNU\/Linux <desarrolladores@canaima.softwarelibre.gob.ve>"
 CONTROL_UPLOADERS="José Miguel Parrella Romero <jparrella@onuva.com>, Carlos David Marrero <cdmarrero2040@gmail.com>, Orlando Andrés Fiol Carballo <ofiol@indesoft.org.ve>, Carlos Alejandro Guerrero Mora <guerrerocarlos@gmail.com>, Diego Alberto Aguilera Zambrano <diegoaguilera85@gmail.com>, Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>, Francisco Javier Vásquez Guerrero <franjvasquezg@gmail.com>"
 CONTROL_STANDARDS="3.9.1"
@@ -110,9 +110,8 @@ COPIAR_PLANTILLAS_PROYECTO="AUTHORS README TODO COPYING THANKS ${LICENSE} Makefi
 FECHA=$( date +%Y )
 # Ciclo que recorre las plantillas declaradas en ${COPIAR_PLANTILLAS_DEBIAN}
 # para copiarlas en la carpeta debian del proyecto (si no existen)
-for plantillas_debian in ${COPIAR_PLANTILLAS_DEBIAN}
-do
-[ ! -e "${DEV_DIR}${nombre}-${version}/debian/${plantillas_debian}" ] && cp -r "${PLANTILLAS}${plantillas_debian}" "${DEV_DIR}${nombre}-${version}/debian/"
+for plantillas_debian in ${COPIAR_PLANTILLAS_DEBIAN}; do
+cp -r "${PLANTILLAS}${plantillas_debian}" "${DEV_DIR}${nombre}-${version}/debian/"
 # Aprovechamos de sustituir algunos @TOKENS@ en las plantillas
 sed -i "s/@AUTHOR_NAME@/${DEV_NAME}/g" "${DEV_DIR}${nombre}-${version}/debian/${plantillas_debian}"
 sed -i "s/@AUTHOR_MAIL@/${DEV_MAIL}/g" "${DEV_DIR}${nombre}-${version}/debian/${plantillas_debian}"
@@ -122,9 +121,8 @@ done
 
 # Ciclo que recorre las plantillas declaradas en ${COPIAR_PLANTILLAS_PROYECTO}
 # para copiarlas en el proyecto (si no existen)
-for plantillas_proyecto in ${COPIAR_PLANTILLAS_PROYECTO}
-do
-[ ! -e "${DEV_DIR}${nombre}-${version}/${plantillas_proyecto}" ] && cp -r "${PLANTILLAS}${plantillas_proyecto}" "${DEV_DIR}${nombre}-${version}/"
+for plantillas_proyecto in ${COPIAR_PLANTILLAS_PROYECTO}; do
+cp -r "${PLANTILLAS}${plantillas_proyecto}" "${DEV_DIR}${nombre}-${version}/"
 # Aprovechamos de sustituir algunos @TOKENS@ en las plantillas
 sed -i "s/@AUTHOR_NAME@/${DEV_NAME}/g" "${DEV_DIR}${nombre}-${version}/${plantillas_proyecto}"
 sed -i "s/@AUTHOR_MAIL@/${DEV_MAIL}/g" "${DEV_DIR}${nombre}-${version}/${plantillas_proyecto}"
@@ -134,8 +132,9 @@ done
 # Cambiamos el nombre al archivo de licencia
 mv "${DEV_DIR}${nombre}-${version}/${LICENSE}" "${DEV_DIR}${nombre}-${version}/LICENSE"
 # Sustituimos algunos campos de debian/control, por los valores que establecimos antes
+sed -i "s/#Vcs-Git:.*/#Vcs-Git: ${CONTROL_VCSGIT}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
 sed -i "s/#Vcs-Browser:.*/#Vcs-Browser: ${CONTROL_VCSBROWSER}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
-sed -i "s/Homepage:.*/Homepage: ${CONTROL_HOMEPAGE}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
+sed -i "s/Homepage:.*/#Homepage: ${CONTROL_HOMEPAGE}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
 sed -i "s/Maintainer:.*/Maintainer: ${CONTROL_MAINTAINER}\nUploaders: ${CONTROL_UPLOADERS}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
 sed -i "s/Description:.*/Description: ${CONTROL_DESCRIPTION}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
 sed -i "s/<insert long description, indented with spaces>/${CONTROL_LONG_DESCRIPTION}/g" "${DEV_DIR}${nombre}-${version}/debian/control"
@@ -186,8 +185,8 @@ directorio_nombre=$( basename "${directorio}" )
 [ -z "${directorio#${DEV_DIR}}" ] && echo -e ${ROJO}"¡Se te olvidó decirme cual era el directorio del proyecto del cuál deseas generar el paquete fuente!"${FIN} && exit 1
 # El directorio no existe
 [ ! -d "${directorio}" ] && echo -e ${ROJO}"El directorio no existe o no es un directorio."${FIN} && exit 1
-# ¿Tenemos debian/changelog?
-[ ! -e "${directorio}/debian/changelog" ] && echo -e ${ROJO}"Ésto no parece ser un proyecto de empaquetamiento. Debianizalo antes de continuar."${FIN} && exit 1
+# Determinemos algunos datos de proyecto
+DATOS-PROYECTO
 # Determinemos si el directorio ingresado tiene un slash (/) al final
 slash=${directorio#${directorio%?}}
 # Si es así, lo removemos
@@ -198,16 +197,17 @@ cd ${DEV_DIR}
 rm -rf "${directorio}.orig"
 # Creamos un nuevo directorio .orig
 cp -r ${directorio} "${directorio}.orig"
+ADVERTENCIA "Creando paquete fuente ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz"
 # Creamos el paquete fuente
 dpkg-source --format="1.0" -i.git/ -I.git -b ${directorio}
 # Movamos las fuentes que estén en la carpeta del desarrollador a su
 # lugar en el depósito
-MOVER fuentes
+[ "${1}" != "no-mover" ] && MOVER fuentes
 # Emitimos la notificación
-if [ -e "${DEPOSITO_SOURCES}${directorio_nombre}.orig.tar.gz" ]; then
-echo -e ${VERDE}"¡Fuente ${directorio_nombre} creada y movida a ${DEPOSITO_SOURCES}!"${FIN}
+if [ -e "${DEPOSITO_SOURCES}${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz" ]; then
+echo -e ${VERDE}"¡Fuente del proyecto ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz creada y movida a ${DEPOSITO_SOURCES}!"${FIN}
 else
-echo -e ${ROJO}"¡Epa! algo pasó durante la creación de ${directorio_nombre}.orig.tar.gz"${FIN}
+echo -e ${ROJO}"¡Epa! algo pasó durante la creación de ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz"${FIN}
 fi
 }
 
@@ -244,7 +244,7 @@ GIT-DCH
 # Volvemos a hacer commit
 REGISTRAR
 # Creamos el paquete fuente (formato 1.0)
-CREAR-FUENTE
+CREAR-FUENTE no-mover
 # Hacemos push
 ENVIAR
 cd ${directorio}
@@ -679,8 +679,7 @@ export DEBEMAIL="${DEV_MAIL}"
 function DATOS-PROYECTO() {
 #-------------------------------------------------------------#
 # Nombre de la Función: DATOS-PROYECTO
-# Propósito: Comprobar que ciertos parámetros se cumplan al
-#            inicio del script canaima-desarrollador.sh
+# Propósito: Determinar algunos datos del proyecto
 # Dependencias:
 #	- Requiere la carga del archivo ${VARIABLES}
 # 	- Paquetes: grep, awk, dpkg-dev
@@ -727,6 +726,7 @@ git remote rename origin origin_viejo
 fi
 # Si "origin" no existe, entonces agrega el correcto
 [ $( git remote | grep -wc "origin" ) == 0 ] && git remote add origin ${repo_completo} && echo -e ${AMARILLO}"Definiendo \"${repo_completo}\" como repositorio git \"origin\""${FIN}
+echo "Repositorios establecidos"
 }
 
 function GIT-DCH() {
