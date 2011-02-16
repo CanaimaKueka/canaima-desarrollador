@@ -370,7 +370,7 @@ fi
 #=================================================================================================================#
 
 descargar-todo|clonar-todo)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ]; then
 echo "Documentación para el Ayudante \"descargar-todo\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -395,7 +395,7 @@ fi
 ;;
 
 registrar-todo|commit-todo)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ]; then
 echo "Documentación para el Ayudante \"registrar-todo\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -422,7 +422,7 @@ fi
 ;;
 
 enviar-todo|push-todo)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ]; then
 echo "Documentación para el Ayudante \"enviar-todo\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -448,7 +448,7 @@ fi
 ;;
 
 actualizar-todo|pull-todo)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ]; then
 echo "Documentación para el Ayudante \"actualizar-todo\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -548,11 +548,11 @@ fi
 ;;
 
 
-#------ AYUDANTES INFORMATIVOS --------------------------------------------------------------------------------------------#
+#------ AYUDANTES INFORMATIVOS -----------------------------------------------------------------------------------------#
 #=======================================================================================================================#
 
 listar-remotos)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ]; then
 echo "Documentación para el Ayudante \"listar-remotos\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
@@ -576,7 +576,7 @@ fi
 ;;
 
 listar-locales)
-if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ] || [ -z ${2} ]; then
+if [ ${2} == "--ayuda" ] || [ ${2} == "--help" ]; then
 echo "Documentación para el Ayudante \"listar-locales\" de Canaima Desarrollador"
 echo ""
 echo "Uso:"
