@@ -341,7 +341,8 @@ directorio_nombre=$( basename "${directorio}" )
 # El directorio no es un directorio
 [ ! -d "${directorio}" ] && echo -e ${ROJO}"El directorio no es un directorio."${FIN} && exit 1
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}/.git" ] && echo -e ${ROJO}"El directorio no contiene un proyecto git."${FIN} && exit 1
+[ ! -e "${directorio}/.git" ] && echo -e ${ROJO}"El directorio no contiene un proyecto git."${FIN} && GIT_NONE=0
+if [ -z ${GIT_NONE} ]; then
 # Ingresar al directorio
 cd ${directorio}
 # Emitir la notificación
@@ -379,6 +380,7 @@ echo -e ${AMARILLO}"Haciendo merge master -> upstream"${FIN}
 fi
 # Volver a la carpeta del desarrollador
 cd ${DEV_DIR}
+fi
 }
 
 function ENVIAR() {
@@ -401,7 +403,8 @@ directorio_nombre=$( basename "${directorio}" )
 # El directorio no es un directorio
 [ ! -d "${directorio}" ] && echo -e ${ROJO}"El directorio no es un directorio."${FIN} && exit 1
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}/.git" ] && echo -e ${ROJO}"El directorio no contiene un proyecto git."${FIN} && exit 1
+[ ! -e "${directorio}/.git" ] && echo -e ${ROJO}"El directorio no contiene un proyecto git."${FIN} && GIT_NONE=0
+if [ -z ${GIT_NONE} ]; then
 # Accedemos al directorio
 cd ${directorio}
 # Emitimos la notificación
@@ -418,6 +421,7 @@ echo -e ${AMARILLO} "Enviando tags ..."${FIN}
 [ $( git branch -l | grep -wc master ) == 1 ] && git push --tags
 # Volvemos a la carpeta del desarrollador
 cd ${DEV_DIR}
+fi
 }
 
 function ACTUALIZAR() {
@@ -441,7 +445,8 @@ directorio_nombre=$( basename "${directorio}" )
 # El directorio no es un directorio
 [ ! -d "${directorio}" ] && echo -e ${ROJO}"El directorio no es un directorio."${FIN} && exit 1
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}/.git" ] && echo -e ${ROJO}"El directorio no contiene un proyecto git."${FIN} && exit 1
+[ ! -e "${directorio}/.git" ] && echo -e ${ROJO}"El directorio no contiene un proyecto git."${FIN} && GIT_NONE=0
+if [ -z ${GIT_NONE} ]; then
 # Accedemos al directorio
 cd ${directorio}
 # Emitimos la notificación
@@ -455,6 +460,7 @@ SET-REPOS
 [ $( git branch -l | grep -wc "master" ) == 1 ] && git pull origin master upstream
 # Volvemos a la carpeta del desarrollador
 cd ${DEV_DIR}
+fi
 }
 
 #------ AYUDANTES MASIVOS ----------------------------------------------------------------------------------------#

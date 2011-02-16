@@ -649,6 +649,9 @@ echo ""
 echo "Contacto: desarrolladores@listas.canaima.softwarelibre.gob.ve"
 ;;
 
+*)
+ERROR "No conozco el ayudante '"${1}"', échale un ojo a la documentación (man canaima-desarrollador)"
+;;
 esac
 
 exit 0
