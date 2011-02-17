@@ -15,8 +15,6 @@
 # Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los
 # términos de la Licencia Pública General de GNU (versión 3).
 
-PKG="canaima-desarrollador"
-
 #------ AYUDANTES CREADORES --------------------------------------------------------------------------------------#
 #=================================================================================================================#
 
@@ -30,23 +28,23 @@ function CREAR-PROYECTO() {
 
 # Comprobaciones varias
 # El nombre del proyecto está vacío
-[ -z "${nombre}" ] && echo -e ${ROJO}"Olvidaste ponerle un nombre al paquete."${FIN} && exit 1
+[ -z "${nombre}" ] && ERROR "Olvidaste ponerle un nombre al paquete." && exit 1
 # El nombre del proyecto contiene un carácter inválido 
-[ $( echo "${nombre}" | grep -c "[\?\*\+\.\\\/\%\$\#\@\!\~\=\^\<\>]" ) != 0 ] && echo -e ${ROJO}"Caracteres no permitidos en el nombre del paquete. Trata algo con letras, \"-\" y \"_\" solamente."${FIN} && exit 1
+[ $( echo "${nombre}" | grep -c "[\?\*\+\.\\\/\%\$\#\@\!\~\=\^\<\>\ ]" ) != 0 ] && ERROR "Caracteres no permitidos en el nombre del paquete. Trata algo con letras, \"-\" y \"_\" solamente." && exit 1
 # Si estamos debianizando, ¿El directorio coincide con el nombre y versión del paquete?
-[ ${opcion} == "debianizar" ] && [ ! -e "${DEV_DIR}${nombre}-${version}"] && echo -e ${ROJO}"¡Hey! No encuentro ningún directorio llamado \"${nombre}-${version}\" en ${DEV_DIR}"${FIN} && exit 1
+[ ${opcion} == "debianizar" ] && [ ! -e "${DEV_DIR}${nombre}-${version}" ] && ERROR "¡Hey! No encuentro ningún directorio llamado \"${nombre}-${version}\" en ${DEV_DIR}" && exit 1
 # ¿Me dijiste un destino válido?
-[ ${destino} != "canaima" ] && [ ${destino} != "personal" ] && echo -e ${ROJO}"Sólo conozco los destinos \"personal\" y \"canaima\". ¿Para quien carrizo es \"${destino}\"?"${FIN} && exit 1
+[ ${destino} != "canaima" ] && [ ${destino} != "personal" ] && ERROR "Sólo conozco los destinos \"personal\" y \"canaima\". ¿Para quien carrizo es \"${destino}\"?" && exit 1
 # La versión está vacía
-[ -z "${version}" ] && version="1.0+0" && echo -e ${AMARILLO}"No me dijiste la versión. Asumiendo 1.0+0"${FIN}
+[ -z "${version}" ] && version="1.0+0" && ADVERTENCIA "No me dijiste la versión. Asumiendo 1.0+0"
 # El destino está vacío
-[ -z "${destino}" ] && destino="personal" && echo -e ${AMARILLO}"No me dijiste si era un proyecto personal o para Canaima GNU/Linux. Asumo que es personal."${FIN}
+[ -z "${destino}" ] && destino="personal" && ADVERTENCIA "No me dijiste si era un proyecto personal o para Canaima GNU/Linux. Asumo que es personal."
 # La licencia está vacía
-[ -z "${licencia}" ] && licencia="gpl3" && echo -e ${AMARILLO}"No especificaste la licencia del paquete. Asumiré que es GPL3."${FIN}
+[ -z "${licencia}" ] && licencia="gpl3" && ADVERTENCIA "No especificaste la licencia del paquete. Asumiré que es GPL3."
 # Creamos la carpeta si no está crado (nuevo proyecto)
 [ ! -e "${DEV_DIR}${nombre}-${version}" ] && mkdir -p "${DEV_DIR}${nombre}-${version}"
 # Paramos si es un nuevo proyecto y la carpeta ya existe
-[ ! -e "${DEV_DIR}${nombre}-${version}" ] && [ ${opcion} == "crear-proyecto" ] && echo -e ${ROJO}"Estamos creando un proyecto nuevo, pero la carpeta ${DEV_DIR}${nombre}-${version} ya existe."${FIN} && exit 1
+[ -e "${DEV_DIR}${nombre}-${version}" ] && [ ${opcion} == "crear-proyecto" ] && ERROR "Estamos creando un proyecto nuevo, pero la carpeta ${DEV_DIR}${nombre}-${version} ya existe." && exit 1
 # Accedemos al directorio
 cd "${DEV_DIR}${nombre}-${version}"
 # Creamos el proyecto mediante dh_make. Lo pasamos a través de un pipe que le pasa una string
@@ -151,7 +149,7 @@ echo "7" > ${DEV_DIR}${nombre}-${version}/debian/compat
 if [ ! -e "${DEV_DIR}${nombre}-${version}/.git/" ]; then
 # Inicializamos un proyecto git
 git init > /dev/null 2>&1
-echo -e ${AMARILLO}"Repositorio git inicializado"${FIN}
+ADVERTENCIA "Repositorio git inicializado"
 directorio="${DEV_DIR}${nombre}-${version}"
 directorio_nombre=$( basename "${directorio}" )
 # Configuramos el repositorio remoto
@@ -162,11 +160,11 @@ fi
 # Enviamos la notificación apropiada, dependiendo del target
 # "crear-proyecto" o "debianizar"
 if [ ${opcion} == "crear-proyecto" ]; then
-echo -e ${VERDE}"¡Proyecto ${nombre} creado!"${FIN}
+EXITO "¡Proyecto ${nombre} creado!"
 elif [ ${opcion} == "debianizar" ]; then
-echo -e ${VERDE}"¡Proyecto ${nombre} debianizado correctamente!"${FIN}
+EXITO "¡Proyecto ${nombre} debianizado correctamente!"
 fi
-echo -e ${AMARILLO}"Lee los comentarios en los archivos creados para mayor información"${FIN}
+ADVERTENCIA "Lee los comentarios en los archivos creados para mayor información"
 }
 
 function CREAR-FUENTE() {
@@ -183,9 +181,9 @@ directorio=${DEV_DIR}${directorio#${DEV_DIR}}
 directorio_nombre=$( basename "${directorio}" )
 # Comprobaciones varias
 # El directorio está vacío
-[ -z "${directorio#${DEV_DIR}}" ] && echo -e ${ROJO}"¡Se te olvidó decirme cual era el directorio del proyecto del cuál deseas generar el paquete fuente!"${FIN} && exit 1
+[ -z "${directorio#${DEV_DIR}}" ] && ERROR "¡Se te olvidó decirme cual era el directorio del proyecto del cuál deseas generar el paquete fuente!" && exit 1
 # El directorio no existe
-[ ! -d "${directorio}" ] && echo -e ${ROJO}"El directorio no existe o no es un directorio."${FIN} && exit 1
+[ ! -d "${directorio}" ] && ERROR "El directorio no existe o no es un directorio." && exit 1
 # Determinemos algunos datos de proyecto
 DATOS-PROYECTO
 # Determinemos si el directorio ingresado tiene un slash (/) al final
@@ -206,11 +204,11 @@ dpkg-source --format="1.0" -i.git/ -I.git -b ${directorio}
 [ "${1}" != "no-mover" ] && MOVER fuentes
 # Emitimos la notificación
 if [ -e "${DEPOSITO_SOURCES}${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz" ] && [ "${1}" != "no-mover" ]; then
-echo -e ${VERDE}"¡Fuente del proyecto ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz creada y movida a ${DEPOSITO_SOURCES}!"${FIN}
+EXITO "¡Fuente del proyecto ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz creada y movida a ${DEPOSITO_SOURCES}!"
 elif [ -e "${DEV_DIR}${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz" ] && [ "${1}" == "no-mover" ]; then
-echo -e ${VERDE}"¡Fuente del proyecto ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz creada!"${FIN}
+EXITO "¡Fuente del proyecto ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz creada!"
 else
-echo -e ${ROJO}"¡Epa! algo pasó durante la creación de ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz"${FIN}
+ERROR "¡Epa! algo pasó durante la creación de ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz"
 fi
 }
 
@@ -231,13 +229,13 @@ directorio=${DEV_DIR}${directorio#${DEV_DIR}}
 directorio_nombre=$( basename "${directorio}" )
 # Comprobaciones varias
 # No especificaste el directorio
-[ -z "${directorio#${DEV_DIR}}" ] && echo -e ${ROJO}"Éste programa es espectacular... Pero no te lee la mente. Especifica un proyecto a empaquetar."${FIN} && exit 1
+[ -z "${directorio#${DEV_DIR}}" ] && ERROR "Éste programa es espectacular... Pero no te lee la mente. Especifica un proyecto a empaquetar." && exit 1
 # Tal vez te comiste el parámetro directoriorio o especificaste un directorio con espacios
-[ $( echo "${directorio#${DEV_DIR}}" | grep -c " " ) != 0 ] && echo -e ${ROJO}"Sospecho dos cosas: o te saltaste el nombre del directorio, o especificaste un directorio con espacios."${FIN} && exit 1
+[ $( echo "${directorio#${DEV_DIR}}" | grep -c " " ) != 0 ] && ERROR "Sospecho dos cosas: o te saltaste el nombre del directorio, o especificaste un directorio con espacios." && exit 1
 # No especificaste un mensaje para el commit
-[ -z "${mensaje}" ] && mensaje="auto" && echo -e ${AMARILLO}"Mensaje de commit vacío. Autogenerando."${FIN}
+[ -z "${mensaje}" ] && mensaje="auto" && ADVERTENCIA "Mensaje de commit vacío. Autogenerando."
 # No especificaste número de procesadores
-[ -z "${procesadores}" ] && procesadores=0 && echo -e ${AMARILLO}"No me dijiste si tenías más de un procesador. Asumiendo uno sólo."${FIN}
+[ -z "${procesadores}" ] && procesadores=0 && ADVERTENCIA "No me dijiste si tenías más de un procesador. Asumiendo uno sólo."
 # Cálculo de los threads (n+1)
 procesadores=$[ ${procesadores}+1 ]
 # Accedemos al directorio
@@ -277,7 +275,7 @@ function DESCARGAR() {
 #-------------------------------------------------------------#
 
 # No especificaste un proyecto
-[ -z "${proyecto}" ] && echo -e ${ROJO}"No especificaste un proyecto."${FIN} && exit 1
+[ -z "${proyecto}" ] && ERROR "No especificaste un proyecto." && exit 1
 # Acceder a la carpeta del desarrollador
 cd ${DEV_DIR}
 # Si la dirección está en formato SSH, hacer la descarga normalmente
@@ -287,12 +285,12 @@ nombre=${proyecto#"git://gitorious.org/canaima-gnu-linux/"}
 nombre=${nombre%".git"}
 git clone ${proyecto}
 # Constatar el resultado de la clonación
-[ -e "${DEV_DIR}${nombre}" ] && echo -e ${VERDE}"¡${nombre} Descargado!"${FIN}
-[ ! -e "${DEV_DIR}${nombre}" ] && echo -e ${ROJO}"Ooops...! Algo falló con ${nombre}"${FIN}
+[ -e "${DEV_DIR}${nombre}" ] && EXITO "¡${nombre} Descargado!"
+[ ! -e "${DEV_DIR}${nombre}" ] && ERROR "Ooops...! Algo falló con ${nombre}"
 # Si el parámetro de descarga no es una dirección, sino el nombre del paquete
 # y el repositorio remoto es gitorious.org ...
 elif [ $( echo ${proyecto} | grep -c "[@:]" ) == 0 ] && [ ${REPO} == "gitorious.org" ]; then
-echo -e ${AMARILLO}"Verificando existencia de ${proyecto} en ${REPO} ..."${FIN}
+ADVERTENCIA "Verificando existencia de ${proyecto} en ${REPO} ..."
 # Obtenemos el index HTML de gitorious ...
 wget "http://gitorious.org/canaima-gnu-linux" > /dev/null 2>&1
 # Extraemos los datos interesantes ...
@@ -302,16 +300,16 @@ if [ $( echo ${FUENTE} | grep -wc "git://gitorious.org/canaima-gnu-linux/${proye
 descarga="git://gitorious.org/canaima-gnu-linux/${proyecto}.git"
 git clone ${descarga}
 # Constatar el resultado de la clonación
-[ -e "${DEV_DIR}${proyecto}" ] && echo -e ${VERDE}"¡${proyecto} Descargado!"${FIN}
-[ ! -e "${DEV_DIR}${proyecto}" ] && echo -e ${ROJO}"Ooops...! Algo falló con ${proyecto}"${FIN}
+[ -e "${DEV_DIR}${proyecto}" ] && EXITO "¡${proyecto} Descargado!"
+[ ! -e "${DEV_DIR}${proyecto}" ] && ERROR "Ooops...! Algo falló con ${proyecto}"
 else
-echo -e ${ROJO}"Tal proyecto \"${proyecto}\"no existe en ${REPO}."${FIN}
+ERROR "Tal proyecto \"${proyecto}\"no existe en ${REPO}."
 fi
 # Si el parámetro de descarga no es una dirección, sino el nombre del paquete
 # y el repositorio remoto es diferente de gitorious.org, esa modalidad de descarga
 # no está disponible.
 elif [ $( echo ${proyecto} | grep -c "[@:]" ) == 0 ] && [ ${REPO} != "gitorious.org" ]; then
-echo -e ${ROJO}"Esa modalidad de descarga no está disponible para ${REPO}"${FIN}
+ERROR "Esa modalidad de descarga no está disponible para ${REPO}"
 fi
 # Nos devolvemos a la carpeta del desarrollador
 cd ${DEV_DIR}
@@ -331,31 +329,31 @@ directorio=${DEV_DIR}${directorio#${DEV_DIR}}
 directorio_nombre=$( basename "${directorio}" )
 # Comprobaciones varias
 # No especificaste el directorio
-[ -z "${directorio#${DEV_DIR}}" ] && echo -e ${ROJO}"Éste programa es espectacular... Pero no te lee la mente. Especifica un proyecto a empaquetar."${FIN} && exit 1
+[ -z "${directorio#${DEV_DIR}}" ] && "Éste programa es espectacular... Pero no te lee la mente. Especifica un proyecto a empaquetar." && exit 1
 # Tal vez te comiste el parámetro directoriorio o especificaste un directorio con espacios
-[ $( echo "${directorio#${DEV_DIR}}" | grep -c " " ) != 0 ] && echo -e ${ROJO}"Sospecho dos cosas: o te saltaste el nombre del directorio, o especificaste un directorio con espacios."${FIN} && exit 1
+[ $( echo "${directorio#${DEV_DIR}}" | grep -c " " ) != 0 ] && ERROR "Sospecho dos cosas: o te saltaste el nombre del directorio, o especificaste un directorio con espacios." && exit 1
 # No especificaste un mensaje para el commit
-[ -z "${mensaje}" ] && mensaje="auto" && echo -e ${AMARILLO}"Mensaje de commit vacío. Autogenerando."${FIN}
+[ -z "${mensaje}" ] && mensaje="auto" && ADVERTENCIA "Mensaje de commit vacío. Autogenerando."
 # El directorio no existe
-[ ! -e "${directorio}" ] && echo -e ${ROJO}"El directorio no existe."${FIN} && exit 1
+[ ! -e "${directorio}" ] && ERROR "El directorio no existe." && exit 1
 # El directorio no es un directorio
-[ ! -d "${directorio}" ] && echo -e ${ROJO}"El directorio no es un directorio."${FIN} && exit 1
+[ ! -d "${directorio}" ] && ERROR "El directorio no es un directorio." && exit 1
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}/.git" ] && echo -e ${ROJO}"El directorio no contiene un proyecto git."${FIN} && GIT_NONE=0
+[ ! -e "${directorio}/.git" ] && ERROR "El directorio no contiene un proyecto git." && GIT_NONE=0
 if [ -z ${GIT_NONE} ]; then
 # Ingresar al directorio
 cd ${directorio}
 # Emitir la notificación
-echo -e ${AMARILLO}"Haciendo commit en el proyecto ${directorio_nombre} ..."${FIN}
+ADVERTENCIA "Haciendo commit en el proyecto ${directorio_nombre} ..."
 # Asegurando que existan las ramas necesarias
-[ $( git branch -l | grep -wc "master" ) == 0 ] && echo -e ${AMARILLO}"No existe la rama upstream, creando ..."${FIN} && git branch master
-[ $( git branch -l | grep -wc "upstream" ) == 0 ] && echo -e ${AMARILLO}"No existe la rama upstream, creando ..."${FIN} && git branch upstream
-[ $( git branch -l | grep -wc "* master" ) == 0 ] && echo -e ${AMARILLO}"No estás en la rama master. Te voy a pasar para allá."${FIN} && git checkout master
+[ $( git branch -l | grep -wc "master" ) == 0 ] && ADVERTENCIA "No existe la rama upstream, creando ..." && git branch master
+[ $( git branch -l | grep -wc "upstream" ) == 0 ] && ADVERTENCIA "No existe la rama upstream, creando ..." && git branch upstream
+[ $( git branch -l | grep -wc "* master" ) == 0 ] && ADVERTENCIA "No estás en la rama master. Te voy a pasar para allá." && git checkout master
 # Agregando todos los cambios
 git add .
 # Verificando que haya algún cambio desde el último commit
 if [ $( git status | grep -c "nothing to commit (working directory clean)" ) == 1 ]; then
-echo -e ${VERDE}"No hay nada a que hacer commit"${FIN}
+EXITO "No hay nada a que hacer commit"
 NO_COMMIT=1
 else
 # Si el mensaje de commit está vacío, o está configurado en modo "auto"
@@ -367,16 +365,16 @@ archivos_modificados=$( basename ${archivos_modificados} )
 commit_message=${commit_message}"${archivos_modificados} "
 done
 # Ejecutar el commit
-git commit -a -q -m "[ canaima-desarrollador ] Los siguientes archivos han sido modificados/añadidos: ${commit_message}" && echo -e ${VERDE}"¡Commit!"${FIN}
+git commit -a -q -m "[ canaima-desarrollador ] Los siguientes archivos han sido modificados/añadidos: ${commit_message}" && EXITO "¡Commit!"
 else
 # Si un mensaje ha sido especificado, ejecutar el commit con ese mensaje
-git commit -a -q -m "${mensaje}" && echo -e ${VERDE}"¡Commit!"${FIN}
+git commit -a -q -m "${mensaje}" && EXITO "¡Commit!"
 fi
 # Combinar los cambios de master a upstream
 git checkout upstream
 git merge master > /dev/null 2>&1
 git checkout master
-echo -e ${AMARILLO}"Haciendo merge master -> upstream"${FIN}
+ADVERTENCIA "Haciendo merge master -> upstream"
 fi
 # Volver a la carpeta del desarrollador
 cd ${DEV_DIR}
@@ -397,27 +395,27 @@ directorio=${DEV_DIR}${directorio#${DEV_DIR}}
 directorio_nombre=$( basename "${directorio}" )
 # Comprobaciones varias
 # No especificaste el directorio
-[ -z "${directorio#${DEV_DIR}}" ] && echo -e ${ROJO}"Descansa un poco... ¡Se te olvidó poner a cuál proyecto querías hacer push!"${FIN} && exit 1
+[ -z "${directorio#${DEV_DIR}}" ] && ERROR "Descansa un poco... ¡Se te olvidó poner a cuál proyecto querías hacer push!" && exit 1
 # El directorio no existe
-[ ! -e "${directorio}" ] && echo -e ${ROJO}"El directorio no existe."${FIN} && exit 1
+[ ! -e "${directorio}" ] && ERROR "El directorio no existe." && exit 1
 # El directorio no es un directorio
-[ ! -d "${directorio}" ] && echo -e ${ROJO}"El directorio no es un directorio."${FIN} && exit 1
+[ ! -d "${directorio}" ] && ERROR "El directorio no es un directorio." && exit 1
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}/.git" ] && echo -e ${ROJO}"El directorio no contiene un proyecto git."${FIN} && GIT_NONE=0
+[ ! -e "${directorio}/.git" ] && ERROR "El directorio no contiene un proyecto git." && GIT_NONE=0
 if [ -z ${GIT_NONE} ]; then
 # Accedemos al directorio
 cd ${directorio}
 # Emitimos la notificación
-echo -e ${AMARILLO}"Haciendo push en el proyecto ${directorio_nombre} ..."${FIN}
+ADVERTENCIA "Haciendo push en el proyecto ${directorio_nombre} ..."
 # Configuramos los repositorios
 SET-REPOS
 # Asegurando que existan las ramas necesarias
-[ $( git branch -l | grep -wc "upstream" ) == 0 ] && echo -e ${ROJO}"Al proyecto le falta la rama upstream, creando ..."${FIN} && git branch upstream
-[ $( git branch -l | grep -wc "master" ) == 0 ] && echo -e ${ROJO}"Al proyecto le falta la rama master, creando ..."${FIN} && git branch master
+[ $( git branch -l | grep -wc "upstream" ) == 0 ] && ERROR "Al proyecto le falta la rama upstream, creando ..." && git branch upstream
+[ $( git branch -l | grep -wc "master" ) == 0 ] && ERROR "Al proyecto le falta la rama master, creando ..." && git branch master
 # Hacemos push
 [ $( git branch -l | grep -wc "master" ) == 1 ] && git push origin master upstream
 # Y enviamos las tags
-echo -e ${AMARILLO} "Enviando tags ..."${FIN}
+ADVERTENCIA  "Enviando tags ..."
 [ $( git branch -l | grep -wc master ) == 1 ] && git push --tags
 # Volvemos a la carpeta del desarrollador
 cd ${DEV_DIR}
@@ -439,23 +437,23 @@ directorio=${DEV_DIR}${directorio#${DEV_DIR}}
 directorio_nombre=$( basename "${directorio}" )
 # Comprobaciones varias
 # No especificaste el directorio
-[ -z "${directorio#${DEV_DIR}}" ] && echo -e ${ROJO}"Descansa un poco... ¡Se te olvidó poner cuál proyecto querías actualizar!"${FIN} && exit 1
+[ -z "${directorio#${DEV_DIR}}" ] && ERROR "Descansa un poco... ¡Se te olvidó poner cuál proyecto querías actualizar!" && exit 1
 # El directorio no existe
-[ ! -e "${directorio}" ] && echo -e ${ROJO}"El directorio no existe."${FIN} && exit 1
+[ ! -e "${directorio}" ] && ERROR "El directorio no existe." && exit 1
 # El directorio no es un directorio
-[ ! -d "${directorio}" ] && echo -e ${ROJO}"El directorio no es un directorio."${FIN} && exit 1
+[ ! -d "${directorio}" ] && ERROR "El directorio no es un directorio." && exit 1
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}/.git" ] && echo -e ${ROJO}"El directorio no contiene un proyecto git."${FIN} && GIT_NONE=0
+[ ! -e "${directorio}/.git" ] && ERROR "El directorio no contiene un proyecto git." && GIT_NONE=0
 if [ -z ${GIT_NONE} ]; then
 # Accedemos al directorio
 cd ${directorio}
 # Emitimos la notificación
-echo -e ${AMARILLO}"Actualizando proyecto ${directorio_nombre} ..."${FIN}
+ADVERTENCIA "Actualizando proyecto ${directorio_nombre} ..."
 # Configuramos los repositorios
 SET-REPOS
 # Asegurando que existan las ramas necesarias
-[ $( git branch -l | grep -wc "upstream" ) == 0 ] && echo -e ${ROJO}"Al proyecto le falta la rama upstream, creando ..."${FIN} && git branch upstream
-[ $( git branch -l | grep -wc "master" ) == 0 ] && echo -e ${ROJO}"Al proyecto le falta la rama master, creando ..."${FIN} && git branch master
+[ $( git branch -l | grep -wc "upstream" ) == 0 ] && ERROR "Al proyecto le falta la rama upstream, creando ..." && git branch upstream
+[ $( git branch -l | grep -wc "master" ) == 0 ] && ERROR "Al proyecto le falta la rama master, creando ..." && git branch master
 # Hacemos pull
 [ $( git branch -l | grep -wc "master" ) == 1 ] && git pull origin master upstream
 # Volvemos a la carpeta del desarrollador
@@ -541,9 +539,9 @@ function EMPAQUETAR-VARIOS() {
 
 # Comprobaciones varias
 # No especificaste el directorio
-[ -z "${PARA_EMPAQUETAR}" ] && echo -e ${ROJO}"No especificaste la lista de proyectos que querías empaquetar."${FIN} && exit 1
+[ -z "${PARA_EMPAQUETAR}" ] && ERROR "No especificaste la lista de proyectos que querías empaquetar." && exit 1
 # No especificaste número de procesadores
-[ -z "${procesadores}" ] && procesadores=0 && echo -e ${AMARILLO}"No me dijiste si tenías más de un procesador. Asumiendo uno sólo."${FIN}
+[ -z "${procesadores}" ] && procesadores=0 && ADVERTENCIA "No me dijiste si tenías más de un procesador. Asumiendo uno sólo."
 # cálculo de los threads (n+1)
 procesadores=$[ ${procesadores}+1 ]
 # Para cada directorio especificado en ${PARA_EMPAQUETAR}... ejecutar la función EMPAQUETAR
@@ -644,12 +642,12 @@ function CHECK() {
 
 # Faltan variables por definir en el archivo de configuración ${CONF}
 if [ -z "${REPO}" ] || [ -z "${REPO_USER}" ] || [ -z "${REPO_DIR}" ] || [ -z "${DEV_DIR}" ] || [ -z "${DEV_NAME}" ] || [ -z "${DEV_MAIL}" ] || [ -z "${DEPOSITO_LOGS}" ] || [ -z "${DEPOSITO_SOURCES}" ] || [ -z "${DEPOSITO_DEBS}" ]; then
-echo -e ${ROJO}"Tu archivo de configuración ${CONF} presenta inconsistencias. Todas las variables deben estar llenas."${FIN} && exit 1
+ERROR "Tu archivo de configuración ${CONF} presenta inconsistencias. Todas las variables deben estar llenas." && exit 1
 fi
 # La carpeta del desarrollador ${DEV_DIR} no existe
-[ ! -d "${DEV_DIR}" ] && echo -e ${ROJO}"¡La carpeta del desarrollador ${DEV_DIR} no existe!"${FIN} && exit 1
+[ ! -d "${DEV_DIR}" ] && ERROR "¡La carpeta del desarrollador ${DEV_DIR} no existe!" && exit 1
 # El archivo de configuración personal ${CONF} no existe
-[ ! -e "${CONF}" ] && echo -e ${ROJO}"¡Tu archivo de configuración ${CONF} no existe!"${FIN} && exit 1
+[ ! -e "${CONF}" ] && ERROR "¡Tu archivo de configuración ${CONF} no existe!" && exit 1
 # Asegurando que existan las carpetas de depósito
 [ ! -e ${DEPOSITO_LOGS} ] && mkdir -p ${DEPOSITO_LOGS}
 [ ! -e ${DEPOSITO_SOURCES} ] && mkdir -p ${DEPOSITO_SOURCES}
@@ -658,11 +656,17 @@ fi
 # terminen con un slash (/) al final
 ultimo_char_dev=${DEV_DIR#${DEV_DIR%?}}
 ultimo_char_pla=${PLANTILLAS#${PLANTILLAS%?}}
+ultimo_char_sou=${DEPOSITO_SOURCES#${DEPOSITO_SOURCES%?}}
+ultimo_char_deb=${DEPOSITO_DEBS#${DEPOSITO_DEBS%?}}
+ultimo_char_log=${DEPOSITO_LOGS#${DEPOSITO_LOGS%?}}
 [ ${ultimo_char_dev} != "/" ] && DEV_DIR="${DEV_DIR}/"
 [ ${ultimo_char_pla} != "/" ] && PLANTILLAS="${PLANTILLAS}/"
+[ ${ultimo_char_sou} != "/" ] && DEPOSITO_SOURCES="${DEPOSITO_SOURCES}/"
+[ ${ultimo_char_deb} != "/" ] && DEPOSITO_DEBS="${DEPOSITO_DEBS}/"
+[ ${ultimo_char_log} != "/" ] && DEPOSITO_LOGS="${DEPOSITO_LOGS}/"
 # Verificando que no hayan carpetas con nombres que contengan espacios
 if [ $( ls ${DEV_DIR} | grep -c " " ) != 0 ]; then
-echo -e ${ROJO}"${DEV_DIR} contiene directorios con espacios en su nombre. Abortando."${FIN}
+ERROR "${DEV_DIR} contiene directorios con espacios en su nombre. Abortando."
 exit 1
 else
 echo "Iniciando Canaima Desarrollador ..."
@@ -707,7 +711,7 @@ NOMBRE_PROYECTO=$( dpkg-parsechangelog -l${CHANGELOG_PROYECTO} | grep "Source: "
 PAQUETE=1
 else
 # De lo contrario, advertir que no es un proyecto de empaquetamiento debian
-echo -e ${ROJO}"${directorio_nombre} no contiene ningún proyecto de empaquetamiento."${FIN} && PAQUETE=0
+ERROR "${directorio_nombre} no contiene ningún proyecto de empaquetamiento." && PAQUETE=0
 fi
 }
 
@@ -737,7 +741,7 @@ if [ $( git remote | grep -wc "origin" ) == 1 ] && [ $( git remote show origin |
 git remote rename origin origin_viejo
 fi
 # Si "origin" no existe, entonces agrega el correcto
-[ $( git remote | grep -wc "origin" ) == 0 ] && git remote add origin ${repo_completo} && echo -e ${AMARILLO}"Definiendo \"${repo_completo}\" como repositorio git \"origin\""${FIN}
+[ $( git remote | grep -wc "origin" ) == 0 ] && git remote add origin ${repo_completo} && ADVERTENCIA "Definiendo \"${repo_completo}\" como repositorio git \"origin\""
 echo "Repositorios establecidos"
 }
 
@@ -755,7 +759,7 @@ function GIT-DCH() {
 DATOS-PROYECTO
 # Accedemos al directorio
 cd ${directorio}
-echo -e ${AMARILLO}"Registrando cambios en debian/changelog ..."${FIN}
+ADVERTENCIA "Registrando cambios en debian/changelog ..."
 # Determinamos la versión del proyecto antes de hacer git-dch
 ANTES_DCH=$( dpkg-parsechangelog | grep "Version: " | awk '{print $2}' )
 # Establecemos el editor como "true" para que no nos lleve al editor
@@ -770,13 +774,13 @@ DESPUES_DCH=$( dpkg-parsechangelog | grep "Version: " | awk '{print $2}' )
 
 # Si la versión cambió después de hacer git-dch ...
 if [ ${DESPUES_DCH} != ${ANTES_DCH} ]; then
-echo -e ${AMARILLO}"Nueva versión ${DESPUES_DCH}"${FIN}
+ADVERTENCIA "Nueva versión ${DESPUES_DCH}"
 # Si git-dch no cambió el directorio de nombre, luego del cambio de versión, hagámoslo por él
 [ $( ls ${DEV_DIR} | grep -wc "${NOMBRE_PROYECTO}-${DESPUES_DCH}" ) == 0  ] && mv $( pwd ) "${DEV_DIR}${NOMBRE_PROYECTO}-${DESPUES_DCH}" && echo "git-dch no puso el nombre correcto al directorio. Lo voy a hacer."
 # Si ya tenemos el nombre correcto, entonces hay que cambiarse para allá
 [ $( ls ${DEV_DIR} | grep -wc "${NOMBRE_PROYECTO}-${DESPUES_DCH}" ) == 1  ] && [ $( pwd ) != "${DEV_DIR}${NOMBRE_PROYECTO}-${DESPUES_DCH}" ] && cd "${DEV_DIR}${NOMBRE_PROYECTO}-${DESPUES_DCH}" && echo "Cambiando directorio a ${NOMBRE_PROYECTO}-${DESPUES_DCH}"
 else
-echo -e ${AMARILLO}"Misma versión ${DESPUES_DCH}"${FIN}
+ADVERTENCIA "Misma versión ${DESPUES_DCH}"
 fi
 # Nos devolvemos a la carpeta del desarrollador
 cd ${DEV_DIR}
@@ -822,8 +826,7 @@ esac
 }
 
 function ERROR() {
-echo -e ${ROJO}${1}${FIN}
-exit 1
+echo -e ${ROJO}${FIN}
 }
 
 function ADVERTENCIA() {
