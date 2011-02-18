@@ -539,13 +539,13 @@ function EMPAQUETAR-VARIOS() {
 
 # Comprobaciones varias
 # No especificaste el directorio
-[ -z "${PARA_EMPAQUETAR}" ] && ERROR "No especificaste la lista de proyectos que querías empaquetar." && exit 1
+[ -z "${para_empaquetar}" ] && ERROR "No especificaste la lista de proyectos que querías empaquetar." && exit 1
 # No especificaste número de procesadores
 [ -z "${procesadores}" ] && procesadores=0 && ADVERTENCIA "No me dijiste si tenías más de un procesador. Asumiendo uno sólo."
 # cálculo de los threads (n+1)
 procesadores=$[ ${procesadores}+1 ]
 # Para cada directorio especificado en ${PARA_EMPAQUETAR}... ejecutar la función EMPAQUETAR
-for directorio in ${PARA_EMPAQUETAR};do EMPAQUETAR;done
+for directorio in ${para_empaquetar};do EMPAQUETAR;done
 }
 
 function EMPAQUETAR-TODO() {
@@ -562,7 +562,7 @@ function EMPAQUETAR-TODO() {
 for directorio in $( ls -A ${DEV_DIR} );do EMPAQUETAR;done
 }
 
-#------ AYUDANTES INFORMATIVOS -----------------------------------------------------------------------------------#
+#------ AYUDANTES INFORMATIVOS -----------------------------------------------------------------------------------------#
 #=======================================================================================================================#
 
 function LISTAR-REMOTOS() {
