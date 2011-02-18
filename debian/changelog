@@ -1,3 +1,9 @@
+canaima-desarrollador (1.1+16) testing; urgency=low
+
+  * [c7b616a] Corrigiendo bug con el grep --
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Fri, 18 Feb 2011 02:35:00 -0430
+
 canaima-desarrollador (1.1+15) testing; urgency=low
 
   * [9986c62] Agregando lógica para detectar opciones erróneas
