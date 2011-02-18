@@ -252,9 +252,9 @@ cd ${directorio}
 # Hacemos commit de los (posibles) cambios hechos
 REGISTRAR
 # Lo reflejamos en debian/changelog
-[ -z ${NO_COMMIT} ] && GIT-DCH
+[ "${NO_COMMIT}" == "0" ] && GIT-DCH
 # Volvemos a hacer commit
-[ -z ${NO_COMMIT} ] && REGISTRAR
+[ "${NO_COMMIT}" == "0" ] && REGISTRAR
 # Creamos el paquete fuente (formato 1.0)
 CREAR-FUENTE no-mover
 # Hacemos push
@@ -347,9 +347,11 @@ directorio_nombre=$( basename "${directorio}" )
 [ ! -e "${directorio}" ] && ERROR "El directorio no existe." && exit 1
 # El directorio no es un directorio
 [ ! -d "${directorio}" ] && ERROR "El directorio no es un directorio." && exit 1
+# El directorio contiene un proyecto git
+[ -e "${directorio}.git" ] && GIT_NONE=0
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}/.git" ] && ERROR "El directorio no contiene un proyecto git." && GIT_NONE=0
-if [ -z ${GIT_NONE} ]; then
+[ ! -e "${directorio}.git" ] && ERROR "El directorio no contiene un proyecto git." && GIT_NONE=1
+if [ "${GIT_NONE}" == "0" ]; then
 # Ingresar al directorio
 cd ${directorio}
 # Emitir la notificación
@@ -361,6 +363,7 @@ ADVERTENCIA "Haciendo commit en el proyecto ${directorio_nombre} ..."
 # Agregando todos los cambios
 git add .
 # Verificando que haya algún cambio desde el último commit
+NO_COMMIT=0
 if [ $( git status | grep -c "nothing to commit (working directory clean)" ) == 1 ]; then
 EXITO "No hay nada a que hacer commit"
 NO_COMMIT=1
@@ -410,8 +413,10 @@ directorio_nombre=$( basename "${directorio}" )
 # El directorio no es un directorio
 [ ! -d "${directorio}" ] && ERROR "El directorio no es un directorio." && exit 1
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}/.git" ] && ERROR "El directorio no contiene un proyecto git." && GIT_NONE=0
-if [ -z ${GIT_NONE} ]; then
+[ -e "${directorio}.git" ] && GIT_NONE=0
+# El directorio no contiene un proyecto git
+[ ! -e "${directorio}.git" ] && ERROR "El directorio no contiene un proyecto git." && GIT_NONE=1
+if [ "${GIT_NONE}" == "0" ]; then
 # Accedemos al directorio
 cd ${directorio}
 # Emitimos la notificación
@@ -451,9 +456,11 @@ directorio_nombre=$( basename "${directorio}" )
 [ ! -e "${directorio}" ] && ERROR "El directorio no existe." && exit 1
 # El directorio no es un directorio
 [ ! -d "${directorio}" ] && ERROR "El directorio no es un directorio." && exit 1
+# El directorio contiene un proyecto git
+[ -e "${directorio}.git" ] && GIT_NONE=0
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}/.git" ] && ERROR "El directorio no contiene un proyecto git." && GIT_NONE=0
-if [ -z ${GIT_NONE} ]; then
+[ ! -e "${directorio}.git" ] && ERROR "El directorio no contiene un proyecto git." && GIT_NONE=1
+if [ "${GIT_NONE}" == "0" ]; then
 # Accedemos al directorio
 cd ${directorio}
 # Emitimos la notificación
