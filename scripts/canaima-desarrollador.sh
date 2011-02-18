@@ -36,19 +36,19 @@ CHECK
 # Ver /usr/share/canaima-desarrollador/scripts/funciones-desarrollador.sh
 DEV-DATA
 
-
+# Capturamos los parámetros 
 PARAMETROS=${@}
+# Eliminamos el ayudante
 PARAMETROS=${PARAMETROS#${1}}
 
+# Parseamos cada parámetro y lo convertimos en variable
 for ARGUMENTO in ${PARAMETROS}; do
-
 ARG_VARIABLE=${ARGUMENTO#--}
 ARG_VARIABLE=${ARG_VARIABLE%=*}
 ARG_VALOR=${ARGUMENTO#--${ARG_VARIABLE}=}
 ARG_VARIABLE=$( echo ${ARG_VARIABLE} | tr '[:lower:]' '[:upper:]' )
 ARG_VARIABLE=$( echo ${ARG_VARIABLE} | tr '-' '_' )
 eval "${ARG_VARIABLE}=${ARG_VALOR}"
-
 done
 
 # Case encargado de interpretar los parámetros introducidos a
@@ -63,7 +63,7 @@ if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 cat "${DIR_AYUDA}/crear-proyecto"
 else
 # Guardemos los parámetros en variables para usarlos después
-opcion=${OPCION}
+opcion=${1}
 nombre=${NOMBRE}
 version=${VERSION}
 destino=${DESTINO}
@@ -219,6 +219,13 @@ fi
 --ayuda|--help|'')
 # Imprimiendo la ayuda
 cat "${DIR_AYUDA}/canaima-desarrollador"
+;;
+
+debug)
+LISTA_DATOS="DEV_NAME DEV_MAIL DEV_GPG DEV_DIR DEPOSITO_SOURCES DEPOSITO_LOGS DEPOSITO_DEBS REPO REPO_USER REPO_DIR CONF VARIABLES PLANTILLAS FUNCIONES NAVEGADOR"
+for VARIABLES_CONF in ${LISTA_DATOS}; do
+eval "echo ${VARIABLES_CONF}=$${VARIABLES_CONF}"
+done
 ;;
 
 *)
