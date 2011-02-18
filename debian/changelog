@@ -1,3 +1,9 @@
+canaima-desarrollador (1.1+17) testing; urgency=low
+
+  * [ca89f38] Mejorando el postrm y corrigiendo bugs
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Fri, 18 Feb 2011 03:12:49 -0430
+
 canaima-desarrollador (1.1+16) testing; urgency=low
 
   * [c7b616a] Corrigiendo bug con el grep --
