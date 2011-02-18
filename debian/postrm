@@ -4,8 +4,8 @@
 # PAQUETE: canaima-desarrollador
 # ARCHIVO: postrm
 # DESCRIPCIÓN: Revierte los cambios hechos por el paquete en los scripts del
-#              mantenedor, de forma tal de asegurarse que el sistema quede
-#              como estaba antes de su instalación.
+#	      mantenedor, de forma tal de asegurarse que el sistema quede
+#	      como estaba antes de su instalación.
 # COPYRIGHT:
 #  (C) 2010 Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>
 #  (C) 2010 Diego Alberto Aguilera Zambrano <daguilera85@gmail.com>
@@ -22,6 +22,11 @@ PKG="canaima-desarrollador"
 case ${1} in
 
 	purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+
+	for usuario in /home/*? ; do
+		rm -rf ${usuario}/Escritorio/manual-desarrollador.desktop
+	done
+
 	;;
 
 	*)

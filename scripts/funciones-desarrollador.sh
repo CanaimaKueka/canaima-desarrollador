@@ -46,12 +46,29 @@ function CREAR-PROYECTO() {
 # Creamos la carpeta si no está creado (nuevo proyecto)
 [ ! -e "${DEV_DIR}${nombre}-${version}" ] && mkdir -p "${DEV_DIR}${nombre}-${version}"
 
+# Asignando strings dependiendo de la licencia escogida
+case ${licencia} in
+gpl3) LICENSE="GPL-3" ;;
+apache) LICENSE="Apache-2.0" ;;
+artistic) LICENSE="Artistic" ;;
+bsd) LICENSE="BSD" ;;
+gpl) LICENSE="GPL-3" ;;
+gpl2) LICENSE="GPL-2" ;;
+gpl3) LICENSE="GPL-3" ;;
+lgpl) LICENSE="LGPL-3" ;;
+lgpl2) LICENSE="LGPL-2" ;;
+lgpl3) LICENSE="LGPL-3" ;;
+*) ERROR "Licencia '${licencia}' no soportada." && exit 1 ;;
+esac
+
 # Accedemos al directorio
 cd "${DEV_DIR}${nombre}-${version}"
 # Creamos el proyecto mediante dh_make. Lo pasamos a través de un pipe que le pasa una string
 # a stdin para saltarnos la confirmación que trae por defecto dh_make. También enviamos todas
 # las salidas a /dev/null para no ver las cosas en pantalla.
 echo "enter" | dh_make --createorig --cdbs --copyright ${licencia} --email ${DEV_MAIL} > /dev/null 2>&1
+
+[ ! -d "${DEV_DIR}${nombre}-${version}/debian/" ] && ERROR "Algo salió mal con la creación de la carpeta debian." && exit 1
 # Presentamos alguna información en pantalla a modo de informe.
 echo "Nombre del Paquete: ${nombre}"
 echo "Versión: ${version}"
@@ -88,19 +105,7 @@ fi
 CONTROL_DESCRIPTION="Insertar una descripción de no más de 60 caracteres."
 CONTROL_LONG_DESCRIPTION="Insertar descripción larga, iniciando con un espacio."
 CONTROL_ARCH="all"
-# Asignando strings dependiendo de la licencia escogida
-case ${licencia} in
-gpl3) LICENSE="GPL-3" ;;
-apache) LICENSE="Apache-2.0" ;;
-artistic) LICENSE="Artistic" ;;
-bsd) LICENSE="BSD" ;;
-gpl) LICENSE="GPL-3" ;;
-gpl2) LICENSE="GPL-2" ;;
-gpl3) LICENSE="GPL-3" ;;
-lgpl) LICENSE="LGPL-3" ;;
-lgpl2) LICENSE="LGPL-2" ;;
-lgpl3) LICENSE="LGPL-3" ;;
-esac
+
 # Lista de archivos a copiar en la carpeta debian del proyecto
 COPIAR_PLANTILLAS_DEBIAN="preinst postinst prerm postrm rules copyright"
 # Lista de archivos a copiar en la carpeta base del proyecto
@@ -187,6 +192,8 @@ directorio_nombre=$( basename "${directorio}" )
 [ ! -d "${directorio}" ] && ERROR "El directorio no existe o no es un directorio." && exit 1
 # Determinemos algunos datos de proyecto
 DATOS-PROYECTO
+# Si es un proyecto de empaquetamiento válido, entonces ...
+if [ "${PAQUETE}" == "1" ]; then
 # Determinemos si el directorio ingresado tiene un slash (/) al final
 slash=${directorio#${directorio%?}}
 # Si es así, lo removemos
@@ -210,6 +217,7 @@ elif [ -e "${DEV_DIR}${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz" ] && [ 
 EXITO "¡Fuente del proyecto ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz creada!"
 else
 ERROR "¡Epa! algo pasó durante la creación de ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz"
+fi
 fi
 }
 
@@ -498,7 +506,7 @@ function REGISTRAR-TODO() {
 #-------------------------------------------------------------#
 
 # Para cada directorio en la carpeta del desarrollador, ejecutar la función REGISTRAR
-for directorio in $( ls -A ${DEV_DIR} );do REGISTRAR;done
+for directorio in $( ls -F ${DEV_DIR} | grep "/" );do REGISTRAR;done
 }
 
 function ENVIAR-TODO() {
@@ -512,7 +520,7 @@ function ENVIAR-TODO() {
 #-------------------------------------------------------------#
 
 # Para cada directorio en la carpeta del desarrollador... ejecutar la función ENVIAR
-for directorio in $( ls -A ${DEV_DIR} );do ENVIAR;done
+for directorio in $( ls -F ${DEV_DIR} | grep "/" );do ENVIAR;done
 }
 
 function ACTUALIZAR-TODO() {
@@ -526,7 +534,7 @@ function ACTUALIZAR-TODO() {
 #-------------------------------------------------------------#
 
 # Para cada directorio en la carpeta del desarrollador... ejecutar la función ACTUALIZAR
-for directorio in $( ls -A ${DEV_DIR} );do ACTUALIZAR;done
+for directorio in $( ls -F ${DEV_DIR} | grep "/" );do ACTUALIZAR;done
 }
 
 function EMPAQUETAR-VARIOS() {
@@ -560,7 +568,7 @@ function EMPAQUETAR-TODO() {
 #-------------------------------------------------------------#
 
 # Para cada directorio en la carpeta del desarrollador... ejecutar la función EMPAQUETAR
-for directorio in $( ls -A ${DEV_DIR} );do EMPAQUETAR;done
+for directorio in $( ls -F ${DEV_DIR} | grep "/" );do EMPAQUETAR;done
 }
 
 #------ AYUDANTES INFORMATIVOS -----------------------------------------------------------------------------------------#
@@ -600,7 +608,7 @@ function LISTAR-LOCALES() {
 #-------------------------------------------------------------#
 
 # Para cada directorio en la carpeta del desarrollador...
-for directorio in $( ls -A ${DEV_DIR} ); do
+for directorio in $( ls -F ${DEV_DIR} | grep "/" ); do
 # Asegurarse que contiene la ruta completa
 directorio=${DEV_DIR}${directorio#${DEV_DIR}}
 # Obtener su nombre base
@@ -728,6 +736,8 @@ function SET-REPOS() {
 
 # Determinar los datos del proyecto
 DATOS-PROYECTO
+# Si es un proyecto de empaquetamiento válido, entonces ...
+if [ "${PAQUETE}" == "1" ]; then
 # Determinando la dirección SSH para cada servidor remoto posible
 # Por ahora spolo diferenciamos entre gitorious.org y cualquier otro
 case ${REPO} in
@@ -744,6 +754,7 @@ fi
 # Si "origin" no existe, entonces agrega el correcto
 [ $( git remote | grep -wc "origin" ) == 0 ] && git remote add origin ${repo_completo} && ADVERTENCIA "Definiendo \"${repo_completo}\" como repositorio git \"origin\""
 echo "Repositorios establecidos"
+fi
 }
 
 function GIT-DCH() {
@@ -758,6 +769,8 @@ function GIT-DCH() {
 
 # Determinar los datos del proyecto
 DATOS-PROYECTO
+# Si es un proyecto de empaquetamiento válido, entonces ...
+if [ "${PAQUETE}" == "1" ]; then
 # Accedemos al directorio
 cd ${directorio}
 ADVERTENCIA "Registrando cambios en debian/changelog ..."
@@ -785,6 +798,7 @@ ADVERTENCIA "Misma versión ${DESPUES_DCH}"
 fi
 # Nos devolvemos a la carpeta del desarrollador
 cd ${DEV_DIR}
+fi
 }
 
 function MOVER() {
