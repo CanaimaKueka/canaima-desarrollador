@@ -1,3 +1,9 @@
+canaima-desarrollador (1.1+10) testing; urgency=low
+
+  * [1f51d36] Mejorando el esquema de ayuda
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Thu, 17 Feb 2011 21:24:16 -0430
+
 canaima-desarrollador (1.1+9) testing; urgency=low
 
   * [e458a5d] Corrigiendo bugs
