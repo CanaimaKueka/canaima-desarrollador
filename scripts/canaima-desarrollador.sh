@@ -62,6 +62,11 @@ crear-proyecto|debianizar)
 if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 cat "${DIR_AYUDA}/crear-proyecto"
 else
+
+for VERIFICAR in ${PARAMETROS}; do
+[ $( echo ${VERIFICAR} | grep -c "--nombre" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--version" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--destino" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--licencia" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+done
+
 # Guardemos los parámetros en variables para usarlos después
 opcion=${1}
 nombre=${NOMBRE}
@@ -76,6 +81,11 @@ crear-fuente)
 if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 cat "${DIR_AYUDA}/crear-fuente"
 else
+
+for VERIFICAR in ${PARAMETROS}; do
+[ $( echo ${VERIFICAR} | grep -c "--directorio" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+done
+
 # Guardando directorio en variable para utilizarlo después
 directorio=${DIRECTORIO}
 CREAR-FUENTE
@@ -86,6 +96,11 @@ empaquetar)
 if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 cat "${DIR_AYUDA}/empaquetar"
 else
+
+for VERIFICAR in ${PARAMETROS}; do
+[ $( echo ${VERIFICAR} | grep -c "--directorio" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--mensaje" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+done
+
 # Guardamos los parámetros en variables para usarlas después
 directorio=${DIRECTORIO}
 mensaje=${MENSAJE}
@@ -100,6 +115,11 @@ descargar|clonar|clone)
 if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 cat "${DIR_AYUDA}/descargar"
 else
+
+for VERIFICAR in ${PARAMETROS}; do
+[ $( echo ${VERIFICAR} | grep -c "--proyecto" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+done
+
 # Guardemos el segundo argumento en la varible "proyecto"
 proyecto=${PROYECTO}
 # Ejecutemos la función correspondiente
@@ -111,6 +131,11 @@ registrar|commit)
 if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 cat "${DIR_AYUDA}/registrar"
 else
+
+for VERIFICAR in ${PARAMETROS}; do
+[ $( echo ${VERIFICAR} | grep -c "--directorio" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--mensaje" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+done
+
 # Guardemos los parámetros en variables para usarlos después
 directorio=${DIRECTORIO}
 mensaje=${MENSAJE}
@@ -122,6 +147,11 @@ enviar|push)
 if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 cat "${DIR_AYUDA}/enviar"
 else
+
+for VERIFICAR in ${PARAMETROS}; do
+[ $( echo ${VERIFICAR} | grep -c "--directorio" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+done
+
 # Guardando directorio en variable para utilizarlo después
 directorio=${DIRECTORIO}
 ENVIAR
@@ -132,6 +162,11 @@ actualizar|pull)
 if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 cat "${DIR_AYUDA}/actualizar"
 else
+
+for VERIFICAR in ${PARAMETROS}; do
+[ $( echo ${VERIFICAR} | grep -c "--directorio" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+done
+
 # Guardando directorio en variable para utilizarlo después
 directorio=${DIRECTORIO}
 ACTUALIZAR
@@ -145,6 +180,7 @@ descargar-todo|clonar-todo)
 if [ "${2}" == "--ayuda" ] || [ $"{2}" == "--help" ]; then
 cat "${DIR_AYUDA}/descargar-todo"
 else
+[ -n "${2}" ] && ERROR "No conozco la opción '${2}', revisa la documentación." && exit 1
 DESCARGAR-TODO
 fi
 ;;
@@ -153,6 +189,7 @@ registrar-todo|commit-todo)
 if [ "${2}" == "--ayuda" ] || [ $"{2}" == "--help" ]; then
 cat "${DIR_AYUDA}/registrar-todo"
 else
+[ -n "${2}" ] && ERROR "No conozco la opción '${2}', revisa la documentación." && exit 1
 mensaje="auto"
 REGISTRAR-TODO
 fi
@@ -162,6 +199,7 @@ enviar-todo|push-todo)
 if [ "${2}" == "--ayuda" ] || [ $"{2}" == "--help" ]; then
 cat "${DIR_AYUDA}/enviar-todo"
 else
+[ -n "${2}" ] && ERROR "No conozco la opción '${2}', revisa la documentación." && exit 1
 ENVIAR-TODO
 fi
 ;;
@@ -170,6 +208,7 @@ actualizar-todo|pull-todo)
 if [ "${2}" == "--ayuda" ] || [ $"{2}" == "--help" ]; then
 cat "${DIR_AYUDA}/actualizar-todo"
 else
+[ -n "${2}" ] && ERROR "No conozco la opción '${2}', revisa la documentación." && exit 1
 ACTUALIZAR-TODO
 fi
 ;;
@@ -178,6 +217,11 @@ empaquetar-varios)
 if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 cat "${DIR_AYUDA}/empaquetar-varios"
 else
+
+for VERIFICAR in ${PARAMETROS}; do
+[ $( echo ${VERIFICAR} | grep -c "--para-empaquetar" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+done
+
 # Guardamos los parámetros en variables para usarlas después
 para_empaquetar=${PARA_EMPAQUETAR}
 mensaje="auto"
@@ -190,6 +234,11 @@ empaquetar-todo)
 if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
 cat "${DIR_AYUDA}/empaquetar-todo"
 else
+
+for VERIFICAR in ${PARAMETROS}; do
+[ $( echo ${VERIFICAR} | grep -c "--procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+done
+
 mensaje="auto"
 procesadores=${PROCESADORES}
 EMPAQUETAR-TODO
@@ -204,6 +253,7 @@ listar-remotos)
 if [ "${2}" == "--ayuda" ] || [ $"{2}" == "--help" ]; then
 cat "${DIR_AYUDA}/listar-remotos"
 else
+[ -n "${2}" ] && ERROR "No conozco la opción '${2}', revisa la documentación." && exit 1
 LISTAR-REMOTOS
 fi
 ;;
@@ -212,16 +262,19 @@ listar-locales)
 if [ "${2}" == "--ayuda" ] || [ $"{2}" == "--help" ]; then
 cat "${DIR_AYUDA}/listar-locales"
 else
+[ -n "${2}" ] && ERROR "No conozco la opción '${2}', revisa la documentación." && exit 1
 LISTAR-LOCALES
 fi
 ;;
 
 --ayuda|--help|'')
+[ -n "${2}" ] && ERROR "No conozco la opción '${2}', revisa la documentación." && exit 1
 # Imprimiendo la ayuda
 cat "${DIR_AYUDA}/canaima-desarrollador"
 ;;
 
 debug)
+[ -n "${2}" ] && ERROR "No conozco la opción '${2}', revisa la documentación." && exit 1
 LISTA_DATOS="DEV_NAME DEV_MAIL DEV_GPG DEV_DIR DEPOSITO_SOURCES DEPOSITO_LOGS DEPOSITO_DEBS REPO REPO_USER REPO_DIR CONF VARIABLES PLANTILLAS FUNCIONES NAVEGADOR"
 for VARIABLES_CONF in ${LISTA_DATOS}; do
 eval "VARIABLES_CONF_EVAL=\$${VARIABLES_CONF}"
