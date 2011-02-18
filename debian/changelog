@@ -1,3 +1,9 @@
+canaima-desarrollador (1.1+13) testing; urgency=low
+
+  * [98816d5] Corrigiendo bug, agregando ayudante "debug"
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Fri, 18 Feb 2011 00:46:03 -0430
+
 canaima-desarrollador (1.1+12) testing; urgency=low
 
   * [a9678c3] Mejorando ayuda
