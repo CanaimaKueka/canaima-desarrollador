@@ -251,6 +251,7 @@ procesadores=$[ ${procesadores}+1 ]
 cd ${directorio}
 # Hacemos commit de los (posibles) cambios hechos
 REGISTRAR
+if [ "${GIT_NONE}" == "0" ]; then
 # Lo reflejamos en debian/changelog
 [ "${NO_COMMIT}" == "0" ] && GIT-DCH
 # Volvemos a hacer commit
@@ -266,6 +267,7 @@ git-buildpackage ${FIRMAR} -tc --git-tag -j${procesadores}
 MOVER debs
 MOVER logs
 MOVER fuentes
+fi
 # Nos devolvemos a la carpeta del desarrollador
 cd ${DEV_DIR}
 }
@@ -344,18 +346,18 @@ directorio_nombre=$( basename "${directorio}" )
 # No especificaste un mensaje para el commit
 [ -z "${mensaje}" ] && mensaje="auto" && ADVERTENCIA "Mensaje de commit vacío. Autogenerando."
 # El directorio no existe
-[ ! -e "${directorio}" ] && ERROR "El directorio no existe." && exit 1
+[ ! -e "${directorio}" ] && ERROR "El directorio '${directorio}' no existe." && exit 1
 # El directorio no es un directorio
-[ ! -d "${directorio}" ] && ERROR "El directorio no es un directorio." && exit 1
+[ ! -d "${directorio}" ] && ERROR "El directorio '${directorio}' no es un directorio." && exit 1
 # El directorio contiene un proyecto git
 [ -e "${directorio}.git" ] && GIT_NONE=0
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}.git" ] && ERROR "El directorio no contiene un proyecto git." && GIT_NONE=1
+[ ! -e "${directorio}.git" ] && ERROR "El directorio '${directorio}' no contiene un proyecto git." && GIT_NONE=1
 if [ "${GIT_NONE}" == "0" ]; then
 # Ingresar al directorio
 cd ${directorio}
 # Emitir la notificación
-ADVERTENCIA "Haciendo commit en el proyecto ${directorio_nombre} ..."
+ADVERTENCIA "Verificando proyecto ${directorio_nombre} ..."
 # Asegurando que existan las ramas necesarias
 [ $( git branch -l | grep -wc "master" ) == 0 ] && ADVERTENCIA "No existe la rama upstream, creando ..." && git branch master
 [ $( git branch -l | grep -wc "upstream" ) == 0 ] && ADVERTENCIA "No existe la rama upstream, creando ..." && git branch upstream
@@ -409,13 +411,13 @@ directorio_nombre=$( basename "${directorio}" )
 # No especificaste el directorio
 [ -z "${directorio#${DEV_DIR}}" ] && ERROR "Descansa un poco... ¡Se te olvidó poner a cuál proyecto querías hacer push!" && exit 1
 # El directorio no existe
-[ ! -e "${directorio}" ] && ERROR "El directorio no existe." && exit 1
+[ ! -e "${directorio}" ] && ERROR "El directorio '${directorio}' no existe." && exit 1
 # El directorio no es un directorio
-[ ! -d "${directorio}" ] && ERROR "El directorio no es un directorio." && exit 1
+[ ! -d "${directorio}" ] && ERROR "El directorio '${directorio}' no es un directorio." && exit 1
 # El directorio no contiene un proyecto git
 [ -e "${directorio}.git" ] && GIT_NONE=0
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}.git" ] && ERROR "El directorio no contiene un proyecto git." && GIT_NONE=1
+[ ! -e "${directorio}.git" ] && ERROR "El directorio '${directorio}' no contiene un proyecto git." && GIT_NONE=1
 if [ "${GIT_NONE}" == "0" ]; then
 # Accedemos al directorio
 cd ${directorio}
@@ -453,13 +455,13 @@ directorio_nombre=$( basename "${directorio}" )
 # No especificaste el directorio
 [ -z "${directorio#${DEV_DIR}}" ] && ERROR "Descansa un poco... ¡Se te olvidó poner cuál proyecto querías actualizar!" && exit 1
 # El directorio no existe
-[ ! -e "${directorio}" ] && ERROR "El directorio no existe." && exit 1
+[ ! -e "${directorio}" ] && ERROR "El directorio '${directorio}' no existe." && exit 1
 # El directorio no es un directorio
-[ ! -d "${directorio}" ] && ERROR "El directorio no es un directorio." && exit 1
+[ ! -d "${directorio}" ] && ERROR "El directorio '${directorio}' no es un directorio." && exit 1
 # El directorio contiene un proyecto git
 [ -e "${directorio}.git" ] && GIT_NONE=0
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}.git" ] && ERROR "El directorio no contiene un proyecto git." && GIT_NONE=1
+[ ! -e "${directorio}.git" ] && ERROR "El directorio '${directorio}' no contiene un proyecto git." && GIT_NONE=1
 if [ "${GIT_NONE}" == "0" ]; then
 # Accedemos al directorio
 cd ${directorio}
