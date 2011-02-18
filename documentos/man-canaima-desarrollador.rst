@@ -75,27 +75,27 @@ USO
 
 ::
 
-	canaima-desarrollador crear-proyecto|debianizar NOMBRE VERSIÓN DESTINO LICENCIA [--ayuda]
+	canaima-desarrollador crear-proyecto|debianizar --nombre="" --version="" --destino="" --licencia="" [--ayuda]
 
 PARÁMETROS
 ----------
 
-``NOMBRE``
+``--nombre``
 	Un nombre para tu proyecto, que puede contener letras, números, puntos y guiones. Cualquier otro caracter no está permitido.
 
-``VERSIÓN``
+``--version``
 	La versión inicial de tu proyecto. Se permiten números, guiones, puntos, letras o dashes (~).
 
-``DESTINO``
+``--destino``
 	Especifica si es un proyecto de empaquetamiento para Canaima GNU/Linux o si es un proyecto personal. Las opciones disponibles son "canaima" y "personal".
 
-``LICENCIA``
+``--licencia``
 	Especifica el tipo de licencia bajo el cuál distribuirás tu trabajo. Las licencias soportadas son: apache, artistic, bsd, gpl, gpl2, gpl3, lgpl, lgpl2 y lgpl3.
 
 ``--ayuda``
 	Muestra la documentación para el ayudante.
 
-Si estás debianizando un proyecto existente, lo que ingreses en NOMBRE y VERSIÓN se utilizará para determinar cuál es el nombre de la carpeta a debianizar dentro del directorio del desarrollador, suponiendo que tiene el nombre NOMBRE-VERSIÓN. Si no se llama así, habrá un error.
+Si estás debianizando un proyecto existente, lo que ingreses en --nombre="proyecto" y --version="X.Y+Z" se utilizará para determinar cuál es el nombre de la carpeta a debianizar dentro del directorio del desarrollador, suponiendo que tiene el nombre proyecto-X.Y+Z. Si no se llama así, habrá un error.
 
 **CREAR FUENTE**
 ================
@@ -107,12 +107,12 @@ USO
 
 ::
 
-	canaima-desarrollador crear-fuente DIRECTORIO [--ayuda]
+	canaima-desarrollador crear-fuente --directorio="" [--ayuda]
 
 PARÁMETROS
 ----------
 
-``DIRECTORIO``
+``--directorio``
 	Nombre del directorio dentro de la carpeta del desarrollador donde se encuentra el proyecto. El directorio debe contener un proyecto debianizado.
 
 ``--ayuda``
@@ -130,18 +130,18 @@ USO
 
 ::
 
-	canaima-desarrollador empaquetar DIRECTORIO MENSAJE PROCESADORES [--ayuda]
+	canaima-desarrollador empaquetar --directorio="" --mensaje="" --procesadores="" [--ayuda]
 
 PARÁMETROS
 ----------
 
-``DIRECTORIO``
+``--directorio``
 	Nombre de la carpeta dentro del directorio del desarrollador donde se encuentra el proyecto a empaquetar.
 
-``MENSAJE``
+``--mensaje``
 	Mensaje representativo de los cambios para el primer commit. El segundo commit es sólo para el changelog. Colocando la palabra "auto" o dejando el campo vacío, se autogenera el mensaje.
 
-``PROCESADORES``
+``--procesadores``
 	Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.
 
 ``--ayuda``
@@ -160,12 +160,12 @@ USO
 
 ::
 
-	canaima-desarrollador descargar PROYECTO [--ayuda]
+	canaima-desarrollador descargar --proyecto="" [--ayuda]
 
 PARÁMETROS
 ----------
 
-``PROYECTO``
+``--proyecto``
 	Nombre del proyecto (en caso de que éste se encuentre en el repositorio de Canaima GNU/Linux) o la dirección git pública del proyecto.
 
 ``--ayuda``
@@ -188,15 +188,15 @@ USO
 
 ::
 
-	canaima-desarrollador registrar DIRECTORIO MENSAJE [--ayuda]
+	canaima-desarrollador registrar --directorio="" --mensaje=="" [--ayuda]
 
 PARÁMETROS
 ----------
 
-``DIRECTORIO``
+``--directorio``
 	Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer commit.
 
-``MENSAJE``
+``--mensaje``
 	Mensaje representativo de los cambios para el commit. Colocando la palabra "auto" o dejando el campo vacío, se autogenera el mensaje.
 
 ``--ayuda``
@@ -217,12 +217,12 @@ USO
 
 ::
 
-	canaima-desarrollador enviar DIRECTORIO [--ayuda]
+	canaima-desarrollador enviar --directorio="" [--ayuda]
 
 PARÁMETROS
 ----------
 
-``DIRECTORIO``
+``--directorio``
 	Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer push.
 
 ``--ayuda``
@@ -243,12 +243,12 @@ USO
 
 ::
 
-	canaima-desarrollador actualizar DIRECTORIO [--ayuda]
+	canaima-desarrollador actualizar --directorio="" [--ayuda]
 
 PARÁMETROS
 ----------
 
-``DIRECTORIO``
+``--directorio``
 	Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer git pull.
 
 ``--ayuda``
@@ -336,15 +336,15 @@ USO
 
 ::
 
-	canaima-desarrollador empaquetar-varios PARA-EMPAQUETAR PROCESADORES [--ayuda]
+	canaima-desarrollador empaquetar-varios --para-empaquetar="" --procesadores="" [--ayuda]
 
 PARÁMETROS
 ----------
 
-``PARA-EMPAQUETAR``
+``--para-empaquetar``
 	Lista de los directorios dentro de la carpeta del desarrollador que contienen los proyectos que se quieren empaquetar, agrupados entre comillas.
 
-``PROCESADORES``
+``--procesadores``
 	Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.
 
 ``--ayuda``
@@ -360,12 +360,12 @@ USO
 
 ::
 
-	canaima-desarrollador empaquetar-todo PROCESADORES [--ayuda]
+	canaima-desarrollador empaquetar-todo --procesadores="" [--ayuda]
 
 PARÁMETROS
 ----------
 
-``PROCESADORES``
+``--procesadores``
 	Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.
 
 ``--ayuda``

@@ -33,18 +33,19 @@ function CREAR-PROYECTO() {
 [ $( echo "${nombre}" | grep -c "[\?\*\+\.\\\/\%\$\#\@\!\~\=\^\<\>\ ]" ) != 0 ] && ERROR "Caracteres no permitidos en el nombre del paquete. Trata algo con letras, \"-\" y \"_\" solamente." && exit 1
 # Si estamos debianizando, ¿El directorio coincide con el nombre y versión del paquete?
 [ "${opcion}" == "debianizar" ] && [ ! -e "${DEV_DIR}${nombre}-${version}" ] && ERROR "¡Hey! No encuentro ningún directorio llamado \"${nombre}-${version}\" en ${DEV_DIR}" && exit 1
+# Paramos si es un nuevo proyecto y la carpeta ya existe
+[ -e "${DEV_DIR}${nombre}-${version}" ] && [ "${opcion}" == "crear-proyecto" ] && ERROR "Estamos creando un proyecto nuevo, pero la carpeta ${DEV_DIR}${nombre}-${version} ya existe." && exit 1
 # ¿Me dijiste un destino válido?
-[ ${destino} != "canaima" ] && [ ${destino} != "personal" ] && ERROR "Sólo conozco los destinos \"personal\" y \"canaima\". ¿Para quien carrizo es \"${destino}\"?" && exit 1
+[ "${destino}" != "canaima" ] && [ "${destino}" != "personal" ] && ERROR "Sólo conozco los destinos \"personal\" y \"canaima\". ¿Para quien carrizo es \"${destino}\"?" && exit 1
 # La versión está vacía
 [ -z "${version}" ] && version="1.0+0" && ADVERTENCIA "No me dijiste la versión. Asumiendo 1.0+0"
 # El destino está vacío
 [ -z "${destino}" ] && destino="personal" && ADVERTENCIA "No me dijiste si era un proyecto personal o para Canaima GNU/Linux. Asumo que es personal."
 # La licencia está vacía
 [ -z "${licencia}" ] && licencia="gpl3" && ADVERTENCIA "No especificaste la licencia del paquete. Asumiré que es GPL3."
-# Creamos la carpeta si no está crado (nuevo proyecto)
+# Creamos la carpeta si no está creado (nuevo proyecto)
 [ ! -e "${DEV_DIR}${nombre}-${version}" ] && mkdir -p "${DEV_DIR}${nombre}-${version}"
-# Paramos si es un nuevo proyecto y la carpeta ya existe
-[ -e "${DEV_DIR}${nombre}-${version}" ] && [ "${opcion}" == "crear-proyecto" ] && ERROR "Estamos creando un proyecto nuevo, pero la carpeta ${DEV_DIR}${nombre}-${version} ya existe." && exit 1
+
 # Accedemos al directorio
 cd "${DEV_DIR}${nombre}-${version}"
 # Creamos el proyecto mediante dh_make. Lo pasamos a través de un pipe que le pasa una string
@@ -68,7 +69,7 @@ mv ${DEV_DIR}${nombre}-${version}/debian/*.* ${DEV_DIR}${nombre}-${version}/debi
 
 # Si el proyecto es para Canaima GNU/Linux, entonces éstos son los campos a sustituir
 # en debian/control
-if [ ${destino} == "canaima" ]; then
+if [ "${destino}" == "canaima" ]; then
 CONTROL_MAINTAINER="Equipo de Desarrollo de Canaima GNU\/Linux <desarrolladores@canaima.softwarelibre.gob.ve>"
 CONTROL_UPLOADERS="José Miguel Parrella Romero <jparrella@onuva.com>, Carlos David Marrero <cdmarrero2040@gmail.com>, Orlando Andrés Fiol Carballo <ofiol@indesoft.org.ve>, Carlos Alejandro Guerrero Mora <guerrerocarlos@gmail.com>, Diego Alberto Aguilera Zambrano <diegoaguilera85@gmail.com>, Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>, Francisco Javier Vásquez Guerrero <franjvasquezg@gmail.com>"
 CONTROL_STANDARDS="3.9.1"
@@ -76,7 +77,7 @@ CONTROL_HOMEPAGE="http:\/\/canaima.softwarelibre.gob.ve\/"
 CONTROL_VCSGIT="git:\/\/gitorious.org\/canaima-gnu-linux\/${nombre}.git"
 CONTROL_VCSBROWSER="git:\/\/gitorious.org\/canaima-gnu-linux\/${nombre}.git"
 # Si el proyecto es personal, entonces son éstos
-elif [ ${destino} == "personal" ]; then
+elif [ "${destino}" == "personal" ]; then
 CONTROL_MAINTAINER="${DEV_NAME} <${DEV_MAIL}>"
 CONTROL_UPLOADERS="${CONTROL_MAINTAINER}"
 CONTROL_HOMEPAGE="Desconocido"
@@ -189,7 +190,7 @@ DATOS-PROYECTO
 # Determinemos si el directorio ingresado tiene un slash (/) al final
 slash=${directorio#${directorio%?}}
 # Si es así, lo removemos
-[ ${slash} == "/" ] && directorio=${directorio%?}
+[ "${slash}" == "/" ] && directorio=${directorio%?}
 # Ingresamos a la carpeta del desarrollador
 cd ${DEV_DIR}
 # Removemos cualquier carpeta .orig previamente creada
@@ -261,7 +262,7 @@ MOVER fuentes
 cd ${DEV_DIR}
 }
 
-#------ AYUDANTES GIT --------------------------------------------------------------------------------------------#
+#------ AYUDANTES GIT --------------------------------------------------------------------------------------------------#
 #=======================================================================================================================#
 
 function DESCARGAR() {
@@ -289,7 +290,7 @@ git clone ${proyecto}
 [ ! -e "${DEV_DIR}${nombre}" ] && ERROR "Ooops...! Algo falló con ${nombre}"
 # Si el parámetro de descarga no es una dirección, sino el nombre del paquete
 # y el repositorio remoto es gitorious.org ...
-elif [ $( echo ${proyecto} | grep -c "[@:]" ) == 0 ] && [ ${REPO} == "gitorious.org" ]; then
+elif [ $( echo ${proyecto} | grep -c "[@:]" ) == 0 ] && [ "${REPO}" == "gitorious.org" ]; then
 ADVERTENCIA "Verificando existencia de ${proyecto} en ${REPO} ..."
 # Obtenemos el index HTML de gitorious ...
 wget "http://gitorious.org/canaima-gnu-linux" > /dev/null 2>&1
@@ -308,7 +309,7 @@ fi
 # Si el parámetro de descarga no es una dirección, sino el nombre del paquete
 # y el repositorio remoto es diferente de gitorious.org, esa modalidad de descarga
 # no está disponible.
-elif [ $( echo ${proyecto} | grep -c "[@:]" ) == 0 ] && [ ${REPO} != "gitorious.org" ]; then
+elif [ $( echo ${proyecto} | grep -c "[@:]" ) == 0 ] && [ "${REPO}" != "gitorious.org" ]; then
 ERROR "Esa modalidad de descarga no está disponible para ${REPO}"
 fi
 # Nos devolvemos a la carpeta del desarrollador
@@ -659,11 +660,11 @@ ultimo_char_pla=${PLANTILLAS#${PLANTILLAS%?}}
 ultimo_char_sou=${DEPOSITO_SOURCES#${DEPOSITO_SOURCES%?}}
 ultimo_char_deb=${DEPOSITO_DEBS#${DEPOSITO_DEBS%?}}
 ultimo_char_log=${DEPOSITO_LOGS#${DEPOSITO_LOGS%?}}
-[ ${ultimo_char_dev} != "/" ] && DEV_DIR="${DEV_DIR}/"
-[ ${ultimo_char_pla} != "/" ] && PLANTILLAS="${PLANTILLAS}/"
-[ ${ultimo_char_sou} != "/" ] && DEPOSITO_SOURCES="${DEPOSITO_SOURCES}/"
-[ ${ultimo_char_deb} != "/" ] && DEPOSITO_DEBS="${DEPOSITO_DEBS}/"
-[ ${ultimo_char_log} != "/" ] && DEPOSITO_LOGS="${DEPOSITO_LOGS}/"
+[ "${ultimo_char_dev}" != "/" ] && DEV_DIR="${DEV_DIR}/"
+[ "${ultimo_char_pla}" != "/" ] && PLANTILLAS="${PLANTILLAS}/"
+[ "${ultimo_char_sou}" != "/" ] && DEPOSITO_SOURCES="${DEPOSITO_SOURCES}/"
+[ "${ultimo_char_deb}" != "/" ] && DEPOSITO_DEBS="${DEPOSITO_DEBS}/"
+[ "${ultimo_char_log}" != "/" ] && DEPOSITO_LOGS="${DEPOSITO_LOGS}/"
 # Verificando que no hayan carpetas con nombres que contengan espacios
 if [ $( ls ${DEV_DIR} | grep -c " " ) != 0 ]; then
 ERROR "${DEV_DIR} contiene directorios con espacios en su nombre. Abortando."
@@ -773,7 +774,7 @@ export EDITOR=""
 DESPUES_DCH=$( dpkg-parsechangelog | grep "Version: " | awk '{print $2}' )
 
 # Si la versión cambió después de hacer git-dch ...
-if [ ${DESPUES_DCH} != ${ANTES_DCH} ]; then
+if [ "${DESPUES_DCH}" != "${ANTES_DCH}" ]; then
 ADVERTENCIA "Nueva versión ${DESPUES_DCH}"
 # Si git-dch no cambió el directorio de nombre, luego del cambio de versión, hagámoslo por él
 [ $( ls ${DEV_DIR} | grep -wc "${NOMBRE_PROYECTO}-${DESPUES_DCH}" ) == 0  ] && mv $( pwd ) "${DEV_DIR}${NOMBRE_PROYECTO}-${DESPUES_DCH}" && echo "git-dch no puso el nombre correcto al directorio. Lo voy a hacer."
@@ -826,7 +827,7 @@ esac
 }
 
 function ERROR() {
-echo -e ${ROJO}${FIN}
+echo -e ${ROJO}${1}${FIN}
 }
 
 function ADVERTENCIA() {

@@ -50,6 +50,7 @@ install:
 	cp -r scripts plantillas $(DESTDIR)/usr/share/canaima-desarrollador/
 	cp -r conf/variables.conf $(DESTDIR)/usr/share/canaima-desarrollador/
 	cp -r conf/usuario.conf $(DESTDIR)/etc/skel/.config/canaima-desarrollador/
+	rm -rf $(DESTDIR)/usr/share/canaima-desarrollador/scripts/canaima-desarrollador.sh
 
 uninstall:
 
