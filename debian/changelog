@@ -1,3 +1,10 @@
+canaima-desarrollador (1.1+14) testing; urgency=low
+
+  * [b8a9ace] Mejorando manual, removiendo script duplicado, corrigiendo
+    bugs en bash.
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Fri, 18 Feb 2011 01:49:32 -0430
+
 canaima-desarrollador (1.1+13) testing; urgency=low
 
   * [98816d5] Corrigiendo bug, agregando ayudante "debug"
