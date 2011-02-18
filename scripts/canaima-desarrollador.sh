@@ -15,7 +15,7 @@
 # Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los
 # términos de la Licencia Pública General de GNU (versión 3).
 
-VARIABLES="/usr/share/canaima-desarrollador/conf/variables.conf"
+VARIABLES="/usr/share/canaima-desarrollador/variables.conf"
 
 # Inicializando variables
 . ${VARIABLES}
@@ -28,12 +28,12 @@ VARIABLES="/usr/share/canaima-desarrollador/conf/variables.conf"
 
 # Función para chequear que ciertas condiciones se cumplan para el
 # correcto funcionamiento de canaima-desarrollador
-# Ver /usr/share/canaima-desarrollador/funciones-desarrollador.sh
+# Ver /usr/share/canaima-desarrollador/scripts/funciones-desarrollador.sh
 CHECK
 
 # Función para cargar los datos del desarrollador especificados en
 # ${CONF} (nombre, correo, etc.)
-# Ver /usr/share/canaima-desarrollador/funciones-desarrollador.sh
+# Ver /usr/share/canaima-desarrollador/scripts/funciones-desarrollador.sh
 DEV-DATA
 
 
