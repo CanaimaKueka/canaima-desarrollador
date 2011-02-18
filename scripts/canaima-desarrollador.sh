@@ -64,7 +64,7 @@ cat "${DIR_AYUDA}/crear-proyecto"
 else
 
 for VERIFICAR in ${PARAMETROS}; do
-[ $( echo ${VERIFICAR} | grep -c "--nombre" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--version" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--destino" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--licencia" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+[ $( echo ${VERIFICAR} | grep -c "\-\-nombre" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-version" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-destino" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-licencia" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
 done
 
 # Guardemos los parámetros en variables para usarlos después
@@ -83,7 +83,7 @@ cat "${DIR_AYUDA}/crear-fuente"
 else
 
 for VERIFICAR in ${PARAMETROS}; do
-[ $( echo ${VERIFICAR} | grep -c "--directorio" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+[ $( echo ${VERIFICAR} | grep -c "\-\-directorio" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
 done
 
 # Guardando directorio en variable para utilizarlo después
@@ -98,7 +98,7 @@ cat "${DIR_AYUDA}/empaquetar"
 else
 
 for VERIFICAR in ${PARAMETROS}; do
-[ $( echo ${VERIFICAR} | grep -c "--directorio" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--mensaje" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+[ $( echo ${VERIFICAR} | grep -c "\-\-directorio" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-mensaje" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
 done
 
 # Guardamos los parámetros en variables para usarlas después
@@ -117,7 +117,7 @@ cat "${DIR_AYUDA}/descargar"
 else
 
 for VERIFICAR in ${PARAMETROS}; do
-[ $( echo ${VERIFICAR} | grep -c "--proyecto" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+[ $( echo ${VERIFICAR} | grep -c "\-\-proyecto" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
 done
 
 # Guardemos el segundo argumento en la varible "proyecto"
@@ -133,7 +133,7 @@ cat "${DIR_AYUDA}/registrar"
 else
 
 for VERIFICAR in ${PARAMETROS}; do
-[ $( echo ${VERIFICAR} | grep -c "--directorio" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--mensaje" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+[ $( echo ${VERIFICAR} | grep -c "\-\-directorio" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-mensaje" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
 done
 
 # Guardemos los parámetros en variables para usarlos después
@@ -149,7 +149,7 @@ cat "${DIR_AYUDA}/enviar"
 else
 
 for VERIFICAR in ${PARAMETROS}; do
-[ $( echo ${VERIFICAR} | grep -c "--directorio" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+[ $( echo ${VERIFICAR} | grep -c "\-\-directorio" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
 done
 
 # Guardando directorio en variable para utilizarlo después
@@ -164,7 +164,7 @@ cat "${DIR_AYUDA}/actualizar"
 else
 
 for VERIFICAR in ${PARAMETROS}; do
-[ $( echo ${VERIFICAR} | grep -c "--directorio" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+[ $( echo ${VERIFICAR} | grep -c "\-\-directorio" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
 done
 
 # Guardando directorio en variable para utilizarlo después
@@ -219,7 +219,7 @@ cat "${DIR_AYUDA}/empaquetar-varios"
 else
 
 for VERIFICAR in ${PARAMETROS}; do
-[ $( echo ${VERIFICAR} | grep -c "--para-empaquetar" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "--procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+[ $( echo ${VERIFICAR} | grep -c "\-\-para-empaquetar" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
 done
 
 # Guardamos los parámetros en variables para usarlas después
@@ -236,7 +236,7 @@ cat "${DIR_AYUDA}/empaquetar-todo"
 else
 
 for VERIFICAR in ${PARAMETROS}; do
-[ $( echo ${VERIFICAR} | grep -c "--procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+[ $( echo ${VERIFICAR} | grep -c "\-\-procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
 done
 
 mensaje="auto"
