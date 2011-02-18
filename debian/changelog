@@ -1,3 +1,9 @@
+canaima-desarrollador (1.1+12) testing; urgency=low
+
+  * [a9678c3] Mejorando ayuda
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Thu, 17 Feb 2011 23:53:39 -0430
+
 canaima-desarrollador (1.1+11) testing; urgency=low
 
   * [c89b739] Corrigiendo bug en la variable VARIABLES
