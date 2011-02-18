@@ -15,15 +15,16 @@ Parámetros:
   --version
 	La versión inicial de tu proyecto. Se permiten números, guiones, puntos, letras o dashes (~).
 
-  --destino			[canaima|personal]
-	Especifica si es un proyecto de empaquetamiento para Canaima GNU/Linux o si es un proyecto personal.
+  --destino	
+	Especifica si es un proyecto de empaquetamiento para Canaima GNU/Linux o si es un proyecto personal. Las opciones disponibles son: [canaima|personal].
 
-  --licencia		[apache|artistic|bsd|gpl|gpl2|gpl3|lgpl|lgpl2|lgpl3]
-	Especifica el tipo de licencia bajo el cuál distribuirás tu	trabajo.
+  --licencia
+	Especifica el tipo de licencia bajo el cuál distribuirás tu trabajo. Las opciones disponibles son: [apache|artistic|bsd|gpl|gpl2|gpl3|lgpl|lgpl2|lgpl3].
 			
-  --ayuda			Muestra ésta ayuda.
+  --ayuda
+	Muestra ésta ayuda.
   
-Si estás debianizando un proyecto existente, lo que ingreses en --nombre="proyecto" y --version="X.Y+Z" se utilizará para determinar cuál es el nombre de la carpeta a debianizar dentro del directorio del desarrollador, suponiendo que tiene el nombre --nombre="proyecto"---version="X.Y+Z". Si no se llama así, habrá un error.
+Si estás debianizando un proyecto existente, lo que ingreses en --nombre="proyecto" y --version="X.Y+Z" se utilizará para determinar cuál es el nombre de la carpeta a debianizar dentro del directorio del desarrollador, suponiendo que tiene el nombre "proyecto-X.Y+Z". Si no se llama así, habrá un error.
 
 Para mayor información, puedes recurrir a la entrada del manual para canaima-desarrollador (man canaima-desarrollador).
 

@@ -32,7 +32,7 @@ function CREAR-PROYECTO() {
 # El nombre del proyecto contiene un carácter inválido 
 [ $( echo "${nombre}" | grep -c "[\?\*\+\.\\\/\%\$\#\@\!\~\=\^\<\>\ ]" ) != 0 ] && ERROR "Caracteres no permitidos en el nombre del paquete. Trata algo con letras, \"-\" y \"_\" solamente." && exit 1
 # Si estamos debianizando, ¿El directorio coincide con el nombre y versión del paquete?
-[ ${opcion} == "debianizar" ] && [ ! -e "${DEV_DIR}${nombre}-${version}" ] && ERROR "¡Hey! No encuentro ningún directorio llamado \"${nombre}-${version}\" en ${DEV_DIR}" && exit 1
+[ "${opcion}" == "debianizar" ] && [ ! -e "${DEV_DIR}${nombre}-${version}" ] && ERROR "¡Hey! No encuentro ningún directorio llamado \"${nombre}-${version}\" en ${DEV_DIR}" && exit 1
 # ¿Me dijiste un destino válido?
 [ ${destino} != "canaima" ] && [ ${destino} != "personal" ] && ERROR "Sólo conozco los destinos \"personal\" y \"canaima\". ¿Para quien carrizo es \"${destino}\"?" && exit 1
 # La versión está vacía
@@ -44,7 +44,7 @@ function CREAR-PROYECTO() {
 # Creamos la carpeta si no está crado (nuevo proyecto)
 [ ! -e "${DEV_DIR}${nombre}-${version}" ] && mkdir -p "${DEV_DIR}${nombre}-${version}"
 # Paramos si es un nuevo proyecto y la carpeta ya existe
-[ -e "${DEV_DIR}${nombre}-${version}" ] && [ ${opcion} == "crear-proyecto" ] && ERROR "Estamos creando un proyecto nuevo, pero la carpeta ${DEV_DIR}${nombre}-${version} ya existe." && exit 1
+[ -e "${DEV_DIR}${nombre}-${version}" ] && [ "${opcion}" == "crear-proyecto" ] && ERROR "Estamos creando un proyecto nuevo, pero la carpeta ${DEV_DIR}${nombre}-${version} ya existe." && exit 1
 # Accedemos al directorio
 cd "${DEV_DIR}${nombre}-${version}"
 # Creamos el proyecto mediante dh_make. Lo pasamos a través de un pipe que le pasa una string
@@ -159,9 +159,9 @@ git commit -a -m "Versión inicial de ${nombre}-${version} para Canaima GNU/Linu
 fi
 # Enviamos la notificación apropiada, dependiendo del target
 # "crear-proyecto" o "debianizar"
-if [ ${opcion} == "crear-proyecto" ]; then
+if [ "${opcion}" == "crear-proyecto" ]; then
 EXITO "¡Proyecto ${nombre} creado!"
-elif [ ${opcion} == "debianizar" ]; then
+elif [ "${opcion}" == "debianizar" ]; then
 EXITO "¡Proyecto ${nombre} debianizado correctamente!"
 fi
 ADVERTENCIA "Lee los comentarios en los archivos creados para mayor información"
