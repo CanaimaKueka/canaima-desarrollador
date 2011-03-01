@@ -213,22 +213,23 @@ ACTUALIZAR-TODO
 fi
 ;;
 
-empaquetar-varios)
-if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
-cat "${DIR_AYUDA}/empaquetar-varios"
-else
+# POR HACER
+#empaquetar-varios)
+#if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
+#cat "${DIR_AYUDA}/empaquetar-varios"
+#else
 
-for VERIFICAR in ${PARAMETROS}; do
-[ $( echo ${VERIFICAR} | grep -c "\-\-para-empaquetar" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
-done
+#for VERIFICAR in ${PARAMETROS}; do
+#[ $( echo ${VERIFICAR} | grep -c "\-\-para-empaquetar" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+#done
 
 # Guardamos los parámetros en variables para usarlas después
-para_empaquetar=${PARA_EMPAQUETAR}
-mensaje="auto"
-procesadores=${PROCESADORES}
-EMPAQUETAR-VARIOS
-fi
-;;
+#para_empaquetar=${PARA_EMPAQUETAR}
+#mensaje="auto"
+#procesadores=${PROCESADORES}
+#EMPAQUETAR-VARIOS
+#fi
+#;;
 
 empaquetar-todo)
 if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
