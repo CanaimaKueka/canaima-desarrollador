@@ -1,3 +1,10 @@
+canaima-desarrollador (1.1+22) testing; urgency=low
+
+  * [49f236d] Especificando mensaje de Nueva versión cuando se hace el
+    commit de sólo debian/changelog
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Mon, 14 Mar 2011 13:51:22 -0430
+
 canaima-desarrollador (1.1+21) testing; urgency=low
 
   * [381f83c] Corrigiendo bug con la ejecución de los parámetros de
