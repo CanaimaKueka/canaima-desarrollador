@@ -47,10 +47,10 @@ install:
 	cp -r scripts/canaima-desarrollador.sh $(DESTDIR)/usr/bin/canaima-desarrollador
 	ln -s /usr/bin/canaima-desarrollador $(DESTDIR)/usr/bin/c-d
 	cp -r scripts/manual-desarrollador.sh $(DESTDIR)/usr/bin/manual-desarrollador
-	cp -r scripts plantillas $(DESTDIR)/usr/share/canaima-desarrollador/
+	cp -r plantillas $(DESTDIR)/usr/share/canaima-desarrollador/
+        cp -r scripts/funciones-desarrollador.sh $(DESTDIR)/usr/share/canaima-desarrollador/
 	cp -r conf/variables.conf $(DESTDIR)/usr/share/canaima-desarrollador/
 	cp -r conf/usuario.conf $(DESTDIR)/etc/skel/.config/canaima-desarrollador/
-	rm -rf $(DESTDIR)/usr/share/canaima-desarrollador/scripts/canaima-desarrollador.sh
 
 uninstall:
 

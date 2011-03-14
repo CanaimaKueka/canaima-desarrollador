@@ -807,6 +807,11 @@ DESPUES_DCH=$( dpkg-parsechangelog | grep "Version: " | awk '{print $2}' )
 
 # Si la versión cambió después de hacer git-dch ...
 if [ "${DESPUES_DCH}" != "${ANTES_DCH}" ]; then
+directorio="${DEV_DIR}${NOMBRE_PROYECTO}-${DESPUES_DCH}"
+# Asegurarse que contiene la ruta completa
+directorio=${DEV_DIR}${directorio#${DEV_DIR}}
+# Obtener su nombre base
+directorio_nombre=$( basename "${directorio}" )
 ADVERTENCIA "Nueva versión ${DESPUES_DCH}"
 # Si git-dch no cambió el directorio de nombre, luego del cambio de versión, hagámoslo por él
 [ $( ls ${DEV_DIR} | grep -wc "${NOMBRE_PROYECTO}-${DESPUES_DCH}" ) == 0  ] && mv $( pwd ) "${DEV_DIR}${NOMBRE_PROYECTO}-${DESPUES_DCH}" && echo "git-dch no puso el nombre correcto al directorio. Lo voy a hacer."
