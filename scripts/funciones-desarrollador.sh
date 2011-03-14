@@ -384,14 +384,14 @@ archivos_modificados=$( basename ${archivos_modificados} )
 commit_message=${commit_message}"${archivos_modificados} "
 done
 # Ejecutar el commit
-if [ $( git status --porcelain | grep -c " M debian/changelog" ) == 1 ] && [ $( git status --porcelain | wc -l ) == 1 ]; then
+if [ $( git status --porcelain | grep -c "debian/changelog" ) == 1 ] && [ $( git status --porcelain | wc -l ) == 1 ]; then
 git commit -a -q -m "Nueva versión" && EXITO "¡Nueva versión!"
 else
 git commit -a -q -m "[ canaima-desarrollador ] Los siguientes archivos han sido modificados/añadidos: ${commit_message}" && EXITO "¡Commit!"
 fi
 else
 # Si un mensaje ha sido especificado, ejecutar el commit con ese mensaje
-if [ $( git status --porcelain | grep -c " M debian/changelog" ) == 1 ] && [ $( git status --porcelain | wc -l ) == 1 ]; then
+if [ $( git status --porcelain | grep -c "debian/changelog" ) == 1 ] && [ $( git status --porcelain | wc -l ) == 1 ]; then
 git commit -a -q -m "Nueva versión" && EXITO "¡Nueva versión!"
 else
 git commit -a -q -m "${mensaje}" && EXITO "¡Commit!"
