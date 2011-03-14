@@ -1,3 +1,11 @@
+canaima-desarrollador (1.1+20) testing; urgency=low
+
+  * [01baf16] Corrigiendo bugs
+  * [b0df91a] Corrigiendo bug que separa el mensaje se commit por sus
+    espacios.
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Mon, 14 Mar 2011 12:30:45 -0430
+
 canaima-desarrollador (1.1+19) testing; urgency=low
 
   * [e01ce43] Corrigiendo bug
