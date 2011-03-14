@@ -112,9 +112,10 @@ cat "${DIR_AYUDA}/empaquetar"
 else
 
 for VERIFICAR in ${PARAMETROS}; do
-[ $( echo ${VERIFICAR} | grep -c "\-\-directorio" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-mensaje" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+[ $( echo ${VERIFICAR} | grep -c "\-\-directorio" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-mensaje" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-procesadores" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-no-enviar" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
 done
 
+[ $( echo ${PARAMETROS} | grep -c "\-\-no-enviar" ) == 1 ] && NO_ENVIAR=1
 # Guardamos los parámetros en variables para usarlas después
 directorio=${DIRECTORIO}
 mensaje=${MENSAJE}
@@ -233,9 +234,10 @@ cat "${DIR_AYUDA}/empaquetar-varios"
 else
 
 for VERIFICAR in ${PARAMETROS}; do
-[ $( echo ${VERIFICAR} | grep -c "\-\-para-empaquetar" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+[ $( echo ${VERIFICAR} | grep -c "\-\-para-empaquetar" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-procesadores" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-no-enviar" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
 done
 
+[ $( echo ${PARAMETROS} | grep -c "\-\-no-enviar" ) == 1 ] && NO_ENVIAR=1
 # Guardamos los parámetros en variables para usarlas después
 para_empaquetar=${PARA_EMPAQUETAR}
 mensaje="auto"
@@ -250,9 +252,10 @@ cat "${DIR_AYUDA}/empaquetar-todo"
 else
 
 for VERIFICAR in ${PARAMETROS}; do
-[ $( echo ${VERIFICAR} | grep -c "\-\-procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+[ $( echo ${VERIFICAR} | grep -c "\-\-procesadores" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-no-enviar" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
 done
 
+[ $( echo ${PARAMETROS} | grep -c "\-\-no-enviar" ) == 1 ] && NO_ENVIAR=1
 mensaje="auto"
 procesadores=${PROCESADORES}
 EMPAQUETAR-TODO

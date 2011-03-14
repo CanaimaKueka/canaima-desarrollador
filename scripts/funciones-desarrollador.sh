@@ -272,8 +272,6 @@ if [ "${GIT_NONE}" == "0" ]; then
 [ "${NO_COMMIT}" == "0" ] && REGISTRAR
 # Creamos el paquete fuente (formato 1.0)
 CREAR-FUENTE no-mover
-# Hacemos push
-ENVIAR
 cd ${directorio}
 # Empaquetamos
 git-buildpackage ${FIRMAR} -tc --git-tag -j${procesadores}
@@ -281,6 +279,8 @@ git-buildpackage ${FIRMAR} -tc --git-tag -j${procesadores}
 MOVER debs
 MOVER logs
 MOVER fuentes
+# Hacemos push
+[ "${NO_ENVIAR}" != 1 ] && ENVIAR
 fi
 # Nos devolvemos a la carpeta del desarrollador
 cd ${DEV_DIR}
