@@ -231,7 +231,11 @@ function EMPAQUETAR() {
 #	- git-buildpackage
 #-------------------------------------------------------------#
 
-[ -z ${DEV_GPG} ] && FIRMAR="-us -uc"
+if [ -z ${DEV_GPG} ]; then
+	FIRMAR="-us -uc"
+else
+	FIRMAR="-k${DEV_GPG}"
+fi
 
 # Garanticemos que el directorio siempre tiene escrita la ruta completa
 directorio=${DEV_DIR}${directorio#${DEV_DIR}}
@@ -249,6 +253,11 @@ directorio_nombre=$( basename "${directorio}" )
 [ ! -e "${directorio}" ] && ERROR "¡EPA! La carpeta \"${directorio}\" no existe en el directorio del desarrollador (${DEV_DIR})." && exit 1
 # El directorio no es un directorio
 [ ! -d "${directorio}" ] && ERROR "¡\"${directorio}\" no es un directorio!" && exit 1
+
+# Movemos todo a sus depósitos
+MOVER debs
+MOVER logs
+MOVER fuentes
 
 # Cálculo de los threads (n+1)
 procesadores=$[ ${procesadores}+1 ]
