@@ -38,18 +38,32 @@ DEV-DATA
 
 # Capturamos los parámetros 
 PARAMETROS=${@}
-# Eliminamos el ayudante
+
+# Si hay parámetros, y no existen parámetros de ayuda ...
+if [ -n "${PARAMETROS}" ] && [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) == 0 ] && [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) == 0 ]; then
+
+# Removemos el ayudante
 PARAMETROS=${PARAMETROS#${1}}
+
+# Damos formato a los parámetros para que sean seleccionados correctamente por el ciclo for
+PARAMETROS=$( echo ${PARAMETROS} | sed 's/=/="/g' )
+PARAMETROS=$( echo ${PARAMETROS} | sed 's/ --/"#####--/g' )
+PARAMETROS=$( echo ${PARAMETROS} | sed 's/ /_____/g' )
+PARAMETROS=$( echo ${PARAMETROS} | sed 's/#####/ /g' )
+PARAMETROS="${PARAMETROS}\""
 
 # Parseamos cada parámetro y lo convertimos en variable
 for ARGUMENTO in ${PARAMETROS}; do
 ARG_VARIABLE=${ARGUMENTO#--}
 ARG_VARIABLE=${ARG_VARIABLE%=*}
 ARG_VALOR=${ARGUMENTO#--${ARG_VARIABLE}=}
+ARG_VALOR=$( echo ${ARG_VALOR} | sed 's/_____/ /g' )
 ARG_VARIABLE=$( echo ${ARG_VARIABLE} | tr '[:lower:]' '[:upper:]' )
 ARG_VARIABLE=$( echo ${ARG_VARIABLE} | tr '-' '_' )
 eval "${ARG_VARIABLE}=${ARG_VALOR}"
 done
+
+fi
 
 # Case encargado de interpretar los parámetros introducidos a
 # canaima-desarrollador y ejecutar la función correspondiente
@@ -59,7 +73,7 @@ case ${1} in
 #=================================================================================================================#
 
 crear-proyecto|debianizar)
-if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
+if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/crear-proyecto"
 else
 
@@ -78,7 +92,7 @@ fi
 ;;
 
 crear-fuente)
-if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
+if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/crear-fuente"
 else
 
@@ -93,7 +107,7 @@ fi
 ;;
 
 empaquetar)
-if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
+if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/empaquetar"
 else
 
@@ -112,7 +126,7 @@ fi
 #------ AYUDANTES GIT --------------------------------------------------------------------------------------------#
 #=================================================================================================================#
 descargar|clonar|clone)
-if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
+if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/descargar"
 else
 
@@ -128,7 +142,7 @@ fi
 ;;
 
 registrar|commit)
-if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
+if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/registrar"
 else
 
@@ -144,7 +158,7 @@ fi
 ;;
 
 enviar|push)
-if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
+if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/enviar"
 else
 
@@ -159,7 +173,7 @@ fi
 ;;
 
 actualizar|pull)
-if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
+if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/actualizar"
 else
 
@@ -213,26 +227,25 @@ ACTUALIZAR-TODO
 fi
 ;;
 
-# POR HACER
-#empaquetar-varios)
-#if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
-#cat "${DIR_AYUDA}/empaquetar-varios"
-#else
+empaquetar-varios)
+if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
+cat "${DIR_AYUDA}/empaquetar-varios"
+else
 
-#for VERIFICAR in ${PARAMETROS}; do
-#[ $( echo ${VERIFICAR} | grep -c "\-\-para-empaquetar" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
-#done
+for VERIFICAR in ${PARAMETROS}; do
+[ $( echo ${VERIFICAR} | grep -c "\-\-para-empaquetar" ) == 0 ] && [ $( echo ${VERIFICAR} | grep -c "\-\-procesadores" ) == 0 ] && ERROR "No conozco la opción '${VERIFICAR}', revisa la documentación." && exit 1
+done
 
 # Guardamos los parámetros en variables para usarlas después
-#para_empaquetar=${PARA_EMPAQUETAR}
-#mensaje="auto"
-#procesadores=${PROCESADORES}
-#EMPAQUETAR-VARIOS
-#fi
-#;;
+para_empaquetar=${PARA_EMPAQUETAR}
+mensaje="auto"
+procesadores=${PROCESADORES}
+EMPAQUETAR-VARIOS
+fi
+;;
 
 empaquetar-todo)
-if [ "${2}" == "--ayuda" ] || [ "${2}" == "--help" ] || [ -z "${2}" ]; then
+if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/empaquetar-todo"
 else
 

@@ -245,6 +245,11 @@ directorio_nombre=$( basename "${directorio}" )
 [ -z "${mensaje}" ] && mensaje="auto" && ADVERTENCIA "Mensaje de commit vacío. Autogenerando."
 # No especificaste número de procesadores
 [ -z "${procesadores}" ] && procesadores=0 && ADVERTENCIA "No me dijiste si tenías más de un procesador. Asumiendo uno sólo."
+# El directorio no existe
+[ ! -e "${directorio}" ] && ERROR "¡EPA! La carpeta \"${directorio}\" no existe en el directorio del desarrollador (${DEV_DIR})." && exit 1
+# El directorio no es un directorio
+[ ! -d "${directorio}" ] && ERROR "¡\"${directorio}\" no es un directorio!" && exit 1
+
 # Cálculo de los threads (n+1)
 procesadores=$[ ${procesadores}+1 ]
 # Accedemos al directorio
@@ -346,13 +351,13 @@ directorio_nombre=$( basename "${directorio}" )
 # No especificaste un mensaje para el commit
 [ -z "${mensaje}" ] && mensaje="auto" && ADVERTENCIA "Mensaje de commit vacío. Autogenerando."
 # El directorio no existe
-[ ! -e "${directorio}" ] && ERROR "El directorio '${directorio}' no existe." && exit 1
+[ ! -e "${directorio}" ] && ERROR "¡EPA! La carpeta \"${directorio}\" no existe en el directorio del desarrollador (${DEV_DIR})." && exit 1
 # El directorio no es un directorio
-[ ! -d "${directorio}" ] && ERROR "El directorio '${directorio}' no es un directorio." && exit 1
+[ ! -d "${directorio}" ] && ERROR "¡\"${directorio}\" no es un directorio!" && exit 1
 # El directorio contiene un proyecto git
-[ -e "${directorio}.git" ] && GIT_NONE=0
+[ -e "${directorio}/.git" ] && GIT_NONE=0
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}.git" ] && ERROR "El directorio '${directorio}' no contiene un proyecto git." && GIT_NONE=1
+[ ! -e "${directorio}/.git" ] && ERROR "El directorio '${directorio}' no contiene un proyecto git." && GIT_NONE=1
 if [ "${GIT_NONE}" == "0" ]; then
 # Ingresar al directorio
 cd ${directorio}
@@ -411,13 +416,13 @@ directorio_nombre=$( basename "${directorio}" )
 # No especificaste el directorio
 [ -z "${directorio#${DEV_DIR}}" ] && ERROR "Descansa un poco... ¡Se te olvidó poner a cuál proyecto querías hacer push!" && exit 1
 # El directorio no existe
-[ ! -e "${directorio}" ] && ERROR "El directorio '${directorio}' no existe." && exit 1
+[ ! -e "${directorio}" ] && ERROR "¡EPA! La carpeta \"${directorio}\" no existe en el directorio del desarrollador (${DEV_DIR})." && exit 1
 # El directorio no es un directorio
-[ ! -d "${directorio}" ] && ERROR "El directorio '${directorio}' no es un directorio." && exit 1
+[ ! -d "${directorio}" ] && ERROR "¡\"${directorio}\" no es un directorio!" && exit 1
 # El directorio no contiene un proyecto git
-[ -e "${directorio}.git" ] && GIT_NONE=0
+[ -e "${directorio}/.git" ] && GIT_NONE=0
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}.git" ] && ERROR "El directorio '${directorio}' no contiene un proyecto git." && GIT_NONE=1
+[ ! -e "${directorio}/.git" ] && ERROR "El directorio '${directorio}' no contiene un proyecto git." && GIT_NONE=1
 if [ "${GIT_NONE}" == "0" ]; then
 # Accedemos al directorio
 cd ${directorio}
@@ -455,13 +460,13 @@ directorio_nombre=$( basename "${directorio}" )
 # No especificaste el directorio
 [ -z "${directorio#${DEV_DIR}}" ] && ERROR "Descansa un poco... ¡Se te olvidó poner cuál proyecto querías actualizar!" && exit 1
 # El directorio no existe
-[ ! -e "${directorio}" ] && ERROR "El directorio '${directorio}' no existe." && exit 1
+[ ! -e "${directorio}" ] && ERROR "¡EPA! La carpeta \"${directorio}\" no existe en el directorio del desarrollador (${DEV_DIR})." && exit 1
 # El directorio no es un directorio
-[ ! -d "${directorio}" ] && ERROR "El directorio '${directorio}' no es un directorio." && exit 1
+[ ! -d "${directorio}" ] && ERROR "¡\"${directorio}\" no es un directorio!" && exit 1
 # El directorio contiene un proyecto git
-[ -e "${directorio}.git" ] && GIT_NONE=0
+[ -e "${directorio}/.git" ] && GIT_NONE=0
 # El directorio no contiene un proyecto git
-[ ! -e "${directorio}.git" ] && ERROR "El directorio '${directorio}' no contiene un proyecto git." && GIT_NONE=1
+[ ! -e "${directorio}/.git" ] && ERROR "El directorio '${directorio}' no contiene un proyecto git." && GIT_NONE=1
 if [ "${GIT_NONE}" == "0" ]; then
 # Accedemos al directorio
 cd ${directorio}
