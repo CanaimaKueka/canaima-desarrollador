@@ -50,7 +50,7 @@ PARAMETROS=$( echo ${PARAMETROS} | sed 's/=/="/g' )
 PARAMETROS=$( echo ${PARAMETROS} | sed 's/ --/"#####--/g' )
 PARAMETROS=$( echo ${PARAMETROS} | sed 's/ /_____/g' )
 PARAMETROS=$( echo ${PARAMETROS} | sed 's/#####/ /g' )
-PARAMETROS="${PARAMETROS}\""
+[ -n "${PARAMETROS}" ] && PARAMETROS="${PARAMETROS}\""
 
 # Parseamos cada parámetro y lo convertimos en variable
 for ARGUMENTO in ${PARAMETROS}; do
@@ -73,7 +73,7 @@ case ${1} in
 #=================================================================================================================#
 
 crear-proyecto|debianizar)
-if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
+if [ -z "${PARAMETROS}" ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/crear-proyecto"
 else
 
@@ -92,7 +92,7 @@ fi
 ;;
 
 crear-fuente)
-if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
+if [ -z "${PARAMETROS}" ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/crear-fuente"
 else
 
@@ -107,7 +107,7 @@ fi
 ;;
 
 empaquetar)
-if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
+if [ -z "${PARAMETROS}" ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/empaquetar"
 else
 
@@ -126,7 +126,7 @@ fi
 #------ AYUDANTES GIT --------------------------------------------------------------------------------------------#
 #=================================================================================================================#
 descargar|clonar|clone)
-if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
+if [ -z "${PARAMETROS}" ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/descargar"
 else
 
@@ -142,7 +142,7 @@ fi
 ;;
 
 registrar|commit)
-if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
+if [ -z "${PARAMETROS}" ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/registrar"
 else
 
@@ -158,7 +158,7 @@ fi
 ;;
 
 enviar|push)
-if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
+if [ -z "${PARAMETROS}" ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/enviar"
 else
 
@@ -173,7 +173,7 @@ fi
 ;;
 
 actualizar|pull)
-if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
+if [ -z "${PARAMETROS}" ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/actualizar"
 else
 
@@ -228,7 +228,7 @@ fi
 ;;
 
 empaquetar-varios)
-if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
+if [ -z "${PARAMETROS}" ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/empaquetar-varios"
 else
 
@@ -245,7 +245,7 @@ fi
 ;;
 
 empaquetar-todo)
-if [ -z ${PARAMETROS} ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
+if [ -z "${PARAMETROS}" ] || [ $( echo ${PARAMETROS} | grep -c "\-\-ayuda" ) != 0 ] || [ $( echo ${PARAMETROS} | grep -c "\-\-help" ) != 0 ]; then
 cat "${DIR_AYUDA}/empaquetar-todo"
 else
 
