@@ -2,8 +2,9 @@ canaima-desarrollador (1.1+23) testing; urgency=low
 
   * [da36c13] Removiendo residuos y haciendo más específica la forma en
     que se determina que sólo se modificó el debian/changelog
+  * [b954ce8] Mejorando la forma en que se envían las tags
 
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Mon, 14 Mar 2011 14:09:20 -0430
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Mon, 14 Mar 2011 14:32:59 -0430
 
 canaima-desarrollador (1.1+22) testing; urgency=low
 
