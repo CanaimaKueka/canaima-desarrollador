@@ -1,3 +1,10 @@
+canaima-desarrollador (1.1+25) testing; urgency=low
+
+  * [37c0134] Mejorando Makefile y corrigiendo bug del cambio de
+    directorio mientras se empaqueta
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Mon, 14 Mar 2011 15:48:59 -0430
+
 canaima-desarrollador (1.1+24) testing; urgency=low
 
   * [06befe6] Mejorando documentación de ayuda
