@@ -13,7 +13,7 @@ Uso:
 
 Parámetros:
 
-  --proyecto		[nombre|dirección]
+  --proyecto
 	Nombre del proyecto (en caso de que éste se encuentre en el repositorio de Canaima GNU/Linux) o la dirección git pública del proyecto.
 
   --ayuda

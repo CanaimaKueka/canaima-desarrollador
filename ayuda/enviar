@@ -6,8 +6,8 @@ Documentación para el Ayudante "enviar" de Canaima Desarrollador
 
   - Verifica la existencia de la rama git "upstream". En caso de no encontrarla, la crea.
   - Verifica la existencia de la rama git "master". En caso de no encontrarla, la crea.
-  - Verifica la existencia de todos los elementos necesarios para ejecutar la acción git push (carpetas, variables de entorno, etc..). En caso de encontrar algún error, aborta e informa.
-  - Configura el repositorio remoto para el proyecto, de acuerdo a los parámetros establecidos en $HOME/.config/canaima-desarrollador/usuario.conf
+  - Verifica la existencia de todos los elementos necesarios para ejecutar la acción git push (carpetas, variables de entorno, entre otros). En caso de encontrar algún error, aborta e informa.
+  - Configura el repositorio remoto para el proyecto, de acuerdo a los parámetros establecidos en ~/.config/canaima-desarrollador/usuario.conf
     
 Uso:
 

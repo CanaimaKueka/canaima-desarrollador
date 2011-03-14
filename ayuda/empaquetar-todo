@@ -9,7 +9,7 @@ Uso:
 
 Parámetros:
 
-  --procesadores		[1-N]
+  --procesadores
 	Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.
 
   --ayuda

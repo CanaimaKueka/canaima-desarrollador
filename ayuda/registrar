@@ -21,8 +21,8 @@ Parámetros:
   --directorio
 	Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer commit.
 
-  --mensaje		[auto|''|*]
-	Mensaje representativo de los cambios para el commit. Colocando la palabra "auto" o dejando el campo vacío,	se autogenera el mensaje.
+  --mensaje
+	Mensaje representativo de los cambios para el commit. Colocando la palabra "auto" o dejando el campo vacío, se autogenera el mensaje.
 
   --ayuda
 	Muestra ésta ayuda.

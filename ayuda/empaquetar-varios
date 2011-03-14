@@ -12,7 +12,7 @@ Parámetros:
   --para-empaquetar
 	Lista de los directorios dentro de la carpeta del desarrollador que contienen los proyectos que se quieren empaquetar, agrupados entre comillas.
 
-  --procesadores	[1-N]
+  --procesadores
 	Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.
 
   --ayuda
