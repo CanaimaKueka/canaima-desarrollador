@@ -442,10 +442,7 @@ SET-REPOS
 [ $( git branch -l | grep -wc "upstream" ) == 0 ] && ERROR "Al proyecto le falta la rama upstream, creando ..." && git branch upstream
 [ $( git branch -l | grep -wc "master" ) == 0 ] && ERROR "Al proyecto le falta la rama master, creando ..." && git branch master
 # Hacemos push
-[ $( git branch -l | grep -wc "master" ) == 1 ] && git push origin master upstream
-# Y enviamos las tags
-ADVERTENCIA  "Enviando tags ..."
-[ $( git branch -l | grep -wc master ) == 1 ] && git push --tags
+[ $( git branch -l | grep -wc "master" ) == 1 ] && git push origin master upstream --tags && EXITO "¡Proyecto enviado!"
 # Volvemos a la carpeta del desarrollador
 cd ${DEV_DIR}
 fi
