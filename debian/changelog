@@ -3,8 +3,9 @@ canaima-desarrollador (1.1+25) testing; urgency=low
   * [37c0134] Mejorando Makefile y corrigiendo bug del cambio de
     directorio mientras se empaqueta
   * [122451d] Corrigiendo error en el Makefile.
+  * [6a59e1f] Borrando residuo de compilación.
 
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Mon, 14 Mar 2011 15:54:03 -0430
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Mon, 14 Mar 2011 15:56:17 -0430
 
 canaima-desarrollador (1.1+24) testing; urgency=low
 
