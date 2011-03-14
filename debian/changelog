@@ -1,3 +1,10 @@
+canaima-desarrollador (1.1+21) testing; urgency=low
+
+  * [381f83c] Corrigiendo bug con la ejecución de los parámetros de
+    ayuda.
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Mon, 14 Mar 2011 13:16:56 -0430
+
 canaima-desarrollador (1.1+20) testing; urgency=low
 
   * [01baf16] Corrigiendo bugs
