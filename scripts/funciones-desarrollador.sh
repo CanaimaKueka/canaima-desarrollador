@@ -203,13 +203,13 @@ cd ${DEV_DIR}
 # Removemos cualquier carpeta .orig previamente creada
 rm -rf "${directorio}.orig"
 # Creamos un nuevo directorio .orig
-cp -r ${directorio} "${directorio}.orig"
 ADVERTENCIA "Creando paquete fuente ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz"
+cp -r ${directorio} "${directorio}.orig"
 # Creamos el paquete fuente
 dpkg-source --format="1.0" -i.git/ -I.git -b ${directorio}
 # Movamos las fuentes que estén en la carpeta del desarrollador a su
 # lugar en el depósito
-[ "${1}" != "no-mover" ] && MOVER fuentes
+[ "${1}" != "no-mover" ] && MOVER fuentes ${NOMBRE_PROYECTO}
 # Emitimos la notificación
 if [ -e "${DEPOSITO_SOURCES}${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz" ] && [ "${1}" != "no-mover" ]; then
 EXITO "¡Fuente del proyecto ${NOMBRE_PROYECTO}_${VERSION_PROYECTO}.orig.tar.gz creada y movida a ${DEPOSITO_SOURCES}!"
@@ -247,18 +247,19 @@ directorio_nombre=$( basename "${directorio}" )
 [ $( echo "${directorio#${DEV_DIR}}" | grep -c " " ) != 0 ] && ERROR "Sospecho dos cosas: o te saltaste el nombre del directorio, o especificaste un directorio con espacios." && exit 1
 # No especificaste un mensaje para el commit
 [ -z "${mensaje}" ] && mensaje="auto" && ADVERTENCIA "Mensaje de commit vacío. Autogenerando."
-# No especificaste número de procesadores
-[ -z "${procesadores}" ] && procesadores=0 && ADVERTENCIA "No me dijiste si tenías más de un procesador. Asumiendo uno sólo."
+# Construímos el comando de multiprocessing
+[ ! -z "${procesadores}" ] && procesadores_com="-j${procesadores}" && ADVERTENCIA "Usando ${procesadores} para construir el proyecto."
 # El directorio no existe
 [ ! -e "${directorio}" ] && ERROR "¡EPA! La carpeta \"${directorio}\" no existe en el directorio del desarrollador (${DEV_DIR})." && exit 1
 # El directorio no es un directorio
 [ ! -d "${directorio}" ] && ERROR "¡\"${directorio}\" no es un directorio!" && exit 1
 
+# Obtengamos datos básicos del proyecto
+DATOS-PROYECTO
 # Movemos todo a sus depósitos
-MOVER debs
-MOVER logs
-MOVER fuentes
-
+MOVER debs ${NOMBRE_PROYECTO}
+MOVER logs ${NOMBRE_PROYECTO}
+MOVER fuentes ${NOMBRE_PROYECTO}
 # Cálculo de los threads (n+1)
 procesadores=$[ ${procesadores}+1 ]
 # Accedemos al directorio
@@ -274,11 +275,11 @@ if [ "${GIT_NONE}" == "0" ]; then
 CREAR-FUENTE no-mover
 cd ${directorio}
 # Empaquetamos
-git-buildpackage ${FIRMAR} -tc --git-tag -j${procesadores}
+git-buildpackage ${FIRMAR} -tc --git-tag ${procesadores_com}
 # Movemos todo a sus depósitos
-MOVER debs
-MOVER logs
-MOVER fuentes
+MOVER debs ${NOMBRE_PROYECTO}
+MOVER logs ${NOMBRE_PROYECTO}
+MOVER fuentes ${NOMBRE_PROYECTO}
 # Hacemos push
 [ "${NO_ENVIAR}" != 1 ] && ENVIAR
 fi
@@ -436,7 +437,7 @@ directorio_nombre=$( basename "${directorio}" )
 [ ! -e "${directorio}" ] && ERROR "¡EPA! La carpeta \"${directorio}\" no existe en el directorio del desarrollador (${DEV_DIR})." && exit 1
 # El directorio no es un directorio
 [ ! -d "${directorio}" ] && ERROR "¡\"${directorio}\" no es un directorio!" && exit 1
-# El directorio no contiene un proyecto git
+# El directorio contiene un proyecto git
 [ -e "${directorio}/.git" ] && GIT_NONE=0
 # El directorio no contiene un proyecto git
 [ ! -e "${directorio}/.git" ] && ERROR "El directorio '${directorio}' no contiene un proyecto git." && GIT_NONE=1
@@ -841,6 +842,7 @@ function MOVER() {
 # Dependencias:
 #       - Requiere la carga del archivo ${CONF}
 #-------------------------------------------------------------#
+MOVER_ARCHIVOS=${2}
 case ${1} in
 # Mover .debs
 debs)
@@ -854,17 +856,17 @@ fi
 
 # Mover .diff .changes .dsc .tar.gz
 fuentes)
-[ $( ls ${DEV_DIR}*.tar.gz 2>/dev/null | wc -l ) != 0 ] && mv ${DEV_DIR}*.tar.gz ${DEPOSITO_SOURCES}
-[ $( ls ${DEV_DIR}*.diff.gz 2>/dev/null | wc -l ) != 0 ] && mv ${DEV_DIR}*.diff.gz ${DEPOSITO_SOURCES}
-[ $( ls ${DEV_DIR}*.changes 2>/dev/null | wc -l ) != 0 ] && mv ${DEV_DIR}*.changes ${DEPOSITO_SOURCES}
-[ $( ls ${DEV_DIR}*.dsc 2>/dev/null | wc -l ) != 0 ] && mv ${DEV_DIR}*.dsc ${DEPOSITO_SOURCES}
+[ $( ls ${DEV_DIR}${MOVER_ARCHIVOS}_*.tar.gz 2>/dev/null | wc -l ) != 0 ] && mv ${DEV_DIR}${MOVER_ARCHIVOS}_*.tar.gz ${DEPOSITO_SOURCES}
+[ $( ls ${DEV_DIR}${MOVER_ARCHIVOS}_*.diff.gz 2>/dev/null | wc -l ) != 0 ] && mv ${DEV_DIR}${MOVER_ARCHIVOS}_*.diff.gz ${DEPOSITO_SOURCES}
+[ $( ls ${DEV_DIR}${MOVER_ARCHIVOS}_*.changes 2>/dev/null | wc -l ) != 0 ] && mv ${DEV_DIR}${MOVER_ARCHIVOS}_*.changes ${DEPOSITO_SOURCES}
+[ $( ls ${DEV_DIR}${MOVER_ARCHIVOS}_*.dsc 2>/dev/null | wc -l ) != 0 ] && mv ${DEV_DIR}${MOVER_ARCHIVOS}_*.dsc ${DEPOSITO_SOURCES}
 EXITO "Fuentes *.tar.gz *.diff.gz *.changes *.dsc movidas a ${DEPOSITO_SOURCES}"
 ;;
 
 # Mover .build
 logs)
-if [ $( ls ${DEV_DIR}*.build 2>/dev/null | wc -l ) != 0 ]; then
-mv ${DEV_DIR}*.build ${DEPOSITO_LOGS}
+if [ $( ls ${DEV_DIR}${MOVER_ARCHIVOS}_*.build 2>/dev/null | wc -l ) != 0 ]; then
+mv ${DEV_DIR}${MOVER_ARCHIVOS}_*.build ${DEPOSITO_LOGS}
 EXITO "Logs .build movidos a ${DEPOSITO_LOGS}"
 else
 ERROR "Ningún log .build para mover"

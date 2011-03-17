@@ -24,44 +24,37 @@ case ${1} in
 	for usuario in /home/*? ;
 	do
 
-		# Si existe la carpeta Escritorio
-		if [ -d $usuario/Escritorio ]
-		then
+		# Obteniendo sólo el nombre del usuario
+		usuario_min=$(basename ${usuario})
 
-			# Obteniendo sólo el nombre del usuario
-			usuario_min=$(basename ${usuario})
+		# Y en caso de que el usuario sea un usuario activo (existente en /etc/shadow) ...
+		case  $(grep "${usuario_min}:.*:.*:.*:.*:.*:::" /etc/shadow) in
 
-			# Y en caso de que el usuario sea un usuario activo (existente en /etc/shadow) ...
-			case  $(grep "${usuario_min}:.*:.*:.*:.*:.*:::" /etc/shadow) in
+			'')
+			# No hace nada si no se encuentra en /etc/shadow
+			;;
 
-				'')
-				# No hace nada si no se encuentra en /etc/shadow
-				;;
+			*)
 
-				*)
+				# Asegurando que el directorio .config/canaima-desarrollador esté creado
+				mkdir -p /home/${usuario_min}/.config/canaima-desarrollador/
+				# con permisos apropiados
+				chown ${usuario_min}:${usuario_min} /home/${usuario_min}/.config/canaima-desarrollador/
 
-					# Asegurando que el directorio .config/canaima-desarrollador esté creado
-					mkdir -p /home/${usuario_min}/.config/canaima-desarrollador/
+				# Copiamos el lanzador de escritorio al escritorio de cada usuario
+				cp /etc/skel/Escritorio/manual-desarrollador.desktop /home/${usuario_min}/Escritorio/
+				# con permisos apropiados
+				chown ${usuario_min}:${usuario_min} /home/${usuario_min}/Escritorio/manual-desarrollador.desktop
+
+				# Copia del archivo de configuración si determina que no existe
+				if [ ! -e /home/${usuario_min}/.config/canaima-desarrollador/usuario.conf ]; then
+					cp /etc/skel/.config/canaima-desarrollador/usuario.conf /home/${usuario_min}/.config/canaima-desarrollador/
 					# con permisos apropiados
-					chown ${usuario_min}:${usuario_min} /home/${usuario_min}/.config/canaima-desarrollador/
+					chown ${usuario_min}:${usuario_min} /home/${usuario_min}/.config/canaima-desarrollador/usuario.conf
+				fi
+			;;
+		esac
 
-					# Copiamos el lanzador de escritorio al escritorio de cada usuario
-					cp /etc/skel/Escritorio/manual-desarrollador.desktop /home/${usuario_min}/Escritorio/
-					# con permisos apropiados
-					chown ${usuario_min}:${usuario_min} /home/${usuario_min}/Escritorio/manual-desarrollador.desktop
-
-					if [ ! -e /home/${usuario_min}/.config/canaima-desarrollador/usuario.conf ]; then
-
-						# Copia del archivo de configuración que determina si debe ejecutarse canaima-bienvenido al inicio o no
-						cp /etc/skel/.config/canaima-desarrollador/usuario.conf /home/${usuario_min}/.config/canaima-desarrollador/
-						# con permisos apropiados
-						chown ${usuario_min}:${usuario_min} /home/${usuario_min}/.config/canaima-desarrollador/usuario.conf
-
-					fi
-
-				;;
-			esac
-		fi
 	done
 
 	;;
