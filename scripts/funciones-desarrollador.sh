@@ -240,7 +240,7 @@ threads=$[ ${procesadores}+1 ]
 
 # Comprobaciones varias
 # No especificaste el directorio
-[ -z "${directorio#${DEV_DIR}}" ] && ADVERTENCIA "No especificaste un directorio a empaquetar, asumiendo que es $( pwd )."
+[ -z "${directorio#${DEV_DIR}}" ] && directorio=$( pwd ) && ADVERTENCIA "No especificaste un directorio a empaquetar, asumiendo que es $( pwd )."
 # Garanticemos que el directorio siempre tiene escrita la ruta completa
 directorio=${DEV_DIR}${directorio#${DEV_DIR}}
 directorio_nombre=$( basename "${directorio}" )
