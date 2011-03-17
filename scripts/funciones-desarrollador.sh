@@ -230,25 +230,28 @@ function EMPAQUETAR() {
 # 	- Requiere la carga del archivo ${CONF}
 #	- git-buildpackage
 #-------------------------------------------------------------#
-
 if [ -z ${DEV_GPG} ]; then
 	FIRMAR="-us -uc"
 else
 	FIRMAR="-k${DEV_GPG}"
 fi
+# Cálculo de los threads (n+1)
+threads=$[ ${procesadores}+1 ]
 
+# Comprobaciones varias
+# No especificaste el directorio
+[ -z "${directorio#${DEV_DIR}}" ] && ADVERTENCIA "No especificaste un directorio a empaquetar, asumiendo que es $( pwd )."
 # Garanticemos que el directorio siempre tiene escrita la ruta completa
 directorio=${DEV_DIR}${directorio#${DEV_DIR}}
 directorio_nombre=$( basename "${directorio}" )
-# Comprobaciones varias
-# No especificaste el directorio
-[ -z "${directorio#${DEV_DIR}}" ] && ERROR "Éste programa es espectacular... Pero no te lee la mente. Especifica un proyecto a empaquetar." && exit 1
 # Tal vez te comiste el parámetro directoriorio o especificaste un directorio con espacios
 [ $( echo "${directorio#${DEV_DIR}}" | grep -c " " ) != 0 ] && ERROR "Sospecho dos cosas: o te saltaste el nombre del directorio, o especificaste un directorio con espacios." && exit 1
 # No especificaste un mensaje para el commit
 [ -z "${mensaje}" ] && mensaje="auto" && ADVERTENCIA "Mensaje de commit vacío. Autogenerando."
 # Construímos el comando de multiprocessing
-[ ! -z "${procesadores}" ] && procesadores_com="-j${procesadores}" && ADVERTENCIA "Usando ${procesadores} para construir el proyecto."
+[ ! -z "${procesadores}" ] && procesadores_com="-j${threads}" && ADVERTENCIA "Usando ${threads} hilos de procesamiento para construir el proyecto."
+# No especificaste número de procesadores
+[ -z "${procesadores}" ] && ADVERTENCIA "No especificaste número de procesadores a utilizar, asumiendo que no se quiere utilizar multiprocessing."
 # El directorio no existe
 [ ! -e "${directorio}" ] && ERROR "¡EPA! La carpeta \"${directorio}\" no existe en el directorio del desarrollador (${DEV_DIR})." && exit 1
 # El directorio no es un directorio
@@ -260,8 +263,6 @@ DATOS-PROYECTO
 MOVER debs ${NOMBRE_PROYECTO}
 MOVER logs ${NOMBRE_PROYECTO}
 MOVER fuentes ${NOMBRE_PROYECTO}
-# Cálculo de los threads (n+1)
-procesadores=$[ ${procesadores}+1 ]
 # Accedemos al directorio
 cd ${directorio}
 # Hacemos commit de los (posibles) cambios hechos
@@ -350,12 +351,12 @@ function REGISTRAR() {
 #	- Paquetes: git-core, grep, awk
 #-------------------------------------------------------------#
 
+# Comprobaciones varias
+# No especificaste el directorio
+[ -z "${directorio#${DEV_DIR}}" ] && ADVERTENCIA "No especificaste un directorio a empaquetar, asumiendo que es $( pwd )."
 # Garanticemos que el directorio siempre tiene escrita la ruta completa
 directorio=${DEV_DIR}${directorio#${DEV_DIR}}
 directorio_nombre=$( basename "${directorio}" )
-# Comprobaciones varias
-# No especificaste el directorio
-[ -z "${directorio#${DEV_DIR}}" ] && "Éste programa es espectacular... Pero no te lee la mente. Especifica un proyecto a empaquetar." && exit 1
 # Tal vez te comiste el parámetro directoriorio o especificaste un directorio con espacios
 [ $( echo "${directorio#${DEV_DIR}}" | grep -c " " ) != 0 ] && ERROR "Sospecho dos cosas: o te saltaste el nombre del directorio, o especificaste un directorio con espacios." && exit 1
 # No especificaste un mensaje para el commit
@@ -427,12 +428,12 @@ function ENVIAR() {
 #	- Paquetes: git-core, grep, wget
 #-------------------------------------------------------------#
 
+# Comprobaciones varias
+# No especificaste el directorio
+[ -z "${directorio#${DEV_DIR}}" ] && ADVERTENCIA "No especificaste un directorio a empaquetar, asumiendo que es $( pwd )."
 # Garanticemos que el directorio siempre tiene escrita la ruta completa
 directorio=${DEV_DIR}${directorio#${DEV_DIR}}
 directorio_nombre=$( basename "${directorio}" )
-# Comprobaciones varias
-# No especificaste el directorio
-[ -z "${directorio#${DEV_DIR}}" ] && ERROR "Descansa un poco... ¡Se te olvidó poner a cuál proyecto querías hacer push!" && exit 1
 # El directorio no existe
 [ ! -e "${directorio}" ] && ERROR "¡EPA! La carpeta \"${directorio}\" no existe en el directorio del desarrollador (${DEV_DIR})." && exit 1
 # El directorio no es un directorio
@@ -468,12 +469,12 @@ function ACTUALIZAR() {
 #	- Funciones: SET-REPOS
 #-------------------------------------------------------------#
 
+# Comprobaciones varias
+# No especificaste el directorio
+[ -z "${directorio#${DEV_DIR}}" ] && ADVERTENCIA "No especificaste un directorio a empaquetar, asumiendo que es $( pwd )."
 # Garanticemos que el directorio siempre tiene escrita la ruta completa
 directorio=${DEV_DIR}${directorio#${DEV_DIR}}
 directorio_nombre=$( basename "${directorio}" )
-# Comprobaciones varias
-# No especificaste el directorio
-[ -z "${directorio#${DEV_DIR}}" ] && ERROR "Descansa un poco... ¡Se te olvidó poner cuál proyecto querías actualizar!" && exit 1
 # El directorio no existe
 [ ! -e "${directorio}" ] && ERROR "¡EPA! La carpeta \"${directorio}\" no existe en el directorio del desarrollador (${DEV_DIR})." && exit 1
 # El directorio no es un directorio
