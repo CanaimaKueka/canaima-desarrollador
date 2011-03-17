@@ -1,3 +1,11 @@
+canaima-desarrollador (1.1+26) testing; urgency=low
+
+  * [0e16eeb] [ canaima-desarrollador ] Los siguientes archivos han sido
+    modificados/añadidos: postinst hola1.deb hola2.deb hola3.deb
+    funciones-desarrollador.sh
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Thu, 17 Mar 2011 16:12:13 -0430
+
 canaima-desarrollador (1.1+25) testing; urgency=low
 
   * [37c0134] Mejorando Makefile y corrigiendo bug del cambio de
