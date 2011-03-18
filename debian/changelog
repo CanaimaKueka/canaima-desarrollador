@@ -1,3 +1,10 @@
+canaima-desarrollador (1.1+30) testing; urgency=low
+
+  * [c19033f] [ canaima-desarrollador ] Los siguientes archivos han sido
+    modificados/añadidos: funciones-desarrollador.sh
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Fri, 18 Mar 2011 00:29:36 -0430
+
 canaima-desarrollador (1.1+29) testing; urgency=low
 
   * [05731d3] [ canaima-desarrollador ] Los siguientes archivos han sido
