@@ -200,6 +200,11 @@ slash=${directorio#${directorio%?}}
 [ "${slash}" == "/" ] && directorio=${directorio%?}
 # Ingresamos a la carpeta del desarrollador
 cd ${DEV_DIR}
+# Corrigiendo nombre del directorio en caso de ser incorrecto
+[ "${DEV_DIR}${NOMBRE_PROYECTO}-${VERSION_PROYECTO}" != ${directorio} ] && mv ${directorio} ${DEV_DIR}${NOMBRE_PROYECTO}-${VERSION_PROYECTO}
+directorio="${DEV_DIR}${NOMBRE_PROYECTO}-${VERSION_PROYECTO}"
+directorio=${DEV_DIR}${directorio#${DEV_DIR}}
+directorio_nombre=$( basename "${directorio}" )
 # Removemos cualquier carpeta .orig previamente creada
 rm -rf "${directorio}.orig"
 # Creamos un nuevo directorio .orig
@@ -277,6 +282,8 @@ CREAR-FUENTE no-mover
 cd ${directorio}
 # Empaquetamos
 git-buildpackage ${FIRMAR} -tc --git-tag ${procesadores_com}
+git clean -fd
+git reset --hard
 # Movemos todo a sus depósitos
 MOVER debs ${NOMBRE_PROYECTO}
 MOVER logs ${NOMBRE_PROYECTO}
