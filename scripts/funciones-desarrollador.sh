@@ -382,7 +382,7 @@ cd ${directorio}
 # Emitir la notificación
 ADVERTENCIA "Verificando proyecto ${directorio_nombre} ..."
 # Asegurando que existan las ramas necesarias
-[ $( git branch -l | grep -wc "master" ) == 0 ] && ADVERTENCIA "No existe la rama upstream, creando ..." && git branch master
+[ $( git branch -l | grep -wc "master" ) == 0 ] && ADVERTENCIA "No existe la rama upstream, creando ..." && git add . && git add -a -m "Versión inicial para Canaima GNU/Linux"
 [ $( git branch -l | grep -wc "upstream" ) == 0 ] && ADVERTENCIA "No existe la rama upstream, creando ..." && git branch upstream
 [ $( git branch -l | grep -wc "* master" ) == 0 ] && ADVERTENCIA "No estás en la rama master. Te voy a pasar para allá." && git checkout master
 # Agregando todos los cambios
