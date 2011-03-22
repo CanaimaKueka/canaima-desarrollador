@@ -1,3 +1,10 @@
+canaima-desarrollador (1.1+32) testing; urgency=low
+
+  * [48f4951] Arreglando forma en que se copia el Manual del
+    Desarrolldor en el Escritorio.
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Tue, 22 Mar 2011 14:22:05 -0430
+
 canaima-desarrollador (1.1+31) testing; urgency=low
 
   * [658a843] [ canaima-desarrollador ] Los siguientes archivos han sido
