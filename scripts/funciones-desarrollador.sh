@@ -88,7 +88,7 @@ mv ${DEV_DIR}${nombre}-${version}/debian/*.* ${DEV_DIR}${nombre}-${version}/debi
 # en debian/control
 if [ "${destino}" == "canaima" ]; then
 CONTROL_MAINTAINER="Equipo de Desarrollo de Canaima GNU\/Linux <desarrolladores@canaima.softwarelibre.gob.ve>"
-CONTROL_UPLOADERS="José Miguel Parrella Romero <jparrella@onuva.com>, Carlos David Marrero <cdmarrero2040@gmail.com>, Orlando Andrés Fiol Carballo <ofiol@indesoft.org.ve>, Carlos Alejandro Guerrero Mora <guerrerocarlos@gmail.com>, Diego Alberto Aguilera Zambrano <diegoaguilera85@gmail.com>, Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>, Francisco Javier Vásquez Guerrero <franjvasquezg@gmail.com>"
+CONTROL_UPLOADERS="José Miguel Parrella Romero <jparrella@onuva.com>, Carlos David Marrero <cdmarrero2040@gmail.com>, Orlando Andrés Fiol Carballo <ofiol@indesoft.org.ve>, Carlos Alejandro Guerrero Mora <guerrerocarlos@gmail.com>, Diego Alberto Aguilera Zambrano <diegoaguilera85@gmail.com>, Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>, Francisco Javier Vásquez Guerrero <franjvasquezg@gmail.com>, Carlos Escobar <carlosescobar70@gmail.com>"
 CONTROL_STANDARDS="3.9.1"
 CONTROL_HOMEPAGE="http:\/\/canaima.softwarelibre.gob.ve\/"
 CONTROL_VCSGIT="git:\/\/gitorious.org\/canaima-gnu-linux\/${nombre}.git"
