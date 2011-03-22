@@ -1,3 +1,9 @@
+canaima-desarrollador (1.1+33) testing; urgency=low
+
+  * [f013915] Agregando Carlos Escobar a Uploaders.
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Tue, 22 Mar 2011 14:38:26 -0430
+
 canaima-desarrollador (1.1+32) testing; urgency=low
 
   * [48f4951] Arreglando forma en que se copia el Manual del
