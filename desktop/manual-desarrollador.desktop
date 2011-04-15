@@ -12,6 +12,6 @@ Terminal=false
 Type=Application
 StartupNotify=true
 Icon=/usr/share/icons/canaima-iconos/categories/scalable/applications-other.svg
-Categories=GNOME;GTK;Utility;
+Categories=GTK;Development;IDE;
 X-GNOME-FullName=Manual del Desarrollador
 X-GNOME-FullName[es]=Manual del Desarrollador
