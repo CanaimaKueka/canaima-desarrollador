@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Canaima Desarrollador &mdash; Manual del Desarrollador para Canaima GNU/Linux</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0+0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="Manual del Desarrollador para Canaima GNU/Linux" href="#" />
+    <link rel="next" title="CANAIMA-DESARROLLADOR" href="man-canaima-desarrollador.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="man-canaima-desarrollador.html" title="CANAIMA-DESARROLLADOR"
+             accesskey="N">siguiente</a> |</li>
+        <li><a href="#">Manual del Desarrollador para Canaima GNU/Linux</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="canaima-desarrollador">
+<h1>Canaima Desarrollador<a class="headerlink" href="#canaima-desarrollador" title="Enlazar permanentemente con este título">¶</a></h1>
+<p><strong>Un conjunto de herramientas para la eliminación de las barreras tecnológicas</strong></p>
+<p>Canaima Desarrollador (C-D) es un compendio de herramientas y ayudantes que facilitan el proceso de desarrollo de software para Canaima GNU/Linux. Está diseñado para <em>facilitar el trabajo</em> a aquellas personas que participan en dicho proceso con regularidad, como también para <em>iniciar a los que deseen aprender</em> de una manera rápida y práctica.</p>
+<p>C-D sigue dos líneas de acción principales para lograr éste cometido: <em>la práctica</em> y <em>la formativa</em>. La práctica permite:</p>
+<ul class="simple">
+<li>Agilizar los procesos para la creación de paquetes binarios canaima a partir de paquetes fuentes correctamente estructurados.</li>
+<li>Automatización personalizada de la creación de Paquetes Fuentes acordes a las Políticas de Canaima GNU/Linux.</li>
+<li>Creación de un depósito personal, por usuario, donde se guardan automáticamente y en carpetas separadas los siguientes tipos de archivo:
+- Proyectos en proceso de empaquetamiento
+- Paquetes Binarios (<em>.deb)
+- Paquetes Fuente (</em>.tar.gz, <em>.dsc, *.changes, *.diff)
+- Registros provenientes de la creación de paquetes binarios (</em>.build)</li>
+<li>Versionamiento asistido (basado en git) en los proyectos, brindando herramientas para realizar las siguientes operaciones, con un alto nivel de automatización y detección de posibles errores:
+- git clone
+- git commit
+- git push
+- git pull</li>
+<li>Ejecución de tareas en masa (empaquetar, hacer pull, push, commit, entre otros), para agilizar procesos repetitivos.</li>
+</ul>
+<p>En el otro aspecto, el formativo, C-D incluye:</p>
+<ul class="simple">
+<li>El Manual del Desarrollador, resumen técnico-práctico de las herramientas cognitivas necesarias para desarrollar paquetes funcionales para Canaima GNU/Linux.</li>
+<li>La Guía de Referencia para el Desarrollador, compendio extenso y detallado que extiende y complementa el contenido del Manual del Desarrollador.</li>
+<li>Éste manual para el uso de Canaima Desarrollador.</li>
+</ul>
+<hr class="docutils" />
+<p><strong>Índice de Contenidos</strong></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="man-canaima-desarrollador.html"><strong>CANAIMA-DESARROLLADOR</strong></a><ul>
+<li class="toctree-l2"><a class="reference external" href="man-canaima-desarrollador.html#un-conjunto-de-herramientas-para-la-eliminacion-de-las-barreras-tecnologicas">Un conjunto de herramientas para la eliminación de las barreras tecnológicas</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="manual-desarrollador.html"><strong>Manual para el Desarrollador</strong></a><ul>
+<li class="toctree-l2"><a class="reference external" href="manual-desarrollador.html#sobre-el-ciclo-de-desarrollo-de-canaima"><strong>Sobre el Ciclo de Desarrollo de Canaima</strong></a></li>
+<li class="toctree-l2"><a class="reference external" href="manual-desarrollador.html#versionando-con-git"><strong>Versionando con GIT</strong></a></li>
+<li class="toctree-l2"><a class="reference external" href="manual-desarrollador.html#empaquetando-con-git-buildpackage"><strong>Empaquetando con git-buildpackage</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="guia-referencia.html"><strong>Guía de Referencia para el Desarrollador</strong></a><ul>
+<li class="toctree-l2"><a class="reference external" href="guia-referencia.html#programas-que-necesitas-para-el-desarrollo"><strong>Programas que necesitas para el desarrollo</strong></a></li>
+<li class="toctree-l2"><a class="reference external" href="guia-referencia.html#desarrollador-oficial-de-canaima"><strong>Desarrollador oficial de Canaima</strong></a></li>
+<li class="toctree-l2"><a class="reference external" href="guia-referencia.html#primeros-pasos"><strong>Primeros Pasos</strong></a></li>
+<li class="toctree-l2"><a class="reference external" href="guia-referencia.html#las-cosas-necesarias-bajo-debian"><strong>Las cosas necesarias bajo debian</strong></a></li>
+<li class="toctree-l2"><a class="reference external" href="guia-referencia.html#otros-ficheros-en-el-directorio-debian"><strong>Otros ficheros en el directorio debian</strong></a></li>
+<li class="toctree-l2"><a class="reference external" href="guia-referencia.html#construir-el-paquete"><strong>Construir el paquete</strong></a></li>
+<li class="toctree-l2"><a class="reference external" href="guia-referencia.html#como-comprobar-tu-paquete-para-encontrar-fallos"><strong>Cómo comprobar tu paquete para encontrar fallos</strong></a></li>
+<li class="toctree-l2"><a class="reference external" href="guia-referencia.html#actualizar-el-paquete"><strong>Actualizar el paquete</strong></a></li>
+</ul>
+</li>
+</ul>
+<hr class="docutils" />
+<p>:)</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h4>Próximo tema</h4>
+            <p class="topless"><a href="man-canaima-desarrollador.html"
+                                  title="Próximo capítulo"><strong>CANAIMA-DESARROLLADOR</strong></a></p>
+            <h3>Esta página</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/index.txt"
+                     rel="nofollow">Enseñar el código</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Búsqueda rápida</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Ir a" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="man-canaima-desarrollador.html" title="CANAIMA-DESARROLLADOR"
+             >siguiente</a> |</li>
+        <li><a href="#">Manual del Desarrollador para Canaima GNU/Linux</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2011, Equipo de Desarrollo de Canaima GNU/Linux.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.6.
+    </div>
+  </body>
+</html>
