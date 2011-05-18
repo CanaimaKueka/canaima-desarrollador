@@ -1,3 +1,10 @@
+canaima-desarrollador (1.1+38) testing; urgency=low
+
+  * [c13418f] Cambaindo la dependencia de construcción de texlive-latex-
+    extra a texlive, es más completo.
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Wed, 18 May 2011 01:04:53 -0430
+
 canaima-desarrollador (1.1+37) testing; urgency=low
 
   * [1fcf907] Agregando dependencia a lintian, para asegurar la revisión
