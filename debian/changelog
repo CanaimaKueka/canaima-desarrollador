@@ -4,8 +4,10 @@ canaima-desarrollador (1.1+37) testing; urgency=low
     de calidad.
   * [56d290e] Agregando dependencia a lintian, para asegurar la revisión
     de calidad.
+  * [8b856be] Agregando dependencia a lintian, para asegurar la revisión
+    de calidad.
 
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Wed, 18 May 2011 00:55:42 -0430
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Wed, 18 May 2011 00:56:44 -0430
 
 canaima-desarrollador (1.1+36) testing; urgency=low
 
