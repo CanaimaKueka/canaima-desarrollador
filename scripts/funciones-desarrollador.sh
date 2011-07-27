@@ -281,7 +281,7 @@ if [ "${GIT_NONE}" == "0" ]; then
 CREAR-FUENTE no-mover
 cd ${directorio}
 # Empaquetamos
-git-buildpackage ${FIRMAR} -tc --git-tag ${procesadores_com}
+git-buildpackage ${FIRMAR} -tc ${procesadores_com}
 git clean -fd
 git reset --hard
 # Movemos todo a sus depósitos

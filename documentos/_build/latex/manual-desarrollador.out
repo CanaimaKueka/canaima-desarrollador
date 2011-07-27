@@ -1,0 +1,15 @@
+\BOOKMARK [0][-]{chapter.1}{CANAIMA-DESARROLLADOR}{}
+\BOOKMARK [1][-]{section.1.1}{Un conjunto de herramientas para la eliminaci\363n de las barreras tecnol\363gicas}{chapter.1}
+\BOOKMARK [0][-]{chapter.2}{Manual para el Desarrollador}{}
+\BOOKMARK [1][-]{section.2.1}{Sobre el Ciclo de Desarrollo de Canaima}{chapter.2}
+\BOOKMARK [1][-]{section.2.2}{Versionando con GIT}{chapter.2}
+\BOOKMARK [1][-]{section.2.3}{Empaquetando con git-buildpackage}{chapter.2}
+\BOOKMARK [0][-]{chapter.3}{Gu\355a de Referencia para el Desarrollador}{}
+\BOOKMARK [1][-]{section.3.1}{Programas que necesitas para el desarrollo}{chapter.3}
+\BOOKMARK [1][-]{section.3.2}{Desarrollador oficial de Canaima}{chapter.3}
+\BOOKMARK [1][-]{section.3.3}{Primeros Pasos}{chapter.3}
+\BOOKMARK [1][-]{section.3.4}{Las cosas necesarias bajo debian}{chapter.3}
+\BOOKMARK [1][-]{section.3.5}{Otros ficheros en el directorio debian}{chapter.3}
+\BOOKMARK [1][-]{section.3.6}{Construir el paquete}{chapter.3}
+\BOOKMARK [1][-]{section.3.7}{C\363mo comprobar tu paquete para encontrar fallos}{chapter.3}
+\BOOKMARK [1][-]{section.3.8}{Actualizar el paquete}{chapter.3}
