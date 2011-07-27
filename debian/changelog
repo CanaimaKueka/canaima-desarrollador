@@ -1,3 +1,10 @@
+canaima-desarrollador (1.1+39) testing; urgency=low
+
+  * [455b67d] Removiendo dependencia a un navegador y la creación de la
+    entrada de menú
+
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Wed, 27 Jul 2011 08:30:17 -0430
+
 canaima-desarrollador (1.1+38) testing; urgency=low
 
   * [c13418f] Cambaindo la dependencia de construcción de texlive-latex-
