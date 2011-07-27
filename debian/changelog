@@ -4,8 +4,9 @@ canaima-desarrollador (1.1+39) testing; urgency=low
     entrada de menú
   * [ad985a9] Removiendo dependencia a un navegador y la creación de la
     entrada de menú
+  * [b362440] Removiendo git-tag del empaquetador
 
- -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Wed, 27 Jul 2011 08:30:31 -0430
+ -- Luis Alejandro Martínez Faneyth <martinez.faneyth@gmail.com>  Wed, 27 Jul 2011 08:44:56 -0430
 
 canaima-desarrollador (1.1+38) testing; urgency=low
 
