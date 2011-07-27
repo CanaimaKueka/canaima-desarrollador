@@ -42,8 +42,8 @@ install:
 	mkdir -p $(DESTDIR)/etc/skel/.config/canaima-desarrollador/
 	mkdir -p $(DESTDIR)/usr/share/applications/
 	mkdir -p $(DESTDIR)/etc/skel/Escritorio/
-	cp -r desktop/manual-desarrollador.desktop $(DESTDIR)/usr/share/applications/
-	cp -r desktop/manual-desarrollador.desktop $(DESTDIR)/etc/skel/Escritorio/
+#	cp -r desktop/manual-desarrollador.desktop $(DESTDIR)/usr/share/applications/
+#	cp -r desktop/manual-desarrollador.desktop $(DESTDIR)/etc/skel/Escritorio/
 	cp -r scripts/canaima-desarrollador.sh $(DESTDIR)/usr/bin/canaima-desarrollador
 	ln -s /usr/bin/canaima-desarrollador $(DESTDIR)/usr/bin/c-d
 	cp -r scripts/manual-desarrollador.sh $(DESTDIR)/usr/bin/manual-desarrollador

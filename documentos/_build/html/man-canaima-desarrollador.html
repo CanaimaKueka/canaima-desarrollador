@@ -1,0 +1,571 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CANAIMA-DESARROLLADOR &mdash; Manual del Desarrollador para Canaima GNU/Linux</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0+0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="Manual del Desarrollador para Canaima GNU/Linux" href="index.html" />
+    <link rel="next" title="Manual para el Desarrollador" href="manual-desarrollador.html" />
+    <link rel="prev" title="Canaima Desarrollador" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="manual-desarrollador.html" title="Manual para el Desarrollador"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Canaima Desarrollador"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="index.html">Manual del Desarrollador para Canaima GNU/Linux</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="canaima-desarrollador">
+<h1><strong>CANAIMA-DESARROLLADOR</strong><a class="headerlink" href="#canaima-desarrollador" title="Enlazar permanentemente con este título">¶</a></h1>
+<div class="section" id="un-conjunto-de-herramientas-para-la-eliminacion-de-las-barreras-tecnologicas">
+<h2>Un conjunto de herramientas para la eliminación de las barreras tecnológicas<a class="headerlink" href="#un-conjunto-de-herramientas-para-la-eliminacion-de-las-barreras-tecnologicas" title="Enlazar permanentemente con este título">¶</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Luis Alejandro Martínez Faneyth &lt;<a class="reference external" href="mailto:martinez&#46;faneyth&#37;&#52;&#48;gmail&#46;com">martinez<span>&#46;</span>faneyth<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</td>
+</tr>
+<tr class="field"><th class="field-name">Date:</th><td class="field-body">2011-01-22</td>
+</tr>
+<tr class="field"><th class="field-name">Copyright:</th><td class="field-body">Libre uso, modificación y distribución (GPL3)</td>
+</tr>
+<tr class="field"><th class="field-name">Version:</th><td class="field-body">1.0+0</td>
+</tr>
+<tr class="field"><th class="field-name">Manual section:</th><td class="field-body">1</td>
+</tr>
+<tr class="field"><th class="field-name">Manual group:</th><td class="field-body">Empaquetamiento</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="modo-de-uso">
+<h3><strong>MODO DE USO</strong><a class="headerlink" href="#modo-de-uso" title="Enlazar permanentemente con este título">¶</a></h3>
+<div class="highlight-python"><pre>canaima-desarrollador [AYUDANTE] [PARÁMETRO-1] [PARÁMETRO-2] ... [PARÁMETRO-N] [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="descripcion">
+<h3><strong>DESCRIPCIÓN</strong><a class="headerlink" href="#descripcion" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Canaima Desarrollador (C-D) es un compendio de herramientas y ayudantes que facilitan el proceso de desarrollo de software para Canaima GNU/Linux. Está diseñado para <strong>facilitar el trabajo</strong> a aquellas personas que participan en dicho proceso con regularidad, como también para <strong>iniciar a los que deseen aprender</strong> de una manera rápida y práctica.</p>
+<p>C-D puede ayudarte a:</p>
+<ul class="simple">
+<li>Agilizar los procesos para la creación de paquetes binarios canaima a partir de paquetes fuentes correctamente estructurados.</li>
+<li>Automatización personalizada de la creación de Paquetes Fuentes acordes a las Políticas de Canaima GNU/Linux.</li>
+<li>Creación de un depósito personal, por usuario, donde se guardan automáticamente y en carpetas separadas los siguientes tipos de archivo:<ul>
+<li>Proyectos en proceso de empaquetamiento</li>
+<li>Paquetes Binarios (*.deb)</li>
+<li>Paquetes Fuente (*.tar.gz, *.dsc, *.changes, *.diff)</li>
+<li>Registros provenientes de la creación de paquetes binarios (*.build)</li>
+</ul>
+</li>
+<li>Versionamiento asistido (basado en git) en los proyectos, brindando herramientas para realizar las siguientes operaciones, con un alto nivel de automatización y detección de posibles errores:<ul>
+<li>git clone</li>
+<li>git commit</li>
+<li>git push</li>
+<li>git pull</li>
+</ul>
+</li>
+<li>Ejecución de tareas en masa (empaquetar, hacer pull, push, commit, entre otros), para agilizar procesos repetitivos.</li>
+</ul>
+</div>
+<div class="section" id="ayudantes-de-canaima-desarrollador">
+<h3><strong>AYUDANTES DE CANAIMA DESARROLLADOR</strong><a class="headerlink" href="#ayudantes-de-canaima-desarrollador" title="Enlazar permanentemente con este título">¶</a></h3>
+<ul class="simple">
+<li>Crear Proyecto / Debianizar</li>
+<li>Crear Fuente</li>
+<li>Empaquetar</li>
+<li>Descargar</li>
+<li>Registrar</li>
+<li>Enviar</li>
+<li>Actualizar</li>
+<li>Descargar Todo</li>
+<li>Registrar Todo</li>
+<li>Enviar Todo</li>
+<li>Actualizar Todo</li>
+<li>Empaquetar Varios</li>
+<li>Empaquetar Todo</li>
+<li>Listar Remotos</li>
+<li>Listar Locales</li>
+</ul>
+</div>
+<div class="section" id="crear-proyecto-debianizar">
+<h3><strong>CREAR PROYECTO / DEBIANIZAR</strong><a class="headerlink" href="#crear-proyecto-debianizar" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Crea un proyecto de empaquetamiento desde cero o debianiza uno existente.</p>
+<div class="section" id="uso">
+<h4>USO<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador crear-proyecto|debianizar --nombre="" --version="" --destino="" --licencia="" [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="parametros">
+<h4>PARÁMETROS<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--nombre</span></tt></dt>
+<dd>Un nombre para tu proyecto, que puede contener letras, números, puntos y guiones. Cualquier otro caracter no está permitido.</dd>
+<dt><tt class="docutils literal"><span class="pre">--version</span></tt></dt>
+<dd>La versión inicial de tu proyecto. Se permiten números, guiones, puntos, letras o dashes (~).</dd>
+<dt><tt class="docutils literal"><span class="pre">--destino</span></tt></dt>
+<dd>Especifica si es un proyecto de empaquetamiento para Canaima GNU/Linux o si es un proyecto personal. Las opciones disponibles son &#8220;canaima&#8221; y &#8220;personal&#8221;.</dd>
+<dt><tt class="docutils literal"><span class="pre">--licencia</span></tt></dt>
+<dd>Especifica el tipo de licencia bajo el cuál distribuirás tu trabajo. Las licencias soportadas son: apache, artistic, bsd, gpl, gpl2, gpl3, lgpl, lgpl2 y lgpl3.</dd>
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+<p>Si estás debianizando un proyecto existente, lo que ingreses en &#8211;nombre=&#8221;proyecto&#8221; y &#8211;version=&#8221;X.Y+Z&#8221; se utilizará para determinar cuál es el nombre de la carpeta a debianizar dentro del directorio del desarrollador, suponiendo que tiene el nombre proyecto-X.Y+Z. Si no se llama así, habrá un error.</p>
+</div>
+</div>
+<div class="section" id="crear-fuente">
+<h3><strong>CREAR FUENTE</strong><a class="headerlink" href="#crear-fuente" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Crea un paquete fuente a partir de un proyecto de empaquetamiento existente. El resultado es guardado en el depósito de fuentes.</p>
+<div class="section" id="id1">
+<h4>USO<a class="headerlink" href="#id1" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador crear-fuente --directorio="" [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id2">
+<h4>PARÁMETROS<a class="headerlink" href="#id2" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--directorio</span></tt></dt>
+<dd>Nombre del directorio dentro de la carpeta del desarrollador donde se encuentra el proyecto. El directorio debe contener un proyecto debianizado.</dd>
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="empaquetar">
+<h3><strong>EMPAQUETAR</strong><a class="headerlink" href="#empaquetar" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Éste ayudante te permite empaquetar un proyecto de forma automatizada, siguiendo la metodología git-buildpackage, que se centra en el siguiente diagrama:</p>
+<p><strong>COMMIT &gt; REFLEJAR CAMBIOS EN EL CHANGELOG &gt; COMMIT &gt; CREAR PAQUETE FUENTE &gt; PUSH &gt; GIT-BUILDPACKAGE</strong></p>
+<div class="section" id="id3">
+<h4>USO<a class="headerlink" href="#id3" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador empaquetar --directorio="" --mensaje="" --procesadores="" [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id4">
+<h4>PARÁMETROS<a class="headerlink" href="#id4" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--directorio</span></tt></dt>
+<dd>Nombre de la carpeta dentro del directorio del desarrollador donde se encuentra el proyecto a empaquetar.</dd>
+<dt><tt class="docutils literal"><span class="pre">--mensaje</span></tt></dt>
+<dd>Mensaje representativo de los cambios para el primer commit. El segundo commit es sólo para el changelog. Colocando la palabra &#8220;auto&#8221; o dejando el campo vacío, se autogenera el mensaje.</dd>
+<dt><tt class="docutils literal"><span class="pre">--procesadores</span></tt></dt>
+<dd>Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.</dd>
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="descargar">
+<h3><strong>DESCARGAR</strong><a class="headerlink" href="#descargar" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Éste ayudante te permite copiar a tu disco duro un proyecto que se encuentre en el repositorio remoto para que puedas modificarlo según consideres. Utiliza git clone para realizar tal operación. Éste ayudante se encarga además de realizar las siguientes operaciones por ti:</p>
+<blockquote>
+<ul class="simple">
+<li>Verifica e informa sobre el éxito de la descarga.</li>
+</ul>
+</blockquote>
+<div class="section" id="id5">
+<h4>USO<a class="headerlink" href="#id5" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador descargar --proyecto="" [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id6">
+<h4>PARÁMETROS<a class="headerlink" href="#id6" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--proyecto</span></tt></dt>
+<dd>Nombre del proyecto (en caso de que éste se encuentre en el repositorio de Canaima GNU/Linux) o la dirección git pública del proyecto.</dd>
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="registrar">
+<h3><strong>REGISTRAR</strong><a class="headerlink" href="#registrar" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Éste ayudante te permite registar (o hacer commit de) los cambios hechos en un proyecto mediante el versionamiento basado en git. Utiliza git commit para lograr éste propósito. Éste ayudante se encarga además de realizar las siguientes operaciones por ti:</p>
+<blockquote>
+<ul class="simple">
+<li>Verifica la existencia de la rama git &#8220;upstream&#8221;. En caso de no encontrarla, la crea.</li>
+<li>Verifica la existencia de la rama git &#8220;master&#8221;. En caso de no encontrarla, la crea.</li>
+<li>Verifica la existencia de todos los elementos necesarios para ejecutar la acción git commit (carpetas, variables de entorno, etc..). En caso de encontrar algún error, aborta e informa.</li>
+<li>Autogenera el mensaje de commit, si se le instruye.</li>
+<li>Hace git checkout a la rama master, si nos encontramos en una rama diferente a la hora de hace commit.</li>
+<li>Hace un git merge de la rama master a la upstream, inmediatamente depués del commit.</li>
+</ul>
+</blockquote>
+<div class="section" id="id7">
+<h4>USO<a class="headerlink" href="#id7" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador registrar --directorio="" --mensaje=="" [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id8">
+<h4>PARÁMETROS<a class="headerlink" href="#id8" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--directorio</span></tt></dt>
+<dd>Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer commit.</dd>
+<dt><tt class="docutils literal"><span class="pre">--mensaje</span></tt></dt>
+<dd>Mensaje representativo de los cambios para el commit. Colocando la palabra &#8220;auto&#8221; o dejando el campo vacío, se autogenera el mensaje.</dd>
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="enviar">
+<h3><strong>ENVIAR</strong><a class="headerlink" href="#enviar" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Éste ayudante te permite enviar los cambios realizados al repositorio remoto especificado en las configuraciones personales, mediante el uso de la acción git push. Éste ayudante se encarga además de realizar las siguientes operaciones por ti:</p>
+<blockquote>
+<ul class="simple">
+<li>Verifica la existencia de la rama git &#8220;upstream&#8221;. En caso de no encontrarla, la crea.</li>
+<li>Verifica la existencia de la rama git &#8220;master&#8221;. En caso de no encontrarla, la crea.</li>
+<li>Verifica la existencia de todos los elementos necesarios para ejecutar la acción git push (carpetas, variables de entorno, etc..). En caso de encontrar algún error, aborta e informa.</li>
+<li>Configura el repositorio remoto para el proyecto, de acuerdo a los parámetros establecidos en ~/.config/canaima-desarrollador/usuario.conf</li>
+</ul>
+</blockquote>
+<div class="section" id="id9">
+<h4>USO<a class="headerlink" href="#id9" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador enviar --directorio="" [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id10">
+<h4>PARÁMETROS<a class="headerlink" href="#id10" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--directorio</span></tt></dt>
+<dd>Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer push.</dd>
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="actualizar">
+<h3><strong>ACTUALIZAR</strong><a class="headerlink" href="#actualizar" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Éste ayudante te permite actualizar el código fuente de un determinado proyecto, mediante la ejecución de &#8220;git pull&#8221; en la carpeta del proyecto. Éste ayudante se encarga además de realizar las siguientes operaciones por ti:</p>
+<blockquote>
+<ul class="simple">
+<li>Verifica la existencia de la rama git &#8220;upstream&#8221;. En caso de no encontrarla, la crea.</li>
+<li>Verifica la existencia de la rama git &#8220;master&#8221;. En caso de no encontrarla, la crea.</li>
+<li>Verifica la existencia de todos los elementos necesarios para ejecutar la acción git pull (carpetas, variables de entorno, etc..). En caso de encontrar algún error, aborta e informa.</li>
+<li>Configura el repositorio remoto para el proyecto, de acuerdo a los parámetros establecidos en ~/.config/canaima-desarrollador/usuario.conf</li>
+</ul>
+</blockquote>
+<div class="section" id="id11">
+<h4>USO<a class="headerlink" href="#id11" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador actualizar --directorio="" [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id12">
+<h4>PARÁMETROS<a class="headerlink" href="#id12" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--directorio</span></tt></dt>
+<dd>Nombre de la carpeta dentro del directorio del desarrollador a la que se quiere hacer git pull.</dd>
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="descargar-todo">
+<h3><strong>DESCARGAR TODO</strong><a class="headerlink" href="#descargar-todo" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Éste ayudante te permite copiar a tu disco duro todos los proyectos de Canaima GNU/Linux que se encuentren en el repositorio remoto oficial. Utiliza git clone para realizar tal operación.</p>
+<div class="section" id="id13">
+<h4>USO<a class="headerlink" href="#id13" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador descargar-todo [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id14">
+<h4>PARÁMETROS<a class="headerlink" href="#id14" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="registrar-todo">
+<h3><strong>REGISTRAR TODO</strong><a class="headerlink" href="#registrar-todo" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Éste ayudante te permite registar (o hacer commit de) todos los cambios hechos en todos los proyectos existentes en la carpeta del desarrollador. Utiliza git commit para lograr éste propósito. Asume un mensaje de commit automático para todos.</p>
+<div class="section" id="id15">
+<h4>USO<a class="headerlink" href="#id15" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador registrar-todo [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id16">
+<h4>PARÁMETROS<a class="headerlink" href="#id16" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="enviar-todo">
+<h3><strong>ENVIAR TODO</strong><a class="headerlink" href="#enviar-todo" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Éste ayudante te permite enviar todos los cambios realizados en todos los proyectos ubicados en la carpeta del desarrollador al repositorio remoto especificado en las configuraciones personales, mediante el uso de la acción git push.</p>
+<div class="section" id="id17">
+<h4>USO<a class="headerlink" href="#id17" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador enviar-todo [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id18">
+<h4>PARÁMETROS<a class="headerlink" href="#id18" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="actualizar-todo">
+<h3><strong>ACTUALIZAR TODO</strong><a class="headerlink" href="#actualizar-todo" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Éste ayudante te permite actualizar el código fuente de todos los proyectos ubicados en la carpeta del desarrollador, mediante la ejecución de &#8220;git pull&#8221; en la carpeta del proyecto.</p>
+<div class="section" id="id19">
+<h4>USO<a class="headerlink" href="#id19" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador actualizar-todo [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id20">
+<h4>PARÁMETROS<a class="headerlink" href="#id20" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="empaquetar-varios">
+<h3><strong>EMPAQUETAR VARIOS</strong><a class="headerlink" href="#empaquetar-varios" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Éste ayudante te permite empaquetar varios proyectos.</p>
+<div class="section" id="id21">
+<h4>USO<a class="headerlink" href="#id21" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador empaquetar-varios --para-empaquetar="" --procesadores="" [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id22">
+<h4>PARÁMETROS<a class="headerlink" href="#id22" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--para-empaquetar</span></tt></dt>
+<dd>Lista de los directorios dentro de la carpeta del desarrollador que contienen los proyectos que se quieren empaquetar, agrupados entre comillas.</dd>
+<dt><tt class="docutils literal"><span class="pre">--procesadores</span></tt></dt>
+<dd>Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.</dd>
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="empaquetar-todo">
+<h3><strong>EMPAQUETAR TODO</strong><a class="headerlink" href="#empaquetar-todo" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Éste ayudante te permite empaquetar todos los proyectos existentes en la carpeta del desarrollador.</p>
+<div class="section" id="id23">
+<h4>USO<a class="headerlink" href="#id23" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador empaquetar-todo --procesadores="" [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id24">
+<h4>PARÁMETROS<a class="headerlink" href="#id24" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--procesadores</span></tt></dt>
+<dd>Número de procesadores con que cuenta tu computadora para optimizar el proceso de empaquetamiento.</dd>
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="listar-remotos">
+<h3><strong>LISTAR REMOTOS</strong><a class="headerlink" href="#listar-remotos" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Muestra todos los proyectos contenidos en el repositorio remoto y muestra su dirección git.</p>
+<div class="section" id="id25">
+<h4>USO<a class="headerlink" href="#id25" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador listar-remotos [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id26">
+<h4>PARÁMETROS<a class="headerlink" href="#id26" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="listar-locales">
+<h3><strong>LISTAR LOCALES</strong><a class="headerlink" href="#listar-locales" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Muestra todos los proyectos contenidos en la carpeta del desarrollador y los clasifica según su tipo.</p>
+<div class="section" id="id27">
+<h4>USO<a class="headerlink" href="#id27" title="Enlazar permanentemente con este título">¶</a></h4>
+<div class="highlight-python"><pre>canaima-desarrollador listar-locales [--ayuda]</pre>
+</div>
+</div>
+<div class="section" id="id28">
+<h4>PARÁMETROS<a class="headerlink" href="#id28" title="Enlazar permanentemente con este título">¶</a></h4>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--ayuda</span></tt></dt>
+<dd>Muestra la documentación para el ayudante.</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Contenidos</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><strong>CANAIMA-DESARROLLADOR</strong></a><ul>
+<li><a class="reference external" href="#un-conjunto-de-herramientas-para-la-eliminacion-de-las-barreras-tecnologicas">Un conjunto de herramientas para la eliminación de las barreras tecnológicas</a><ul>
+<li><a class="reference external" href="#modo-de-uso"><strong>MODO DE USO</strong></a></li>
+<li><a class="reference external" href="#descripcion"><strong>DESCRIPCIÓN</strong></a></li>
+<li><a class="reference external" href="#ayudantes-de-canaima-desarrollador"><strong>AYUDANTES DE CANAIMA DESARROLLADOR</strong></a></li>
+<li><a class="reference external" href="#crear-proyecto-debianizar"><strong>CREAR PROYECTO / DEBIANIZAR</strong></a><ul>
+<li><a class="reference external" href="#uso">USO</a></li>
+<li><a class="reference external" href="#parametros">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#crear-fuente"><strong>CREAR FUENTE</strong></a><ul>
+<li><a class="reference external" href="#id1">USO</a></li>
+<li><a class="reference external" href="#id2">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#empaquetar"><strong>EMPAQUETAR</strong></a><ul>
+<li><a class="reference external" href="#id3">USO</a></li>
+<li><a class="reference external" href="#id4">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#descargar"><strong>DESCARGAR</strong></a><ul>
+<li><a class="reference external" href="#id5">USO</a></li>
+<li><a class="reference external" href="#id6">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#registrar"><strong>REGISTRAR</strong></a><ul>
+<li><a class="reference external" href="#id7">USO</a></li>
+<li><a class="reference external" href="#id8">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#enviar"><strong>ENVIAR</strong></a><ul>
+<li><a class="reference external" href="#id9">USO</a></li>
+<li><a class="reference external" href="#id10">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#actualizar"><strong>ACTUALIZAR</strong></a><ul>
+<li><a class="reference external" href="#id11">USO</a></li>
+<li><a class="reference external" href="#id12">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#descargar-todo"><strong>DESCARGAR TODO</strong></a><ul>
+<li><a class="reference external" href="#id13">USO</a></li>
+<li><a class="reference external" href="#id14">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#registrar-todo"><strong>REGISTRAR TODO</strong></a><ul>
+<li><a class="reference external" href="#id15">USO</a></li>
+<li><a class="reference external" href="#id16">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#enviar-todo"><strong>ENVIAR TODO</strong></a><ul>
+<li><a class="reference external" href="#id17">USO</a></li>
+<li><a class="reference external" href="#id18">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#actualizar-todo"><strong>ACTUALIZAR TODO</strong></a><ul>
+<li><a class="reference external" href="#id19">USO</a></li>
+<li><a class="reference external" href="#id20">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#empaquetar-varios"><strong>EMPAQUETAR VARIOS</strong></a><ul>
+<li><a class="reference external" href="#id21">USO</a></li>
+<li><a class="reference external" href="#id22">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#empaquetar-todo"><strong>EMPAQUETAR TODO</strong></a><ul>
+<li><a class="reference external" href="#id23">USO</a></li>
+<li><a class="reference external" href="#id24">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#listar-remotos"><strong>LISTAR REMOTOS</strong></a><ul>
+<li><a class="reference external" href="#id25">USO</a></li>
+<li><a class="reference external" href="#id26">PARÁMETROS</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#listar-locales"><strong>LISTAR LOCALES</strong></a><ul>
+<li><a class="reference external" href="#id27">USO</a></li>
+<li><a class="reference external" href="#id28">PARÁMETROS</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h4>Tema anterior</h4>
+            <p class="topless"><a href="index.html"
+                                  title="Capítulo anterior">Canaima Desarrollador</a></p>
+            <h4>Próximo tema</h4>
+            <p class="topless"><a href="manual-desarrollador.html"
+                                  title="Próximo capítulo"><strong>Manual para el Desarrollador</strong></a></p>
+            <h3>Esta página</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/man-canaima-desarrollador.txt"
+                     rel="nofollow">Enseñar el código</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Búsqueda rápida</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Ir a" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="manual-desarrollador.html" title="Manual para el Desarrollador"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Canaima Desarrollador"
+             >anterior</a> |</li>
+        <li><a href="index.html">Manual del Desarrollador para Canaima GNU/Linux</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2011, Equipo de Desarrollo de Canaima GNU/Linux.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.6.
+    </div>
+  </body>
+</html>

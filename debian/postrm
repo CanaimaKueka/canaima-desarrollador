@@ -24,7 +24,7 @@ case ${1} in
 	purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
 
 	for usuario in /home/*? ; do
-		rm -rf ${usuario}/Escritorio/manual-desarrollador.desktop
+		#rm -rf ${usuario}/Escritorio/manual-desarrollador.desktop
 	done
 
 	;;

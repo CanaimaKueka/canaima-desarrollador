@@ -11,6 +11,6 @@ Vcs-Browser: http://gitorious.org/canaima-gnu-linux/canaima-desarrollador/trees/
 
 Package: canaima-desarrollador
 Architecture: all
-Depends: dpkg-dev, git-core, git-buildpackage, dh-make, cdbs, debhelper, fakeroot, build-essential, canaima-curiara | www-browser, lintian, ${shlibs:Depends}, ${misc:Depends}
+Depends: dpkg-dev, git-core, git-buildpackage, dh-make, cdbs, debhelper, fakeroot, build-essential, lintian, ${shlibs:Depends}, ${misc:Depends}
 Description: Paquete que facilita la creación de Software para Canaima
  Este paquete provee los archivos base de Canaima GNU/Linux.

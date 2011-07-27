@@ -1,0 +1,1161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Guía de Referencia para el Desarrollador &mdash; Manual del Desarrollador para Canaima GNU/Linux</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0+0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="Manual del Desarrollador para Canaima GNU/Linux" href="index.html" />
+    <link rel="prev" title="Manual para el Desarrollador" href="manual-desarrollador.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="manual-desarrollador.html" title="Manual para el Desarrollador"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="index.html">Manual del Desarrollador para Canaima GNU/Linux</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="guia-de-referencia-para-el-desarrollador">
+<h1><strong>Guía de Referencia para el Desarrollador</strong><a class="headerlink" href="#guia-de-referencia-para-el-desarrollador" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Este documento tratará de describir cómo se construye un paquete Canaima GNU/Linux para el usuario común de Canaima y para futuros desarrolladores en un lenguaje informal, y con multitud de ejemplos. Hay un antiguo dicho romano que dice, Longum iter est per preaecepta, breve et efficax per exempla! (¡Es un largo camino con las reglas, pero corto y eficiente con ejemplos!)</p>
+<p>Canaima esta basado en Debian, y una de las cosas que hace a Debian una de las distribuciones más importantes del mercado es su sistema de paquetes. Aunque hay una gran cantidad de programas disponibles en forma de paquetes de Debian, algunas veces necesitarás instalar programas que no están disponible en este formato.</p>
+<p>Este documento explicará cada pequeño paso (al principio quizás irrelevantes), le ayudará a crear tu primer paquete, ganar alguna experiencia en construir próximas versiones de él, y quizás otros paquetes después.</p>
+<p>Este documento se basa en la &#8220;Guía del nuevo desarrollador de Debian&#8221;. se pueden obtener versiones nuevas de este documento en línea en <a class="reference external" href="http://www.debian.org/doc/maint-guide/">http://www.debian.org/doc/maint-guide/</a> y en el paquete «maint-guide-es».</p>
+<div class="section" id="programas-que-necesitas-para-el-desarrollo">
+<h2><strong>Programas que necesitas para el desarrollo</strong><a class="headerlink" href="#programas-que-necesitas-para-el-desarrollo" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Antes de empezar nada, deberías asegurarte de que tienes instalados algunos paquetes adicionales necesarios para el desarrollo. Observa que en la lista no están incluidos paquetes cuyas prioridades son «esencial» o «requerido», que se suponen ya instalados.</p>
+<p>Los siguientes paquetes vienen en una instalación estándar de Canaima, así que probablemente ya los tengas (junto con los paquetes de los que dependen). Aún así, deberías comprobarlo con:</p>
+<div class="highlight-python"><pre>dpkg -s &lt;paquete&gt;</pre>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">dpkg-dev:</th><td class="field-body">este paquete contiene las herramientas necesarias para desempaquetar, construir y enviar paquetes fuente de Canaima.</td>
+</tr>
+<tr class="field"><th class="field-name">file:</th><td class="field-body">este útil programa puede determinar de qué tipo es un fichero</td>
+</tr>
+<tr class="field"><th class="field-name">gcc:</th><td class="field-body">el compilador de C de GNU, necesario si el programa, como la gran mayoría, está escrito en el lenguaje de programación C. Este paquete también vendrá con otros paquetes como <strong>binutils</strong> que incluye programas para ensamblar y enlazar ficheros objeto y el preprocesador de C en el paquete cpp.</td>
+</tr>
+<tr class="field"><th class="field-name">libc6-dev:</th><td class="field-body">las bibliotecas y archivos de cabecera de C que gcc necesita para enlazar y crear ficheros objeto.</td>
+</tr>
+<tr class="field"><th class="field-name">make:</th><td class="field-body">habitualmente la creación de un programa consta de varios pasos. En lugar de ejecutar las mismas órdenes una y otra vez, puedes utilizar este programa para automatizar el proceso, creando ficheros <strong>«Makefile»</strong></td>
+</tr>
+<tr class="field"><th class="field-name">patch:</th><td class="field-body">esta utilidad es muy práctica, ya que permite tomar un fichero que contiene un listado de diferencias (producido por el programa diff) y aplicárselas al fichero original, produciendo una versión &#8220;parcheada&#8221;.</td>
+</tr>
+<tr class="field"><th class="field-name">perl:</th><td class="field-body">Perl es uno de los lenguajes interpretados para hacer guiones (o <em>«scripts»</em>) más usados en los sistemas Un*x de hoy en día, comúnmente se refiere a él como la <strong>«navaja suiza de Unix»</strong>.</td>
+</tr>
+</tbody>
+</table>
+<p><em>Probablemente, necesitarás instalar además los siguientes paquetes:</em></p>
+<p><em>autoconf</em> y <em>automake</em>: muchos programas nuevos usan ficheros de configuración y ficheros «Makefile» que se procesan con la ayuda de programas como éstos.</p>
+<p><em>dh-make</em> y <em>debhelper</em>: <em>dh-make</em> es necesario para crear el esqueleto de nuestro paquete ejemplo, y se usarán algunas de las herramientas de debhelper para crear los paquetes. Aunque no son imprescindibles para la creación de paquetes se recomiendan encarecidamente para nuevos desarrolladores. Hacen el proceso mucho más fácil al principio, y más fácil de controlar también más adelante, mas información en el directorio <em>/doc/debhelper/README</em>.</p>
+<p><em>devscripts</em>: este paquete contiene algunos guiones útiles para los desarrolladores, pero no son necesarios para crear paquetes, mas información en el directorio <em>/usr/share/doc/devscripts/README.gz</em>.</p>
+<p><em>fakeroot</em>: esta utilidad te permite emular al usuario administrador (o <em>root</em>), lo cual es necesario para ciertas partes del proceso de construcción.</p>
+<p><em>gnupg</em>: herramienta que te permite firmar digitalmente los paquetes. Esto es especialmente importante si quieres distribuir tu paquete a otras personas, y ciertamente, tendrás que hacerlo cuando tu trabajo vaya a incluirse en la distribución de Debian.</p>
+<p><em>g77</em>: el compilador GNU de Fortran 77, necesario si el programa está escrito en Fortran.</p>
+<p><em>gpc</em>: el compilador GNU de Pascal, necesario si el programa está escrito en Pascal. Merece la pena mencionar aquí fp-compiler, un compilador libre de Pascal, que también es bueno en esta tarea.</p>
+<p><em>xutils</em>: algunos programas, normalmente aquellos hechos para X11, también usan programas para generar Makefiles de un conjunto de funciones de macro.</p>
+<p><em>lintian</em>: este es el comprobador de paquetes de Debian, que te indica muchos de los errores comunes después de construir un paquete, y explica los errores encontrados, mas información en <em>/usr/share/doc/lintian/lintian.html/index.html</em>.</p>
+<p><em>pbuilder</em>: este paquete contiene programas para crear y mantener entornos chroot. Al construir paquetes Debian en estos entornos chroot se verifica que las dependencias son las adecuadas y se evitan fallos al construir desde el código fuente.</p>
+<p>Las breves descripciones dadas anteriormente sólo sirven para introducirte a lo que hace cada paquete. Antes de continuar, por favor, lee la documentación de cada programa, al menos para su uso normal. Puede parecerte algo duro ahora, pero más adelante estarás muy contento de haberla leído.
+Nota: debmake es un paquete que incluye otros programas con funciones similares a dh-make, pero su uso específico no está cubierto en este documento porque se trata de una herramienta obsoleta.</p>
+</div>
+<div class="section" id="desarrollador-oficial-de-canaima">
+<h2><strong>Desarrollador oficial de Canaima</strong><a class="headerlink" href="#desarrollador-oficial-de-canaima" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Puede que te quieras convertir en un desarrollador oficial de Canaima una vez hayas construido tu paquete (o incluso mientras lo estás haciendo) para que el paquete se introduzca en la nueva distribución (si el programa es útil, ¿por qué no?).</p>
+<p>No puedes convertirte en desarrollador oficial de Canaima de la noche a la mañana porque hace falta más que sólo habilidades técnicas. No te sientas desilusionado por esto. Aún puedes subir tu paquete, si es útil a otras personas, como su mantenedor a través de un patrocinador mientras tu entras en el proceso de nuevos desarrolladores de Debian. En este caso el patrocinador es un desarrollador oficial de Debian que ayuda a la persona que mantiene el paquete a subirlo al archivo de Debian.</p>
+<p>Ten en cuenta que no tienes que crear un paquete nuevo para poder convertirte en desarrollador oficial. Un camino posible para ser desarrollador oficial es contribuir al mantenimiento de los paquetes ya existentes en la distribución.</p>
+<div class="section" id="mas-informacion">
+<h3>Más información<a class="headerlink" href="#mas-informacion" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Puedes construir dos tipos de paquetes: fuentes y binarios. Un paquete fuente contiene el código que puedes compilar en un programa. Un paquete binario contiene sólo el programa terminado. ¡No mezcles los términos como «fuentes de un programa» y el «paquete fuente de un programa»! Por favor, lee los otros manuales si necesitas más detalles sobre terminología.</p>
+<p>Canaima usa el término <em>desarrollador</em> se utiliza para referirse a la persona que hace paquetes, y el termino <em>autor original</em> para la persona que hizo el programa, y <em>desarrollador original</em> para la persona que actualmente mantiene el programa fuera de Debian. Generalmente el autor y el desarrollador fuente son la misma persona - y algunas veces incluso el desarrollador es el mismo. Si haces un programa, y quieres incluirlo en Debian, tienes total libertad para solicitar convertirte en desarrollador.</p>
+</div>
+</div>
+<div class="section" id="primeros-pasos">
+<h2><strong>Primeros Pasos</strong><a class="headerlink" href="#primeros-pasos" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="section" id="elige-el-programa">
+<h3>Elige el programa<a class="headerlink" href="#elige-el-programa" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Probablemente hayas escogido ya el paquete que deseas construir. Lo primero que debes hacer es comprobar si el paquete está ya en el archivo de la distribución utilizando synaptic.</p>
+<p>Si el paquete es nuevo y decides que te gustaría verlo en Canaima GNU/Linux debes seguir los pasos indicados a continuación:</p>
+<ul class="simple">
+<li>Comprueba que no hay nadie más trabajando ya en el paquete consultando la lista de paquetes en los que se está trabajando. Si ya hay alguien trabajando en él, contacta con esa persona. Si no, intenta encontrar otro programa interesante que nadie mantenga.</li>
+<li>El programa debe tener una licencia. Preferiblemente la licencia deberá ser libre en el sentido marcado por las Directrices de Debian para el software libre y no puede depender de un paquete que no esté dentro de «main» para compilarse o para poder utilizarse. Si la licencia no sigue alguna de estas reglas aún puede incluirse en las secciones «contrib» o «non-free» de Debian dependiendo de su situación. Si no estás seguro sobre en qué lugar debería ir, envía el texto de la licencia y pide consejo con un correo (en inglés) dirigido a <a class="reference external" href="mailto:debian-legal&#37;&#52;&#48;lists&#46;debian&#46;org">debian-legal<span>&#64;</span>lists<span>&#46;</span>debian<span>&#46;</span>org</a>.</li>
+<li>El programa no debería ejecutarse con «setuid root», o aún mejor: no debería ser «setuid» ni «setgid».</li>
+<li>El programa no debería ser un demonio, o algo que vaya en los directorios <em>/sbin</em>, o abrir un puerto como usuario administrador.</li>
+<li>El programa debería estar compuesto por binarios ejecutables, no intentes empaquetar aún con bibliotecas.</li>
+<li>El programa debería tener una buena documentación, o al menos un código fuente legible y no ofuscado.</li>
+<li>Deberías contactar con el autor o autores del programa para comprobar si está/n de acuerdo con que se empaquete. Es importante que el autor o autores sigan manteniendo el programa para que puedas en el futuro consultarle/s en caso de que haya problemas específicos. No deberías intentar empaquetar programas que no estén mantenidos.</li>
+<li>Y por último, pero no menos importante, deberías saber cómo funciona, y haberlo utilizado durante algún tiempo.</li>
+</ul>
+<p>Por supuesto, esta lista es para tomar medidas de seguridad, y con la intención de salvarte de usuarios enfurecidos si haces algo mal con algún demonio «setuid»... Cuando tengas más experiencia en empaquetar, podrás hacer este tipo de paquetes, incluso los desarrolladores más experimentados preguntan en la lista de correo de <em>desarrolladores</em> cuando tienen dudas. La gente allí te ayudará gustosamente.</p>
+</div>
+<div class="section" id="obten-el-programa-y-pruebalo">
+<h3>Obtén el programa y pruébalo<a class="headerlink" href="#obten-el-programa-y-pruebalo" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Lo primero que debes hacer es encontrar y descargar el paquete original. A partir de este punto se da por supuesto que ya tienes el código fuente que obtuviste de la página del autor. Las fuentes de los programas libres de GNU/Linux generalmente vienen en formato <em>tar/gzip</em>, con extensión <em>.tar.gz</em>, y generalmente contienen un subdirectorio llamado <em>«programa-versión»</em> con todas las fuentes en él. Si tu programa viene en otro tipo de archivo (por ejemplo, el fichero termina en &#8220;.Z&#8221; o &#8220;.zip&#8221;), descomprímelo con las herramientas adecuadas, o pregunta en la lista de correo <em>desarrolladores</em> si tienes dudas de cómo se puede desempaquetar correctamente (pista: prueba <em>«file archivo.extensión»</em>).</p>
+<p>Como ejemplo, usaré el programa conocido como «gentoo», un gestor de ficheros de X11 en GTK+. Observa que el programa ya ha sido empaquetado previamente pero ha cambiado sustancialmente de versión desde que este texto se escribió.</p>
+<p>Crea un subdirectorio bajo tu directorio personal llamado «debian» o «deb» o lo que creas apropiado (por ejemplo ~/gentoo/ estaría bien en este caso). Mueve a él el archivo que has descargado, y descomprímelo de la siguiente forma: «tar xzf gentoo-0.9.12.tar.gz». Asegúrate de que no hay errores, incluso errores «irrelevantes», porque es muy probable que haya problemas al desempaquetarlo en sistemas de otras personas, cuyas herramientas de desempaquetado puede que no ignoren estas anomalías.</p>
+<p>Ahora tienes otro subdirectorio, llamado «gentoo-0.9.12». Muévete a ese directorio y lee en profundidad la documentación que encuentres. Generalmente se encuentra en ficheros que se llaman <em>README</em>, <em>INSTALL</em>, *.lsm o *.html. Allí encontrarás instrucciones de cómo compilar e instalar el programa (muy probablemente asumirán que lo quieres instalar en el directorio /usr/local/bin, no harás esto, pero eso lo veremos más adelante en Instalación en un subdirectorio, Sección 3.1).</p>
+<p>El proceso varía de un programa a otro, pero gran parte de los programas modernos vienen con un guión <em>«configure»</em> que configura las fuentes para tu sistema y se asegura de que el sistema está en condiciones de compilarlo. Después de configurarlo (con <em>«./configure»</em>), los programas generalmente se compilan con <em>«make»</em>. Algunos de ellos soportan <em>«make check»</em> para ejecutarse incluyendo comprobaciones automáticas. Generalmente se instalarán en sus directorios de destino ejecutando <em>«make install»</em>.</p>
+<p>Ahora intenta compilar, y ejecutar el programa, para asegurarte de que funciona bien y de que no rompe nada mientras está instalándose o ejecutándose.</p>
+<p>También, generalmente, puedes ejecutar <em>«make clean»</em> (o mejor <em>«make distclean»</em>) para limpiar el directorio donde se genera el programa. A veces hay incluso un <em>«make uninstall»</em> que se puede utilizar para borrar todos los archivos instalados.</p>
+</div>
+<div class="section" id="nombre-del-paquete-y-version">
+<h3>Nombre del paquete y versión<a class="headerlink" href="#nombre-del-paquete-y-version" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Deberías empezar a construir tu paquete en un directorio de fuentes completamente limpio, o simplemente con las fuentes recién desempaquetadas.</p>
+<p>Para construir correctamente el paquete, debes cambiar el nombre original del programa a letras minúsculas (si no lo está ya), y deberías renombrar el directorio de fuentes a <em>&lt;nombre_de_paquete&gt;-&lt;versión&gt;</em>.</p>
+<p>Si el nombre del programa está formado por varias palabras, contráelas a una palabra o haz una abreviatura. Por ejemplo, el paquete del programa «el editor para X de Javi» se podría llamar javiedx o jle4x, o lo que decidas, siempre y cuando no se exceda de unos límites razonables, como 20 caracteres.</p>
+<p>Comprueba también la versión exacta del programa (la que se incluye en la versión del paquete). Si el programa no está numerado con versiones del estilo de X.Y.Z, pero sí con fecha de publicación, eres libre de utilizar la fecha como número de versión, precedida por «0.0» (sólo por si los desarrolladores originales deciden sacar una versión nueva como 1.0). Así, si la fecha de las fuentes es el 19 de diciembre de 1998, puedes utilizar la cadena 0 0.0.19981219 (que utiliza el formato de fecha ISO 8601, N. del T.) como número de versión.</p>
+<p>Aún así habrá algunos programas que ni siquiera estén numerados, en cuyo caso deberás contactar con el desarrollador original para ver si tienen algún otro sistema de seguimiento de revisiones.</p>
+</div>
+<div class="section" id="debianizacion-inicial">
+<h3>«Debianización» inicial<a class="headerlink" href="#debianizacion-inicial" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Asegúrate que te encuentras en el directorio donde están las fuentes del programa y ejecuta lo siguiente:</p>
+<div class="highlight-python"><pre>dh_make -e tu.dirección@de.desarrollador -f ../gentoo-0.9.12.tar.gz</pre>
+</div>
+<p>Por supuesto, cambia la cadena «tu.dirección&#64;de.desarrollador» por tu dirección de correo electrónico para que se incluya en la entrada del fichero de cambios así como en otros ficheros, y el nombre de fichero de tu archivo fuente original.</p>
+<p>Saldrá alguna información. Te preguntará qué tipo de paquete deseas crear. Gentoo es un sólo paquete de binarios - crea sólo un binario, y, por tanto, sólo un fichero .deb - así que seleccionaremos la primera opción, con la tecla «s». Comprueba la información que aparece en la pantalla y confirma pulsando la tecla &lt;intro&gt;.</p>
+<p>Tras ejecutar dh_make, se crea una copia del código original con el nombre gentoo_0.9.12.orig.tar.gz en el directorio raíz para facilitar la creación del paquete de fuentes no nativo de Debian con el diff.gz. Observa que hay dos cambios clave en este nombre de fichero:</p>
+<ul class="simple">
+<li>El nombre del paquete y la versión están separados por «_».</li>
+<li>Hay un «orig.» antes de «tar.gz».</li>
+</ul>
+<p>Como nuevo desarrollador, se desaconseja crear paquetes complicados, por ejemplo:</p>
+<ul class="simple">
+<li>múltiples paquetes binarios</li>
+<li>paquetes de bibliotecas</li>
+<li>paquetes en los que el formato del archivo fuente no es en tar.gz. ni en tar.bz2, o</li>
+<li>paquetes cuyas fuentes contienen partes que no se pueden distribuir.</li>
+</ul>
+<p>Estos casos no son extremadamente difíciles, pero sí necesita algunos conocimientos más, así que aquí no se describirá el proceso de empaquetado para este tipo de paquetes.</p>
+<p>Ten en cuenta que deberías ejecutar dh_make sólo una vez, y que no se comportará correctamente si lo haces otra vez en el mismo directorio ya «debianizado». Esto también significa que usarás un método distinto para crear una nueva revisión o una nueva versión de tu paquete en el futuro.</p>
+</div>
+<div class="section" id="modificar-las-fuentes">
+<h3>Modificar las fuentes<a class="headerlink" href="#modificar-las-fuentes" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Por lo general, los programas se instalan a sí mismos en el subdirectorio /usr/local. Pero los paquetes Debian no pueden utilizar este directorio ya que está reservado para el uso privado del administrador (o de los usuarios). Esto significa que tienes que mirar el sistema de construcción de tu programa, generalmente empezando por el fichero <em>«Makefile»</em>. Éste es el guión <em>make</em> que se usará para automatizar la creación de este programa.</p>
+<p>Observa que si tu programa usa GNU automake y/o autoconf, lo que quiere decir que las fuentes incluyen ficheros Makefile.am y Makefile.in, respectivamente, ya que necesitarás modificar esos ficheros, porque cada invocación de <em>automake</em> reescribirá los ficheros <em>«Makefile.in»</em> con información generada a partir de los ficheros <em>«Makefile.am»</em>, y cada llamada a <em>./configure</em> hará lo mismo con los ficheros <em>«Makefile»</em>, con información de los ficheros <em>«Makefile.in»</em>. Editar los ficheros <em>«Makefile.am»</em> requiere algunos conocimientos de <em>automake</em>, que puedes obtener leyendo la entrada de <em>info</em> para <em>automake</em>, mientras que editar los ficheros <em>«Makefile.in»</em> es casi lo mismo que editar ficheros <em>«Makefile»</em>, simplemente basta con poner atención en las variables, es decir, cualquier cadena que empiece y acabe con el caracter «&#64;», como por ejemplo &#64;CFLAGS&#64; o &#64;LN_S&#64;, que se sustituyen por otros valores cada vez que se ejecute <em>./configure</em>. Por favor, lee <em>/usr/share/doc/autotools-dev/README.Debian.gz</em> antes de empezar.</p>
+<p>Ten en cuenta que no hay espacio aquí para entrar en todos los detalles respecto a los arreglos que deben hacerse en las fuentes originales. Sin embargo, a continuación se detallan algunos de los problemas más frecuentes.</p>
+</div>
+<div class="section" id="instalacion-en-un-subdirectorio">
+<h3>Instalación en un subdirectorio<a class="headerlink" href="#instalacion-en-un-subdirectorio" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>La mayor parte de los programas tienen alguna manera de instalarse en la estructura de directorios existente en tu sistema, para que los binarios sean incluidos en tu <em>$PATH</em>, y para que encuentre la documentación y páginas de manual en los lugares habituales. Sin embargo, si lo instalas de esta forma, el programa se instalará con los demás binarios que ya están en tu sistema. Esto dificultará a las herramientas de paquetes averiguar qué archivos pertenecen a tu paquete y cuales no.</p>
+<p>Por lo tanto, necesitas hacer algo más: instalar el programa en un subdirectorio temporal desde el cual las herramientas de desarrollo construirán el paquete <em>.deb</em> que se pueda instalar. Todo lo que se incluye en este directorio será instalado en el sistema del usuario cuando instale su paquete, la única diferencia es que <em>dpkg</em> instalará los ficheros en el directorio raíz.</p>
+<p>Este directorio temporal se creará bajo el directorio <em>debian/</em> que está dentro del árbol del código descomprimido, generalmente con el nombre <em>debian/nombre_de_paquete.</em></p>
+<p>Ten en cuenta que, aunque necesitas que el programa se instale en <em>debian/nombre_de_paquete</em>, también necesitas que se comporte correctamente cuando se instale en el directorio raíz, es decir, cuando se instale desde el paquete <em>.deb</em>. Así que no deberías permitir que al construirse lo haga con cadenas como <em>/home/canaima/deb/gentoo-0.9.12/usr/share/gentoo</em> dentro de los archivos del paquete a distribuir.</p>
+<p>Esto será sencillo con los de programas que utilicen la herramienta GNU <em>autoconf</em>. La mayoría de estos programas tienen ficheros <em>«Makefile»</em> por omisión que permiten configurar la instalación en un subdirectorio cualquiera, aunque recordando que, por ejemplo, <em>/usr</em> es el prefijo normal. Cuando detecte que tu programa usa <em>autoconf</em>, <em>dh_make</em> fijará las opciones necesarias para hacer esto automáticamente, así que puedes dejar de leer esta sección. Pero con otros programas puede ser necesario que examines y edites los ficheros <em>«Makefile»</em>.</p>
+<p>Esta es la parte importante del <em>Makefile</em> de gentoo:</p>
+<div class="highlight-python"><pre># ¿Dónde poner el binario cuando se ejecute «make install»?
+BIN     = /usr/local/bin
+
+# ¿Dónde poner los iconos cuando se ejecute «make install»?
+ICONS   = /usr/local/share/gentoo/</pre>
+</div>
+<p>Vemos que los ficheros están configurados para instalarse bajo /usr/local. Cambia estas rutas a:</p>
+<div class="highlight-python"><pre># ¿Dónde poner el binario cuando se ejecute «make install»?
+BIN     = $(DESTDIR)/usr/bin
+
+# ¿Dónde poner los iconos cuando se ejecute «make install»?
+ICONS   = $(DESTDIR)/usr/share/gentoo</pre>
+</div>
+<p>Pero: ¿por qué en este directorio y no en otro? Porque los paquetes de Debian nunca se instalan bajo <em>/usr/local</em>, este árbol de directorio, está reservado para el uso del administrador del sistema. Así que estos ficheros deben instalarse en <em>/usr</em>.</p>
+<p>La localización correcta de los binarios, iconos, documentación, etc, está especificada en el <em>«Estándar de la jerarquía del sistema de ficheros»</em> (véase <em>/usr/share/doc/debian-policy/fhs</em>). Te recomiendo que leas las secciones que podrían aplicar a tu paquete.</p>
+<p>Así pues, deberíamos instalar el binario en <em>/usr/bin</em> en lugar de <em>/usr/local/bin</em> y la página de manual en <em>/usr/share/man/man1</em> en lugar de <em>/usr/local/man/man1</em>. No hemos mencionado ninguna página de manual en el <em>Makefile</em> de gentoo, pero en Debian se requiere que cada programa debe tener una, así que haremos una más tarde y la instalaremos en /usr/share/man/man1.</p>
+<p>Algunos programas no usan variables en el <em>makefile</em> para definir rutas como éstas. Esto significa que tendrás que editar algunos de los ficheros de código C para arreglarlos y que usen las rutas correctas. Pero, ¿dónde buscar?, y exactamente, ¿el qué? Puedes probar a encontrarlos usando:</p>
+<div class="highlight-python"><pre>grep -nr -e 'usr/local/lib' --include='*.[c|h]' .</pre>
+</div>
+<p>(En cada subdirectorio que contenga ficheros .c y .h, grep nos indicará el nombre del fichero y la línea cuando encuentre una ocurrencia.</p>
+<p>Ahora edita esos ficheros y cambia en esas líneas <em>usr/local/lib</em> con <em>usr/share</em> y ya está. Sólo tienes que reemplazar <em>usr/local/lib</em> por tu localización, pero debes ser muy cuidadoso para no modificar el resto del código, especialmente si no sabes mucho sobre cómo programar en C.</p>
+<p>Después de esto deberías encontrar el objetivo <em>«install»</em> (busca una línea que comience por <em>«install:»</em>) y renombra todas las referencias a directorios distintos de los definidos al comienzo del <em>Makefile</em>. Anteriormente el objetivo <em>«install»</em> decía:</p>
+<div class="highlight-python"><pre>install:        gentoo
+                install ./gentoo $(BIN)
+                install icons $(ICONS)
+                install gentoorc-example $(HOME)/.gentoorc</pre>
+</div>
+<p>Después del cambio dice:</p>
+<div class="highlight-python"><pre>install:        gentoo-target
+                install -d $(BIN) $(ICONS) $(DESTDIR)/etc
+                install ./gentoo $(BIN)
+                install -m644 icons/* $(ICONS)
+                install -m644 gentoorc-example $(DESTDIR)/etc/gentoorc</pre>
+</div>
+<p>Seguramente has notado que ahora hay una orden <em>install -d</em> antes de las demás órdenes de la regla. El <em>makefile</em> original no lo tenía porque normalmente <em>/usr/local/bin</em> y otros directorios ya existen en el sistema donde se ejecuta <em>«make install»</em>. Sin embargo, dado que lo instalaremos en un directorio vacío (o incluso inexistente), tendremos que crear cada uno de estos directorios.</p>
+<p>También podemos añadir otras cosas al final de la regla, como la instalación de documentación adicional que los desarrolladores originales a veces omiten:</p>
+<div class="highlight-python"><pre>install -d $(DESTDIR)/usr/share/doc/gentoo/html
+cp -a docs/* $(DESTDIR)/usr/share/doc/gentoo/html</pre>
+</div>
+<p>Un lector atento se dará cuenta de que he cambiado <em>«gentoo»</em> a <em>«gentoo-target»</em> en la línea <em>«install:»</em>. A eso se le llama arreglar un fallo en el programa.</p>
+<p>Siempre que hagas cambios que no estén específicamente relacionados con el paquete Debian, asegúrate de que los envías al desarrollador original para que éste los pueda incluir en la próxima revisión del programa y así le puedan ser útiles a alguien más. Además, recuerda hacer que tus cambios no sean específicos para Debian o Linux (¡ni siquiera para Unix!) antes de enviarlos, hazlo portable. Esto hará que tus arreglos sean más fáciles de aplicar.</p>
+<p>Ten en cuenta que no tienes que enviar ninguno de los ficheros debian/* al desarrollador original.</p>
+</div>
+<div class="section" id="bibliotecas-diferentes">
+<h3>Bibliotecas diferentes<a class="headerlink" href="#bibliotecas-diferentes" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Hay otro problema común: las bibliotecas son generalmente diferentes de plataforma a plataforma. Por ejemplo, un <em>Makefile</em> puede contener una referencia a una biblioteca que no exista en Debian o ni siquiera en Linux. En este caso, se necesita cambiarla a una biblioteca que sí exista en Debian y sirva para el mismo propósito.</p>
+<p>Así, si hay una línea en el <em>Makefile</em> (o Makefile.in) de tu programa que dice algo como lo siguiente (y tu programa no compila):</p>
+<div class="highlight-python"><pre>LIBS = -lcurses -lcosas -lmáscosas</pre>
+</div>
+<p>Entonces cámbiala a lo siguiente, y funcionará casi con seguridad:</p>
+<div class="highlight-python"><pre>LIBS = -lncurses -lcosas -lmáscosas</pre>
+</div>
+<p>(El autor se ha dado cuenta de que éste no es el mejor ejemplo ya que ahora el paquete libncurses incluye un enlace simbólico a libcurses.so, pero no puedo pensar uno mejor. Cualquier sugerencia sería muy bien recibida :-)</p>
+</div>
+</div>
+<div class="section" id="las-cosas-necesarias-bajo-debian">
+<h2><strong>Las cosas necesarias bajo debian</strong><a class="headerlink" href="#las-cosas-necesarias-bajo-debian" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Ahora hay un nuevo subdirectorio bajo el directorio principal del programa (<em>«gentoo-0.9.12»</em>), que se llama <em>«debian»</em>. Hay algunos ficheros en este directorio que debemos editar para adaptar el comportamiento del paquete. La parte más importante es modificar los ficheros <em>«control»</em>, <em>«rules»</em>, <em>«changelog»</em>, y <em>«copyright»</em> que son necesarios en todos los paquetes.</p>
+<div class="section" id="el-fichero-control">
+<h3>El fichero «control»<a class="headerlink" href="#el-fichero-control" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Este fichero contiene varios valores que <em>dpkg</em>, <em>dselect</em> y otras herramientas de gestión de paquetes usarán para gestionar el paquete.</p>
+<p>Aquí está el fichero de control que dh_make crea para nosotros:</p>
+<div class="highlight-python"><pre>1  Source: gentoo
+2  Section: unknown
+3  Priority: optional
+4  Maintainer: Josip Rodin &lt;joy-mg@debian.org&gt;
+5  Build-Depends: debhelper (&gt;&gt; 3.0.0)
+6  Standards-Version: 3.6.2
+7
+8  Package: gentoo
+9  Architecture: any
+10 Depends: ${shlibs:Depends}
+11 Description: &lt;insertar hasta 60 caracteres de descripción&gt;
+12  &lt;inserta una descripción larga, indentada con espacios.&gt;</pre>
+</div>
+<p>Las líneas 1 a 6 son la información de control para el paquete fuente.</p>
+<p>La línea 1 es el nombre del paquete fuente.</p>
+<p>La línea 2 es la sección de la distribución dentro de la que estará este paquete.</p>
+<p>Como puede que hayas notado, Canaima está dividida en secciones: <em>«estable»</em>, <em>«pruebas»</em>, <em>«desarrollo»</em>, etc. Bajo ellas hay subdivisiones lógicas que describen en una palabra qué paquetes hay dentro. Así que tenemos <em>«admin»</em> para programas que sólo usa un administrador, «base» para las herramientas básicas, <em>«devel»</em> para las herramientas de programación, <em>«doc»</em> para la documentación, <em>«libs»</em> para las bibliotecas, <em>«mail»</em> para lectores y demonios de correo-e, <em>«net»</em> para aplicaciones y demonios de red, <em>«x11»</em> para programas específicos de X11, y muchos más.</p>
+<p>Vamos a cambiarla para que ponga x11. El prefijo &#8220;main/&#8221; ya va implícito, así que podemos omitirlo.</p>
+<p>La línea 3 describe cómo de importante es para el usuario la instalación de este paquete. Podrás consultar en el manual de normas de Debian («Debian Policy») la guía de los valores que deberían tener estos campos. La prioridad «optional» suele ser lo mejor para los paquetes nuevos.</p>
+<p>Como es un paquete de prioridad normal y no tiene conflictos con ningún otro, lo dejaremos con prioridad <em>«optional»</em>.</p>
+<p>La línea 4 es el nombre y correo electrónico del desarrollador. Para una dirección de correo electrónico, evita usar comas, el signo «&amp;» y paréntesis.</p>
+<p>La línea 5 incluye la lista de paquetes requeridos para construir tu paquete. Algunos paquetes como gcc y make están implícitos, consulta el paquete build-essential para más detalles. Si se necesita algún compilador no estándar u otra herramienta para construir tu paquete, deberías añadirla en la línea <em>«Build-Depends»</em>. Las entradas múltiples se separan con comas, lee la explicación de las dependencias binarias para averiguar más sobre la sintaxis de este campo.</p>
+<p>También tienes los campos <em>«Build-Depends-Indep»</em> y <em>«Build-Conflicts»</em> entre otros. Estos datos los usarán los programas de construcción automática de paquetes de Debian para crear paquetes binarios para el resto de arquitecturas. Consulta las normas de Debian para más información sobre las dependencias de construcción y la Referencia del Desarrollador para más información sobre las otras arquitecturas y sobre cómo migrar los programas a ellas.</p>
+<p>Aquí tienes un truco que puedes usar para averiguar qué paquetes necesitará tu paquete en su construcción:</p>
+<div class="highlight-python"><pre>strace -f -o /tmp/log ./configure
+# o make en lugar de ./configure, si el paquete no usa autoconf
+for x in `dpkg -S $(grep open /tmp/log|\
+                    perl -pe 's!.* open\(\"([^\"]*).*!$1!' |\
+                    grep "^/"| sort | uniq|\
+                    grep -v "^\(/tmp\|/dev\|/proc\)" ) 2&gt;/dev/null|\
+                    cut -f1 -d":"| sort | uniq`; \
+      do \
+        echo -n "$x (&gt;=" `dpkg -s $x|grep ^Version|cut -f2 -d":"` "), "; \
+      done</pre>
+</div>
+<p>Para encontrar manualmente las dependencias exactas de /usr/bin/foo, ejecuta:</p>
+<div class="highlight-python"><pre>objdump -p /usr/bin/foo | grep NEEDED</pre>
+</div>
+<p>y para cada biblioteca, por ejemplo, libfoo.so.6, ejecuta:</p>
+<div class="highlight-python"><pre>dpkg -S libfoo.so.6</pre>
+</div>
+<p>Debes utilizar la versión <em>«-dev»</em> de cada uno de los paquetes dentro de la entrada <em>«Build-deps»</em>. Si usas <em>ldd</em> para este propósito, también te informará de las dependencias de bibliotecas indirectas, lo que puede llevar a que se introduzcan demasiadas dependencias de construcción.</p>
+<p>La aplicación <em>&#8220;gentoo&#8221;</em> también requiere <em>xlibs-dev</em>, <em>libgtk1.2-dev</em> y <em>libglib1.2-dev</em> para su construcción, así que lo añadiremos junto a <em>debhelper</em>.</p>
+<p>La línea 6 es la versión de los estándares definidos en las normas que sigue este paquete, es decir, la versión del manual de normas que has leído mientras haces tu paquete.</p>
+<p>La línea 8 es el nombre del paquete binario. Este suele ser el mismo que el del paquete fuente, pero no tiene que ser necesariamente así siempre.</p>
+<p>La línea 9 describe la arquitectura de CPU para la que el paquete binario puede ser compilado. Dejaremos puesto <em>«any»</em>, porque dpkg-gencontrol(1) la rellenará con el valor apropiado cuando se compile este paquete en cualquier arquitectura para la cual pueda ser compilado.</p>
+<p>Si tu paquete es independiente de la arquitectura (por ejemplo, un documento, un guión escrito en Perl o para el intérprete de órdenes), cambia esto a <em>«all»</em>, y consulta más adelante El fichero <em>«rules»</em>, Sección 4.4 sobre cómo usar la regla <em>«binary-indep»</em> en lugar de <em>«binary-arch»</em> para construir el paquete.</p>
+<p>La línea 10 muestra una de las más poderosas posibilidades del sistema de paquetes de Debian. Los paquetes se pueden relacionar unos con otros de diversas formas. Aparte de «Depends:» (depende) otros campos de relación son «Recommends:» (recomienda), «Suggests:» (sugiere), «Pre-Depends:» (predepende de), «Conflicts:» (entra en conflicto con), <em>«Provides:»</em> (provee), «Replaces:» (reemplaza a).</p>
+<p>Las herramientas de gestión de paquetes se comportan habitualmente de la misma forma cuando tratan con esas relaciones entre paquetes; si no es así, se explicará en cada caso.</p>
+<p>A continuación se detalla el significado de las dependencias:</p>
+<ul class="simple">
+<li><em>Depends:</em></li>
+</ul>
+<p>No se instalará el programa a menos que los paquetes de los que depende estén ya instalados. Usa esto si tu programa no funcionará de ninguna forma (o se romperá fácilmente) a no ser que se haya instalado un paquete determinado.</p>
+<ul class="simple">
+<li><em>Recommends:</em></li>
+</ul>
+<p>Programas como dselect o aptitude informarán en la instalación de los paquetes recomendados por tu paquete, dselect incluso insistirá. dpkg y apt-get ignorarán este campo. Usa esto para paquetes que no son estrictamente necesarios pero que se usan habitualmente con tu programa.</p>
+<ul class="simple">
+<li><em>Suggests:</em></li>
+</ul>
+<p>Cuando un usuario instale el paquete, todos los programas le informarán de que puede instalar los paquetes sugeridos. Salvo dpkg y apt, que ignorarán estas dependencias. Utiliza esto para paquetes que funcionarán bien con tu programa pero que no son necesarios en absoluto.</p>
+<ul class="simple">
+<li><em>Pre-Depends:</em></li>
+</ul>
+<p>Esto es más fuerte que «Depends». El paquete no se instalará a menos que los paquetes de los que pre-dependa esté instalados y correctamente configurados. Utiliza esto muy poco y sólo después de haberlo discutido en la lista de <em>desarrolladores</em>. En resumidas cuentas: no lo utilices en absoluto :-)</p>
+<ul class="simple">
+<li><em>Conflicts:</em></li>
+</ul>
+<p>El paquete no se instalará hasta que todos los paquetes con los que entra en conflicto hayan sido eliminados. Utiliza esto si tu programa no funcionará en absoluto (o fallará fácilmente) si un paquete en concreto está instalado.</p>
+<ul class="simple">
+<li><em>Provides:</em></li>
+</ul>
+<p>Se han definido nombres virtuales para algunos tipos determinados de paquetes que ofrecen múltiples alternativas para la misma función. Puedes obtener la lista completa en el fichero <em>/usr/share/doc/debian-policy/virtual-package-names-list.text.gz.</em> Usa esto si tu programa ofrece las funciones de un paquete virtual que ya exista.</p>
+<ul class="simple">
+<li><em>Replaces:</em></li>
+</ul>
+<p>Usa esto si tu programa reemplaza ficheros de otro paquete o reemplaza totalmente otro paquete (generalmente se usa conjuntamente con «Conflicts:»). Se eliminarán los ficheros de los paquetes indicados antes de instalar el tuyo.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name" colspan="2">Todos estos campos tienen una sintaxis uniforme:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first">se trata de una lista de nombres de paquetes separados por comas. Estos nombres de paquetes también puede ser listas de paquetes alternativos, separados por los símbolos de barra vertical | (símbolos tubería).</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Los campos pueden restringir su aplicación a versiones determinadas de cada paquete nombrado. Esto se hace listando después de cada nombre de paquete individual las versiones entre paréntesis, e indicando antes del número de versión una relación de la siguiente lista. Las relaciones permitidas son:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first">&lt;&lt;, &lt;=, =, &gt;= y &gt;&gt; para estrictamente anterior, anterior o igual, exactamente igual, posterior o igual o estrictamente posterior, respectivamente. Por ejemplo:</p>
+<div class="last highlight-python"><pre>:Depends: foo (&gt;= 1.2), libbar1 (= 1.3.4)
+:Conflicts: baz
+:Recommends: libbaz4 (&gt;&gt; 4.0.7)
+:Suggests: quux
+:Replaces: quux (&lt;&lt; 5), quux-foo (&lt;= 7.6)</pre>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>La última funcionalidad que necesitas conocer es $(shlibs:Depends). Después de que tu paquete se compile y se instale en el directorio temporal, dh_shlibdeps(1) lo escaneará en busca de binarios y bibliotecas para determinar las dependencias de bibliotecas compartidas y en qué paquetes están, tales como como libc6 o xlib6g. Luego pasará la lista a dh_gencontrol(1) que rellenará estas dependencias en el lugar adecuado. De esta forma no tendrás que preocuparte por esto.</p>
+<p>Después de decir todo esto, podemos dejar la línea de «Depends:» exactamente como está ahora e insertar otra línea tras ésta que diga Suggests: file, porque gentoo utiliza algunas funciones de este paquete/programa.</p>
+<p>La línea 11 es una descripción corta. La mayor parte de los monitores de la gente son de 80 columnas de ancho, así que no debería tener más de 60 caracteres. Cambiaré esto a «fully GUI configurable GTK+ file manager» («Gestor de ficheros GTK+ completamente configurable por GUI»).</p>
+<p>La línea 12 es donde va la descripción larga del paquete. Debería ser al menos un párrafo que dé más detalles del paquete. La primera columna de cada línea debería estar vacía. No puede haber líneas en blanco, pero puede poner un . (punto) en una columna para simularlo. Tampoco debe haber más de una línea en blanco después de la descripción completa.</p>
+<p>Aquí está el fichero de control actualizado:</p>
+<div class="highlight-python"><pre>1  Source: gentoo
+2  Section: x11
+3  Priority: optional
+4  Maintainer: Josip Rodin &lt;joy-mg@debian.org&gt;
+5  Build-Depends: debhelper (&gt;&gt; 3.0.0), xlibs-dev, libgtk1.2-dev, libglib1.2-dev
+6  Standards-Version: 3.5.2
+7
+8  Package: gentoo
+9  Architecture: any
+10 Depends: ${shlibs:Depends}
+11 Suggests: file
+12 Description: fully GUI configurable X file manager using GTK+
+13  gentoo is a file manager for Linux written from scratch in pure C. It
+14  uses the GTK+ toolkit for all of its interface needs. gentoo provides
+15  100% GUI configurability; no need to edit config files by hand and re-
+16  start the program. gentoo supports identifying the type of various
+17  files (using extension, regular expressions, or the «file» command),
+18  and can display files of different types with different colors and icons.
+19  .
+20  gentoo borrows some of its look and feel from the classic Amiga file
+21  manager "Directory OPUS" (written by Jonathan Potter).</pre>
+</div>
+</div>
+<div class="section" id="el-fichero-copyright">
+<h3>El fichero «copyright»<a class="headerlink" href="#el-fichero-copyright" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Este fichero contiene la información sobre la licencia y copyright de las fuentes originales del paquete. El formato no está definido en las normas, pero sí en sus contenidos (sección 12.6 «Copyright information»).</p>
+<p><em>dh_make</em> crea por omisión un fichero como este:</p>
+<div class="highlight-python"><pre>1  This package was debianized by Josip Rodin &lt;joy-mg@debian.org&gt; on
+2  Wed, 11 Nov 1998 21:02:14 +0100.
+3
+4  It was downloaded from &lt;rellena con el sitio ftp site&gt;
+5
+6  Upstream Author(s): &lt;pon el nombre del autor y dirección de correo&gt;
+7
+8  Copyright:
+9
+10 &lt;Debe incluirse aquí&gt;</pre>
+</div>
+<p>Las cosas importantes que se deben añadir a este fichero son el lugar de donde obtuviste el paquete junto con la nota de copyright y licencia originales. Debes incluir la licencia completa, a menos que sea una licencia común en el mundo del software libre como GNU GPL o LGPL, BSD o la «Licencia artística», donde basta referirse al fichero apropiado en el directorio /usr/share/common-licenses/ que existe en todo sistema Debian.</p>
+<p>La aplicación <em>gentoo</em> está publicado bajo la Licencia Pública General GNU, así que cambiaremos el fichero a esto:</p>
+<div class="highlight-python"><pre>1  This package was debianized by Josip Rodin &lt;joy-mg@debian.org&gt; on
+2  Wed, 11 Nov 1998 21:02:14 +0100.
+3
+4  It was downloaded from: ftp://ftp.obsession.se/gentoo/
+5
+6  Upstream author: Emil Brink &lt;emil@obsession.se&gt;
+7
+8  This software is copyright (c) 1998-99 by Emil Brink, Obsession
+9  Development.
+10
+11 You are free to distribute this software under the terms of
+12 the GNU General Public License  either version 2 of the License,
+13 or (at your option) any later version.
+14 On Debian systems, the complete text of the GNU General Public
+15 License can be found in the file `/usr/share/common-licenses/GPL-2'.</pre>
+</div>
+</div>
+<div class="section" id="el-fichero-changelog">
+<h3>El fichero «changelog»<a class="headerlink" href="#el-fichero-changelog" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Este es un fichero requerido, que tiene un formato especial descrito en las normas, sección 4.4 &#8220;debian/changelog&#8221;. Este es el formato que usan dpkg y otros programas para obtener el número de versión, revisión, distribución y urgencia de tu paquete.</p>
+<p>Para ti es también importante, ya que es bueno tener documentados todos los cambios que hayas hecho. Esto ayudará a las personas que se descarguen tu paquete para ver si hay temas pendientes en el paquete que deberían conocer de forma inmediata. Se guardará como «/usr/share/doc/gentoo/changelog.Debian.gz» en el paquete binario.</p>
+<p>dh_make crea uno por omisión, el cual es como sigue:</p>
+<div class="highlight-python"><pre>1  gentoo (0.9.12-1) unstable; urgency=low
+2
+3   * Initial Release.
+4
+5  -- Carlos Guerrero &lt;cguerrero@cnti.gob.ve&gt; Wed, 11 Nov 2009 21:02:14 +0100
+6</pre>
+</div>
+<p>La línea 1 es el nombre del paquete, versión, distribución y urgencia. El nombre debe coincidir con el nombre del paquete fuente, la distribución debería ser, por ahora, «pruebas» (o incluso «desarrollo») y la urgencia no debería cambiarse a algo mayor que «low». :-)</p>
+<p>Las línea 3-5 son una entrada de registro, donde se documentan los cambios hechos en esta revisión del paquete (no los cambios en las fuentes originales - hay un fichero especial para este propósito, creado por los autores originales y que instalarás luego como <em>/usr/share/doc/gentoo/changelog.gz</em>). Las nuevas líneas deben insertarse justo antes de la línea que hay más arriba que comienza por un asterisco («*»). Puede hacerlo con dch(1), o manualmente con cualquier editor de texto.</p>
+<p>Terminarás con algo así:</p>
+<div class="highlight-python"><pre>1  gentoo (0.9.12-1) unstable; urgency=low
+2
+3   * Version inicial del paquete.
+4   * Este es mi primer paquete.
+5   * Sin modificaciones adicionales del archivo fuente.
+6
+7  -- Carlos Guerrero &lt;cguerrero@cnti.gob.ve&gt; Wed, 11 Nov 2009 21:02:14 +0100
+8</pre>
+</div>
+<p>Puedes leer más sobre cómo actualizar el fichero changelog más adelante en Actualizar el paquete, Capítulo 9.</p>
+</div>
+<div class="section" id="el-fichero-rules">
+<h3>El fichero «rules»<a class="headerlink" href="#el-fichero-rules" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Ahora necesitamos mirar las reglas exactas que dpkg-buildpackage utilizará para crear el paquete. Este fichero es en realidad otro Makefile, pero diferente al que viene en las fuentes originales. A diferencia de otros ficheros en debian/, éste necesita ser un fichero ejecutable.</p>
+<p>Cada fichero <em>«rules»</em>, como muchos otros <em>Makefiles</em>, se compone de varias reglas que especifican cómo tratar las fuentes. Cada regla se compone de objetivos, ficheros o nombres de acciones que se deben llevar a cabo (por ejemplo, <em>«build:»</em> o <em>«install:»</em>). Las reglas que quieras ejecutar deberían llamarse como argumentos de la línea de órdenes (por ejemplo, <em>«./debian/rules build»</em> o <em>«make -f rules install»</em>). Después del nombre del objetivo, puedes nombrar las dependencias, programas o ficheros de los que la regla dependa. Después de esto, hay un número cualquiera de instrucciones (¡indentado con &lt;tab&gt;!), hasta que se llega a una línea en blanco. Ahí empieza otra regla. Las líneas múltiples en blanco, y las líneas que empiezan por almohadillas («#») se tratan como comentarios y se ignoran.</p>
+<p>Probablemente ya te hayas perdido, pero todo quedará más claro después de ver el fichero «rules» que <em>dh_make</em> pone por omisión. Deberías leer también la entrada de <em>«make»</em> en <em>info</em> para más información.</p>
+<p>La parte importante que debes conocer sobre el fichero de reglas creado por <em>dh_make</em>, es que sólo es una sugerencia. Funcionará para paquetes simples pero para más complicados, no te asustes y añade o quita cosas de éste para ajustarlo a tus necesidades. Una cosa que no debes cambiar son los nombres de las reglas, porque todas las herramientas utilizan estos nombres, como se describe en las normas.</p>
+<p>Éste es, más o menos, el contenido del fichero debian/rules que <em>dh_make</em> genera por omisión:</p>
+<div class="highlight-python"><pre> 1  #!/usr/bin/make -f
+ 2  # -*- makefile -*-
+ 3  # Sample debian/rules that uses debhelper.
+ 4  # This file was originally written by Joey Hess and Craig Small.
+ 5  # As a special exception, when this file is copied by dh-make into a
+ 6  # dh-make output file, you may use that output file without restriction.
+ 7  # This special exception was added by Craig Small in version 0.37 of dh-make.
+ 8  # Uncomment this to turn on verbose mode.
+ 9  #export DH_VERBOSE=1
+10  configure: configure-stamp
+11  configure-stamp:
+12          dh_testdir
+13          # Add here commands to configure the package.
+14          touch configure-stamp
+15  build: build-stamp
+16  build-stamp: configure-stamp
+17          dh_testdir
+18          # Add here commands to compile the package.
+19          $(MAKE)
+20          #docbook-to-man debian/testpack.sgml &gt; testpack.1
+21          touch $@
+22  clean:
+23          dh_testdir
+24          dh_testroot
+25          rm -f build-stamp configure-stamp
+26          # Add here commands to clean up after the build process.
+27          $(MAKE) clean
+28          dh_clean
+29  install: build
+30          dh_testdir
+31          dh_testroot
+32          dh_clean -k
+33          dh_installdirs
+34          # Add here commands to install the package into debian/testpack.
+35          $(MAKE) DESTDIR=$(CURDIR)/debian/testpack install
+36  # Build architecture-independent files here.
+37  binary-indep: build install
+38  # We have nothing to do by default.
+39  # Build architecture-dependent files here.
+40  binary-arch: build install
+41          dh_testdir
+42          dh_testroot
+43          dh_installchangelogs
+44          dh_installdocs
+45          dh_installexamples
+46  #       dh_install
+47  #       dh_installmenu
+48  #       dh_installdebconf
+49  #       dh_installlogrotate
+50  #       dh_installemacsen
+51  #       dh_installpam
+52  #       dh_installmime
+53  #       dh_python
+54  #       dh_installinit
+55  #       dh_installcron
+56  #       dh_installinfo
+57          dh_installman
+58          dh_link
+59          dh_strip
+60          dh_compress
+61          dh_fixperms
+62  #       dh_perl
+63  #       dh_makeshlibs
+64          dh_installdeb
+65          dh_shlibdeps
+66          dh_gencontrol
+67          dh_md5sums
+68          dh_builddeb
+69  binary: binary-indep binary-arch
+70  .PHONY: build clean binary-indep binary-arch binary install configure</pre>
+</div>
+<p>Probablemente estés familiarizado con líneas como la primera de guiones escritos en shell o Perl. Esta línea indica que el fichero debe ejecutarse con <em>/usr/bin/make</em>.</p>
+<p>El significado de las variables DH_* que se mencionan en las líneas 8 y 9 debería ser evidente de la descripción corta. Para más información sobre DH_COMPAT consulte la sección «Debhelper compatibility levels» del manual de debhelper(1).</p>
+<p>Las líneas de la 11 a la 16 son el esqueleto de apoyo para los parámetros de DEB_BUILD_OPTIONS. Basicamente, estas cosas controlan si los binarios se construyen con los símbolos del depurador y si deberían eliminarse tras la instalación. De nuevo, es sólo un esqueleto, una pista de lo que deberías hacer. Deberías comprobar cómo el sistema de construcción de las fuentes maneja la inclusión de los símbolos del depurador y su eliminación en la instalación e implementarlo por ti mismo.</p>
+<p>Habitualmente puedes decirle a gcc que compile con &#8220;-g&#8221; usando la variable CFLAGS. Si este es el caso de tu paquete, pon la variable añadiendo CFLAGS=&#8221;$(CFLAGS)&#8221; a la invocación de $(MAKE) en la regla de construcción (ver más abajo). Alternativamente, si tu paquete usa un guión de configuración de autoconf puedes definir la cadena arriba mostrada anteponiéndola a la llamada a ./configure en la regla de construcción.</p>
+<p>Los programas a los que se le quitan los símbolos del depurador con <em>strip</em> se configuran normalmente para instalarse sin pasar por <em>strip</em>, y a menudo sin una opción para cambiar esto. Afortunadamente, tienes <em>dh_strip</em> que detectará cuando la bandera DEB_BUILD_OPTIONS=nostrip está activada y finalizará silenciosamente.</p>
+<p>Las líneas 18 a la 26 describen la regla <em>build</em> (y su hija <em>«build-stamp»</em>), que ejecuta <em>make</em> con el propio <em>Makefile</em> de la aplicación para compilar el programa. Si el programa utiliza las utilidades de configuración de GNU para construir los binarios, por favor, asegúrate de leer <em>/usr/share/doc/autotools-dev/README.Debian.gz</em>. Hablaremos sobre el ejemplo comentado docbook-to-man más adelante en <em>manpage.1.ex</em>, <em>manpage.sgml.es</em>, Sección 5.8.</p>
+<p>La regla «clean», como se especifica en las líneas 28 a la 36, limpia cualquier binario innecesario o cosas generadas automáticamente, dejadas después de la construcción del paquete. Esta regla debe funcionar en todo momento (¡incluso cuando el árbol de fuentes esté limpio!), así que, por favor, usa las opciones que fuercen a hacer cosas (por ejemplo para rm, sería «-f»), o ignora los valores devueltos (con un «-» al principio de la orden).</p>
+<p>El proceso de instalación, la regla «install», comienza en la línea 38. Básicamente ejecuta la regla «install» del Makefile del programa, pero lo instala en el directorio $(CURDIR)/debian/gentoo. Esta es la razón por la que especificamos $(DESTDIR) como el directorio raíz de instalación del Makefile de gentoo.</p>
+<p>Como sugiere el comentario, la regla <em>«binary-indep»</em>, en la línea 48, se usa para construir paquetes independientes de arquitectura. Como no tenemos ninguno, aquí no se hará nada.</p>
+<p>Lo siguiente es la regla <em>«binary-arch»</em>, en las líneas 52 a 79, en la que ejecutamos varias pequeñas utilidades del paquete debhelper que nos permiten hacer diversas operaciones en nuestro paquete para que cumpla las normas de Debian.</p>
+<p>Si tu paquete es del tipo <em>«Architecture: all»</em> necesitarás incluir todas las órdenes para crear el paquete bajo esta regla, y dejar la siguiente regla (<em>«binary-arch»</em>) vacía en su lugar.</p>
+<p>Los nombres comienzan con <em>dh_</em> y el resto del nombre es la descripción de lo que la utilidad en particular realmente hace. Es todo más o menos auto-explicativo, pero a continuación tienes algunos añadidos a las explicaciones:</p>
+<ul class="simple">
+<li><em>dh_testdir</em> comprueba que estás en el directorio correcto (esto es, el directorio raíz de la distribución de las fuentes),</li>
+<li><em>dh_testroot</em> comprueba que tienes permisos de superusuario que son necesarios para las reglas <em>«binary-arch»</em>, <em>«binary-indep»</em> and <em>«clean»</em>,</li>
+<li><em>dh_installman</em> copiará todas las páginas de manual que encuentre en el paquete fuente en el paquete, sólo has de indicarle donde están de forma relativa, desde el nivel más alto del directorio de codigo.</li>
+<li><em>dh_strip</em> elimina las cabeceras de depuración de los ficheros ejecutables para hacerlos más pequeños,</li>
+<li><em>dh_compress</em> comprime las páginas de manual y los ficheros de documentación que sean más grandes de 4 kB con gzip(1),</li>
+<li><em>dh_installdeb</em> copia los ficheros relativos al paquete (es decir, los guiones del desarrollador que mantiene el paquete) bajo el directorio <em>debian/gentoo/DEBIAN</em>,</li>
+<li><em>dh_shlibdeps</em> calcula las dependencias de los ejecutables y bibliotecas con las bibliotecas compartidas,</li>
+<li><em>dh_gencontrol</em> genera e instala el fichero de control en <em>debian/gentoo/DEBIAN</em>,</li>
+<li><em>dh_md5sums</em> genera las sumas de comprobación MD5 para todos los ficheros del paquete.</li>
+</ul>
+<p>:Para información más completa de lo que hacen cada uno de estos guiones <em>dh_*</em> , y qué otras opciones tienen, por favor lee sus páginas de manual respectivas. Hay otros guiones con la misma nomenclatura (<em>dh_*</em>) que no se han mencionado aquí, pero pueden serte útiles. Si los necesitas, lee la documentación de <em>debhelper</em>.</p>
+<p>La sección binary-arch es en una de las que deberías comentar o eliminar las líneas que llamen a funciones que no necesites. Para gentoo, comentaré de ejemplos, cron, init, man e info, simplemente porque gentoo no las necesita. Tan sólo, en la línea 68, reemplazaré «ChangeLog» con «FIXES», porque este es el nombre del fichero de cambios de las fuentes.</p>
+<p>Las últimas dos líneas (junto con otras que no se explican) son cosas más o menos necesarias, sobre las que puedes leer en el manual de <em>make</em>, y las normas. Por ahora no es importante que sepas nada de ellas.</p>
+</div>
+</div>
+<div class="section" id="otros-ficheros-en-el-directorio-debian">
+<h2><strong>Otros ficheros en el directorio debian</strong><a class="headerlink" href="#otros-ficheros-en-el-directorio-debian" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Verás que existen otros ficheros en el subdirectorio debian/, muchas de los cuales tendrán el sufijo «.ex», que indica que son ejemplos. Echale un vistazo a todos. Si lo deseas o necesitas usar alguna de estas características:</p>
+<ul class="simple">
+<li>revisa todo la documentación relacionada,</li>
+<li>si es necesario, modifica los ficheros para ajustarlos a tus necesidades,</li>
+<li>renómbralos para eliminar el sufijo «ex.», si lo tiene,</li>
+<li>renómbralos para eliminar el prefijo «.ex», si lo tiene,</li>
+<li>modifica el fichero «rules» si fuera necesario.</li>
+</ul>
+<p>Algunos de los ficheros que se usan habitualmente se detallan en las secciones que siguen.</p>
+<div class="section" id="readme-debian-leeme-debian">
+<h3>README.debian (LÉEME.debian)<a class="headerlink" href="#readme-debian-leeme-debian" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Cualquier detalle extra o discrepancias entre el programa original y su versión debianizada debería documentarse aquí.</p>
+<p><em>dh_make</em> crea una por omisión, y éste es su aspecto:</p>
+<blockquote>
+<p>gentoo for Debian</p>
+<p>&lt;possible notes regarding this package - if none, delete this file&gt;</p>
+<blockquote>
+&#8211; Carlos Guerrero &lt;<a class="reference external" href="mailto:cguerrero&#37;&#52;&#48;cnti&#46;gob&#46;ve">cguerrero<span>&#64;</span>cnti<span>&#46;</span>gob<span>&#46;</span>ve</a>&gt;, Wed, 11 May 2009 21:02:14 +0100</blockquote>
+</blockquote>
+<p>Dado que no tenemos que poner nada aquí - está permitido borrarlo.</p>
+</div>
+<div class="section" id="conffiles">
+<h3>conffiles<a class="headerlink" href="#conffiles" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Una de las cosas más molestas de los programas es cuando pasas mucho tiempo y esfuerzo adaptando un programa y una actualización destroza todos tus cambios. Debian resuelve este problema marcando los ficheros de configuración de forma que cuando actualizas un paquete se te pregunta si deseas mantener la nueva configuración o no.</p>
+<p>Eso se consigue poniendo la ruta completa a cada fichero de configuración (se encuentran generalmente en <em>/etc</em>), una por línea, en un fichero llamado <em>«conffiles»</em> (abreviatura de ficheros de configuración). Gentoo tiene un fichero de configuración, <em>/etc/gentoorc</em>, y meteremos éste en el fichero <em>conffiles</em>.</p>
+<p>En el caso de que tu programa utilice ficheros de configuración pero también los reescriba él mismo es mejor no marcarlos como «conffiles». Si lo haces, dpkg informará a los usuarios que verifiquen los cambios de estos ficheros cada vez que lo actualicen.</p>
+<p>También deberías considerar no marcar el fichero como un conffile si el programa que estás empaquetando requiere que cada usuario modifique su fichero de configuración para poder trabajar.</p>
+<p>Puedes tomar ejemplos de ficheros de configuración de los guiones ya existentes de desarrolladores, para más información consulta postinst.ex, preinst.ex, postrm.ex y prerm.ex.</p>
+<p>Puedes eliminar el fichero conffiles del directorio debian/ si tu programa no tiene «conffiles».</p>
+</div>
+<div class="section" id="cron-d-ex">
+<h3>cron.d.ex<a class="headerlink" href="#cron-d-ex" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Si tu paquete requiere tareas periódicas para funcionar adecuadamente, puedes usar este fichero como patrón.</p>
+<p>Ten en cuenta que ésto no incluye la rotación de archivos de registro, para hacer eso consulta <em>dh_installlogrotate</em> y <em>logrotate</em>.</p>
+<p>Elimina el fichero si el paquete no utiliza dichas tareas.</p>
+</div>
+<div class="section" id="dirs">
+<h3>dirs<a class="headerlink" href="#dirs" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Este fichero especifica los directorios que se necesitan pero que por alguna razón no se crean en un proceso de instalación normal (<em>«make install»</em>).</p>
+<p>Por omisión, tiene este aspecto:</p>
+<div class="highlight-python"><pre>1 usr/bin
+2 usr/sbin</pre>
+</div>
+<p>Observa que la barra precedente no está incluida. Normalmente lo cambiaríamos a algo así:</p>
+<div class="highlight-python"><pre>1 usr/bin
+2 usr/man/man1</pre>
+</div>
+<p>pero estos directorios ya se crean en el Makefile, así que no necesitaremos este fichero y lo podremos borrar.</p>
+</div>
+<div class="section" id="docs">
+<h3>docs<a class="headerlink" href="#docs" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Este fichero especifica los nombres de los ficheros de documentación que <em>dh_installdocs</em> instalará en el directorio temporal.</p>
+<p>Por omisión, se incluirán todos los ficheros existentes en los directorios de más alto nivel del código que se llamen «BUGS», «README*», «TODO» etc.</p>
+<p>También incluiré algunos otros para gentoo:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">BUGS</span>
+<span class="n">CONFIG</span><span class="o">-</span><span class="n">CHANGES</span>
+<span class="n">CREDITS</span>
+<span class="n">ONEWS</span>
+<span class="n">README</span>
+<span class="n">README</span><span class="o">.</span><span class="n">gtkrc</span>
+<span class="n">TODO</span>
+</pre></div>
+</div>
+<p>También podemos eliminar este fichero y en su lugar listar estos ficheros en la línea de órdenes de <em>dh_installdocs</em> en el fichero rules, de esta forma:</p>
+<div class="highlight-python"><pre>dh_installdocs BUGS CONFIG-CHANGES CREDITS ONEWS README \
+               README.gtkrc TODO</pre>
+</div>
+<p>Es posible que no tengas ninguno de estos ficheros en las fuentes de tu paquete. Puedes eliminar este fichero si este es tú caso. Pero no elimines la llamada a <em>dh_installdocs</em> desde el fichero rules porque también se usa para instalar el fichero copyright entre otras cosas.</p>
+</div>
+<div class="section" id="emacsen-ex">
+<h3>emacsen-*.ex<a class="headerlink" href="#emacsen-ex" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Si tu paquete proporciona ficheros Emacs que pueden ser compilados a bytes en el momento de la instalación, puede usar estos ficheros.</p>
+<p><em>dh_installemacsen</em> los instala en el directorio temporal, así que no olvides descomentar esta línea en el fichero rules si los usas.</p>
+<p>Elimínalos si no los necesitas.</p>
+</div>
+<div class="section" id="init-d-ex">
+<h3>init.d.ex<a class="headerlink" href="#init-d-ex" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Si tu paquete es un demonio que necesita ejecutarse en el arranque del sistema, obviamente has desatendido mi recomendación inicial, ¿o no? :-)</p>
+<p>Este fichero es prácticamente un esqueleto genérico para un fichero de guiones en <em>/etc/init.d/</em>, así que probablemente tendrás que editarlo y mucho. <em>dh_installinit</em> lo instalará en el directorio temporal.</p>
+<p>Elimina el fichero si no lo necesitas.</p>
+</div>
+<div class="section" id="manpage-1-ex-manpage-sgml-es">
+<h3>manpage.1.ex, manpage.sgml.es<a class="headerlink" href="#manpage-1-ex-manpage-sgml-es" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>El programa debería tener una página de manual. Cada uno de estos ficheros es una plantilla que puedes rellenar en el caso de que no tengas una.</p>
+<p>Las páginas de manual se escriben normalmente con <em>nroff</em>. El ejemplo <em>manpage.1.ex</em> está también escrito con <em>nroff</em>. Consulta la página de manual <em>man</em> para una breve descripción de como editar el fichero.</p>
+<p>Por otro lado, puede que prefieras escribir usando <em>SGML</em> en lugar de <em>nroff</em>. En este caso, puedes usar la plantilla <em>manpage.sgml.ex</em>. Si haces esto, tendrás que:</p>
+<ul class="simple">
+<li>instalar el paquete docbook-to-man</li>
+<li>añadir docbook-to-man a la línea de Build-Depends en el fichero de control</li>
+<li>eliminar el comentario de la llamada a docbook-to-man en la regla «build» de tu fichero rules</li>
+</ul>
+<p>¡Y recuerda renombrar el fichero a algo como gentoo.sgml!</p>
+<p>La página final del nombre debería incluir el nombre del programa que está documentando, asi que lo renombraremos de &#8220;manpage&#8221; a &#8220;gentoo&#8221;. El nombre del fichero incluye también &#8220;.1&#8221; como primer sufijo, lo que significa que es una página de manual para una programa de usuario. Asegurate de verificar que esa sección es la correcta. Aquí tienes una pequeña lista de las secciones de las páginas de manual:</p>
+<div class="highlight-python"><pre>Sección |     Descripción        |     Notas
+   1     Ordenes de Usuario        Programas o guiones ejecutables.
+   2     Llamadas al Sistema       Funciones que ofrece el núcleo.
+   3     Llamadas a Bibliotecas    Funciones dadas por las bibliotecas del sistema.
+   4     Ficheros Especiales       Generalmente se encuentran en /dev.
+   5     Formatos de Fichero       Por ejemplo, el formato del /etc/passwd.
+   6     Juegos                    U otros programas frívolos.
+   7     Paquetes de Macros        Como las macros de man.
+   8     Administración del Sist.  Programas que sólo suele ejecutar el superusuario.
+   9     Rutinas del Núcleo        Llamadas al sistema no estándar.</pre>
+</div>
+<p>Así que la página de manual de gentoo debería llamarse gentoo.1. No había una página de manual gentoo.1 en el paquete fuente asi que la escribí usando la información del ejemplo y de los documentos del programador original.</p>
+</div>
+<div class="section" id="menu-ex">
+<h3>menu.ex<a class="headerlink" href="#menu-ex" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Los usuarios de X Windows suelen tener un gestor de ventanas con menús que pueden adaptarse para lanzar programas. Si tienen instalado el paquete menu de Canaima, se creará un conjunto de menús para cada programa del sistema para ellos.</p>
+<p>Éste es el fichero <em>menu.ex</em> que <em>dh_make</em> crea por omisión:</p>
+<div class="highlight-python"><pre>?package(gentoo):needs="X11|text|vc|wm" section="Apps/lea-manual-menu"\
+  title="gentoo" command="/usr/bin/gentoo"</pre>
+</div>
+<p>El primer campo tras la coma (<em>«needs»</em>) son las necesidades, y especifica qué tipo de interfaz necesita el programa. Cambia ésta a una de las alternativas que se listan, como por ejemplo <em>«text»</em> o <em>«X11»</em>.</p>
+<p>Lo siguiente (<em>«section»</em>) es la sección donde deberían aparecer la entrada del menú y del submenú. La lista actual de secciones está en: <em>/usr/share/doc/debian-policy/menu-policy.html/ch2.html#s2.1</em></p>
+<p>El campo <em>«title»</em> es el nombre del programa. Puedes comenzar este en mayúsculas si lo quieres, pero hazlo lo más corto que puedas.</p>
+<p>Finalmente, el campo <em>«command»</em> es la orden que ejecuta el programa.</p>
+<p>Ahora cambiaremos la entrada del menú por ésta:</p>
+<div class="highlight-python"><pre>?package(gentoo): needs="X11" section="Apps/Tools" title="Gentoo" command="gentoo"</pre>
+</div>
+<p>También puedes añadir otros campos como son <em>«longtitle»</em> (título largo), <em>«icon»</em> (icono), <em>«hints»</em> (pistas), etc. Para más información consulta <em>menufile</em>, <em>update-menus</em> y <em>/usr/share/doc/debian-policy/menu-policy.html/</em>.</p>
+</div>
+<div class="section" id="watch-ex">
+<h3>watch.ex<a class="headerlink" href="#watch-ex" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Este fichero se usa para configurar los programas <em>uscan</em> y <em>uupdate</em> (en el paquete devscripts), que se usan para vigilar el servidor de donde obtuviste las fuentes originales.</p>
+<p>Esto es lo que he puesto yo:</p>
+<div class="highlight-python"><pre># watch control file for uscan
+# Site             Directory       Pattern                 Version Script
+ftp.obsession.se   /gentoo         gentoo-(.*)\.tar\.gz    debian  uupdate</pre>
+</div>
+<p>Pista: conéctate a Internet, e intenta ejecutar el programa <em>«uscan»</em> en el directorio donde has creado el fichero. Consulta la página de manual para más detalles.</p>
+</div>
+<div class="section" id="ex-package-doc-base">
+<h3>ex.package.doc-base<a class="headerlink" href="#ex-package-doc-base" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Si tu paquete tiene documentación aparte de las páginas de manual y documentos <em>«info»</em>, deberías usar el fichero <em>«doc-base»</em> para registrarla, así el usuario puede encontrarlos con <em>dhelp</em>, <em>dwww</em> o <em>doccentral</em>.</p>
+<p>Esto incluye generalmente ficheros <em>HTML</em>, <em>PS</em> y <em>PDF</em> que se instalen en <em>/usr/share/doc/nombre_de_paquete/</em>.</p>
+<p>Así es como el fichero <em>doc-base</em> de gentoo gentoo.doc-base debe ser:</p>
+<div class="highlight-python"><pre>Document: gentoo
+Title: Gentoo Manual
+Author: Emil Brink
+Abstract: This manual describes what Gentoo is, and how it can be used.
+Section: Apps/Tools
+
+Format: HTML
+Index: /usr/share/doc/gentoo/html/index.html
+Files: /usr/share/doc/gentoo/html/*.html</pre>
+</div>
+<p>Para información sobre el formato del fichero revisa install-docs(8) y el manual de doc-base en /usr/share/doc/doc-base/doc-base.html/index.html.</p>
+</div>
+<div class="section" id="postinst-ex-preinst-ex-postrm-ex-y-prerm-ex">
+<h3>postinst.ex, preinst.ex, postrm.ex y prerm.ex<a class="headerlink" href="#postinst-ex-preinst-ex-postrm-ex-y-prerm-ex" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Estos ficheros se llaman <em>guiones del desarrollador</em>  o <em>«maintainer scripts»</em>, y son guiones que se colocan en el área de control del paquete y que <em>dpkg</em> ejecuta cuando tu paquete se instala, se actualiza o se elimina.</p>
+<p>Por ahora, deberías intentar evitar editar manualmente estos guiones si puedes porque suelen hacerse muy complejos. Es recomendable echar un vistazo a los ejemplos dados por <em>dh_make</em>.</p>
+</div>
+</div>
+<div class="section" id="construir-el-paquete">
+<h2><strong>Construir el paquete</strong><a class="headerlink" href="#construir-el-paquete" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Deberíamos estar preparados para construir el paquete.</p>
+<div class="section" id="reconstruccion-completa">
+<h3>Reconstrucción completa<a class="headerlink" href="#reconstruccion-completa" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Entra en el directorio principal del programa y ejecuta la siguiente orden:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dpkg</span><span class="o">-</span><span class="n">buildpackage</span> <span class="o">-</span><span class="n">rfakeroot</span>
+</pre></div>
+</div>
+<p>Esto lo hará todo por tí:</p>
+<ul class="simple">
+<li>limpia el árbol del código (debian/rules clean), usando fakeroot</li>
+<li>construye el paquete de código (dpkg-source -b)</li>
+<li>construye el programa (debian/rules build)</li>
+<li>construye el paquete binario (debian/rules binary), usando fakeroot</li>
+<li>firma el fichero fuente .dsc, usando gnupg</li>
+<li>crea y firma el fichero de subida .changes, usando dpkg-genchanges y gnupg</li>
+</ul>
+<p>Lo único que se te pedirá es que escribas tu contraseña secreta de la clave GPG, dos veces.</p>
+<p>Después de hacer todo esto, verás las siguientes líneas en el directorio encima del que está (~/gentoo/):</p>
+<p><em>gentoo_0.9.12.orig.tar.gz</em></p>
+<p>:Este es el código fuente original comprimido, simplemente se ha renombrado para seguir los estándares de Debian. Nótese que ha sido creado usando la opción «-f» de <em>dh_make</em> cuando lo ejecutamos en el inicio.</p>
+<p><em>gentoo_0.9.12-1.dsc</em></p>
+<p>:Este es un sumario de los contenidos del código fuente. Este fichero se genera a partir del fichero de <em>«control»</em> y se usa cuando se descomprimen las fuentes con <em>dpkg-source</em>. Este fichero está firmado con GPG de forma que cualquiera pueda estar seguro de que es realmente suyo.</p>
+<p><em>gentoo_0.9.12-1.diff.gz</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name" colspan="2">Este fichero comprimido contiene todos y cada uno de los cambios que hizo al código fuente original, en un formato conocido como «diff unificado». El programa que lo hace y lo usa es <em>dpkg-source</em>. Precaución:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">si no renombras el archivo comprimido original nombre_de_paquete_versión.orig.tar.gz ¡<em>dpkg-source</em> fallará al generar el fichero .diff.gz!</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Si alguien quiere volver a crear tu paquete desde cero, puede hacerlo fácilmente usando los tres ficheros de arriba. El proceso de extracción es trivial:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">sólo se debe copiar los tres ficheros en algún lado y ejecutar dpkg-source -x gentoo_0.9.12-1.dsc.</td>
+</tr>
+</tbody>
+</table>
+<p><em>gentoo_0.9.12-1_i386.deb</em></p>
+<p>:Este es el paquete binario completo. Puedes usar <em>dpkg</em> para instalar o eliminar tanto este paquete como cualquier otro.</p>
+<p><em>gentoo_0.9.12-1_i386.changes</em></p>
+<p>:Este fichero describe todos los cambios hechos en la revisión actual del paquete, y se usa por los programas de gestión del archivo FTP para instalar los paquetes binarios y fuentes en él. Se genera parcialmente a partir del fichero <em>«changelog»</em> y el fichero <em>«.dsc»</em>. Este fichero está firmado con GPG, de forma que cualquiera puede estar aún más seguro de que es realmente tuyo.</p>
+<p>:Mientras sigues trabajando en el paquete, éste cambiará su comportamiento y se le añadirán nuevas funciones. Las personas que descarguen tu paquete pueden leer este fichero y ver qué ha cambiado. Los programas de mantenimiento del archivo de Canaima, también enviarán el contenido de este fichero a la lista de correo.</p>
+<p>:Las largas listas de números en los ficheros .dsc y .changes son las sumas MD5 para los ficheros. Las personas que descarguen estos ficheros pueden comprobarlos con <em>md5sum</em> y si los números no coinciden, sabrán que el fichero está corrupto o ha sido modificado.</p>
+</div>
+<div class="section" id="reconstruccion-rapida">
+<h3>Reconstrucción rápida<a class="headerlink" href="#reconstruccion-rapida" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Con un paquete grande, puede que no quieras recompilar desde cero cada vez que tocas un detalle en el fichero debian/rules. Para propósitos de prueba, puedes hacer un fichero .deb sin necesidad de recompilar las fuentes originales de esta forma:</p>
+<div class="highlight-python"><pre>fakeroot debian/rules binary</pre>
+</div>
+<p>Una vez que has terminado la puesta a punto, recuerda reconstruir el paquete siguiendo el procedimiento adecuado que está arriba. Puede que no seas capaz de enviar correctamente el paquete si intentas enviar los archivos .deb construidos de esta forma.</p>
+</div>
+<div class="section" id="la-orden-debuild">
+<h3>La orden debuild<a class="headerlink" href="#la-orden-debuild" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Puedes automatizar aún más el proceso de construcción de paquetes con la orden <em>debuild</em>.</p>
+<p>La personalización de la orden <em>debuild</em> puede hacerse a través de <em>/etc/devscripts.conf</em> o <em>~/.devscripts</em>. Te sugiero al menos los siguientes valores:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">DEBSIGN_KEYID</span><span class="o">=</span><span class="s">&quot;Tu_ID_clave_GPG&quot;</span>
+<span class="n">DEBUILD_DPKG_BUILDPACKAGE_OPTS</span><span class="o">=</span><span class="s">&quot;-i -ICVS -I.svn&quot;</span>
+</pre></div>
+</div>
+<p>Con estos valores, puedes construir paquetes siempre con tu clave GPG y evitar incluir componentes no deseados. (Esto también es bueno para patrocinar). Por ejemplo, limpiar el código y reconstruir el paquete desde una cuenta de usuario es tan simple como:</p>
+<div class="highlight-python"><pre>debuild clean
+debuild</pre>
+</div>
+</div>
+<div class="section" id="los-sistemas-dpatch-y-quilt">
+<h3>Los sistemas dpatch y quilt<a class="headerlink" href="#los-sistemas-dpatch-y-quilt" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>El uso de las órdenes <em>dh_make</em> y <em>dpkg-buildpackage</em> creará un gran fichero <em>diff.gz</em> que contendrá los archivos de mantenimiento del paquete en <em>debian/</em> así como los parches de los ficheros fuente. Este tipo de paquetes es un poco engorroso de inspeccionar y entender para cada una de las modificaciones de código posteriores.</p>
+<p>Se han propuesto y se utilizan distintos métodos para la gestión de conjuntos de parches en Debian. Los sistemas <em>dpatch</em> y <em>quilt</em> son los dos más simples de todos los propuestos. Otros son <em>dbs</em>, <em>cdbs</em>, etc.</p>
+<p>Un paquete que haya sido empaquetado correctamente con el sistema <em>dpatch</em> o <em>quilt</em> tiene las modificaciones al código fuente claramente documentadas como un conjunto de ficheros parche de tipo <em>«-p1»</em> en <em>debian/patches/</em> y el árbol de código permanece más allá del directorio <em>debian/</em>. Si estás pidiendo a un patrocinador que suba tu paquete, este clara separación y documentación de los cambios son muy importantes para acelerar la revisión del paquete por parte del patrocinador. El modo de empleo de <em>dpatch</em> y <em>quilt</em> se explica en <em>dpatch</em>, <em>dpatch-edit-patch</em> y <em>quilt</em>. Ambos programas ofrecen ficheros que se pueden incluir en <em>debian/rules</em>: <em>/usr/share/dpatch/dpatch.make</em> y <em>/usr/share/quilt/quilt.make</em>.</p>
+<p>Cuando alguien (incluyéndote a ti) proporciona un parche para las fuentes, modificar el paquete con es muy sencillo:</p>
+<ul class="simple">
+<li>Edita el parche para crear un parche -p1 sobre el árbol el código fuente.</li>
+<li>En el caso de dpatch, añade una cabecera empleando la orden dpatch patch-template.</li>
+<li>Pon ese fichero en debian/patches</li>
+<li>Añade el nombre de fichero de este parche a debian/patches/00list (en dpatch) o debian/patches/series (en quilt).</li>
+</ul>
+<p>Además, dpatch puede crear parches dependientes de la arquitectura usando macros CPP.</p>
+</div>
+<div class="section" id="incluir-orig-tar-gz-para-subir">
+<h3>Incluir orig.tar.gz para subir<a class="headerlink" href="#incluir-orig-tar-gz-para-subir" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Cuando subes por primera vez un paquete al archivo, necesitas incluir las fuentes originales orig.tar.gz. Si la versión del paquete no es una revisión de Debian -0 o -1, debes proporcionarle la opción <em>«-sa»</em> a la orden <em>dpkg-buildpackage</em>. Por otro lado, la opción <em>«-sd»</em> forzará la exclusión del código original <em>orig.tar.gz</em>.</p>
+</div>
+</div>
+<div class="section" id="como-comprobar-tu-paquete-para-encontrar-fallos">
+<h2><strong>Cómo comprobar tu paquete para encontrar fallos</strong><a class="headerlink" href="#como-comprobar-tu-paquete-para-encontrar-fallos" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="section" id="los-paquetes-lintian">
+<h3>Los paquetes lintian<a class="headerlink" href="#los-paquetes-lintian" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Ejecuta <em>lintian</em> sobre tu fichero de cambios <em>.changes</em>. Estos programas comprobarán muchos errores comunes al empaquetar. La orden es:</p>
+<div class="highlight-python"><pre>lintian -i gentoo_0.9.12-1_i386.changes</pre>
+</div>
+<p>Por supuesto, cambia el nombre de fichero con el nombre del fichero de cambios generado por tu paquete. Si parece que hay algunos errores (líneas que comienzan por E:), lee la explicación (líneas N:), corrige errores, y reconstruye como se describe en Reconstrucción completa, Sección 6.1. Las líneas que comienzan con W: son sólo avisos (Warnings), así que afina el paquete o verifica que los avisos son falsos (y haz que <em>lintian</em> los acepte, consulta la documentación para más detalles).</p>
+<p>Observa que puedes construir el paquete con <em>dpkg-buildpackage</em> y ejecutar <em>lintian</em> todo con sólo una orden si utilizas <em>debuild</em>.</p>
+</div>
+<div class="section" id="la-orden-mc">
+<h3>La orden mc<a class="headerlink" href="#la-orden-mc" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Puedes descomprimir el contenido del paquete <em>*.deb</em> con la orden <em>dpkg-deb</em>. Puedes listar el contenido de un paquete Debian con <em>debc</em>.</p>
+<p>Este proceso puede ser muy intuitivo si empleamos un gestor de ficheros como <em>mc</em>, que permite visionar tanto el contenido del paquete <em>*.deb</em>, como el de los ficheros <em>*.diff.gz</em> y <em>*.tar.gz</em>.</p>
+<p>Vigila que no haya ficheros innecesarios extra o de tamaño cero, tanto en el binario como en el paquete fuente. A veces, hay cosas que no se limpiaron adecuadamente, debes ajustar tu fichero <em>«rules»</em> para arreglar esto.</p>
+<p>Pista: <em>«zgrep ^+++ ../gentoo_0.9.12-1.diff.gz»</em> te dará una lista de tus cambios o contribuciones a las fuentes, y <em>«dpkg-deb -c gentoo_0.9.12-1_i386.deb»</em> o <em>«debc gentoo_0.9.12-1_i386.changes»</em> listará los ficheros en el paquete binario.</p>
+</div>
+<div class="section" id="la-orden-debdiff">
+<h3>La orden debdiff<a class="headerlink" href="#la-orden-debdiff" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Puedes comparar la lista de ficheros de dos paquetes binarios de Debian con la orden <em>debdiff</em>. Este programa es útil para verificar que no hay ficheros que se hayan cambiado de sitio o eliminado por error, y que no se ha realizado ningún otro cambio no deseado al actualizar el paquete. Puedes comprobar un grupo de ficheros <em>*.deb</em> simplemente con <em>«debdiff paquete-viejo.change paquete-nuevo.change»</em>.</p>
+</div>
+<div class="section" id="la-orden-interdiff">
+<h3>La orden interdiff<a class="headerlink" href="#la-orden-interdiff" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Puedes comparar dos ficheros <em>diff.gz</em> con la orden <em>interdiff</em>. Esto es muy útil para verificar que no se han realizado cambios inadvertidos por el mantenedor al actualizar el paquete. Ejecuta <em>«interdiff -z paquete-viejo.diff.gz paquete-nuevo.diff.gz»</em>.</p>
+</div>
+<div class="section" id="la-orden-debi">
+<h3>La orden debi<a class="headerlink" href="#la-orden-debi" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Instala el paquete para probarlo tú mismo, por ejemplo, usando la orden <em>debi</em> como superusuario. Intenta instalarlo y ejecutarlo en otras máquinas distintas de la tuya, y presta atención para detectar errores o avisos tanto en la instalación como en la ejecución del programa.</p>
+</div>
+<div class="section" id="el-paquete-pbuilder">
+<h3>El paquete pbuilder<a class="headerlink" href="#el-paquete-pbuilder" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>El paquete <em>pbuilder</em> es muy útil para conseguir un entorno limpio (chroot) donde verificar las dependencias. Esto asegura una construcción limpia desde el código en los programas que realizan la compilación automática de paquetes para diferentes arquitecturas y evita fallos serios del tipo FTBFS (Fallo al construir desde la fuente o «Fail to Build From Source»), que son siempre del tipo RC (fallos criticos o «release critical»). Para más informacon del paquete debian auto-builder véase <em>http://buildd.debian.org/</em>.</p>
+<p>El uso más básico del paquete pbuilder es la ejecución directa de la orden <em>pbuilder</em> como administrador. Por ejemplo, puedes construir un paquete si escribes las siguientes órdenes en el directorio donde se encuentran los ficheros <em>.orig.tar.gz</em>, <em>.diff.gz</em> y <em>.dsc</em>:</p>
+<div class="highlight-python"><pre>pbuilder create # si se ejecuta por segunda vez, pbuilder update
+pbuilder build foo.dsc</pre>
+</div>
+<p>Los paquetes recién construidos se pueden encontrar en /var/cache/pbuilder/result/ y el propietario será el usuario administrador.</p>
+<p>La orden pdebuild te ayuda a usar las funciones del paquete pbuilder como usuario sin permisos de administración. Desde el directorio raíz del código fuente, con el archivo orig.tar.gz en el directorio padre, escribe las siguientes órdenes:</p>
+<div class="highlight-python"><pre>$ sudo pbuilder create # si se ejecuta por segunda vez, sudo pbuilder update
+$ pdebuild</pre>
+</div>
+<p>Los paquetes construidos se pueden encontrar en /var/cache/pbuilder/result/ y el propietario no será el administrador. [2]</p>
+<p>Si deseas añadir fuentes de apt para que las utilice el paquete pbuilder, configura <em>OTHERMIRROR</em> en <em>~/.pbuilderrc</em> o <em>/etc/pbuilderrc</em> y ejecuta (para sarge):</p>
+<div class="highlight-python"><pre>$ sudo pbuilder update --distribution sarge --override-config</pre>
+</div>
+<p>Es necesario el uso de <em>&#8211;override-config</em> para actualizar las fuentes de apt dentro del entorno chroot.</p>
+</div>
+</div>
+<div class="section" id="actualizar-el-paquete">
+<h2><strong>Actualizar el paquete</strong><a class="headerlink" href="#actualizar-el-paquete" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="section" id="nueva-revision-debian-del-paquete">
+<h3>Nueva revisión Debian del paquete<a class="headerlink" href="#nueva-revision-debian-del-paquete" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Supongamos que se ha creado un informe de fallo en tu paquete con el número #54321, y que describe un problema que puedes solucionar. Para crear una nueva revisión del paquete, necesitas:</p>
+<ul class="simple">
+<li>Corregir, por supuesto, el problema en las fuentes del paquete.</li>
+<li>Añadir una nueva revisión en el fichero de cambios (changelog), con <em>«dch -i»</em>, o explícitamente con <em>«dch -v &lt;versión&gt;-&lt;revisión&gt;»</em> y entonces insertar los comentarios con tu editor favorito.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Sugerencia:</th><td class="field-body">¿Como obtener la fecha fácilmente en el formato requerido? Usa «822-date», o «date -R».</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Incluir una breve descripción del error y su solución en la entrada del fichero de cambios, seguido por: <em>«Closes: #54321»</em>. De esta forma, el informe del error será automágicamente cerrado por los programas de gestión del archivo en el momento en que tu paquete se acepte en el archivo de Canaima.</li>
+<li>Repite lo que hiciste en <em>Reconstrucción completa</em>, <em>Cómo comprobar tu paquete para encontrar fallos</em> y <em>Enviar el paquete</em>. La diferencia es que esta vez, las fuentes originales del archivo no se incluirán, dado que no han cambiado y ya existen en el archivo de Canaima.</li>
+</ul>
+</div>
+<div class="section" id="nueva-version-del-programa-fuente-basico">
+<h3>Nueva versión del programa fuente (básico)<a class="headerlink" href="#nueva-version-del-programa-fuente-basico" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Ahora consideremos una situación diferente y algo más complicada: ha salido una versión nueva de las fuentes originales, y, por supuesto, deseas empaquetarla. Debes hacer lo siguiente:</p>
+<ul>
+<li><p class="first">Descarga las nuevas fuentes y pon el archivo tar (pongamos que se llama gentoo-0.9.13.tar.gz) un directorio por encima del antiguo árbol de fuentes (por ejemplo ~/gentoo/).</p>
+</li>
+<li><p class="first">Entra en el antiguo directorio de las fuentes y ejecuta:</p>
+<div class="highlight-python"><pre>uupdate -u gentoo-0.9.13.tar.gz</pre>
+</div>
+</li>
+</ul>
+<p>:Por supuesto, reemplaza este nombre de fichero con el nombre de las fuentes de tu programa. uupdate(1) renombrará apropiadamente este fichero tar, intentará aplicar los cambios de tu fichero .diff.gz previo y actualizará el nuevo fichero debian/changelog.</p>
+<ul class="simple">
+<li>Cambia al directorio «../gentoo-0.9.13», el nuevo directorio fuente del paquete, y repite la operación que hiciste en <em>Reconstrucción completa</em>, <em>Cómo comprobar tu paquete para encontrar fallos</em>, y <em>Enviar el paquete</em>.</li>
+</ul>
+<p>:Observa que si has puesto el fichero «debian/watch» como se describe en watch.ex, puedes ejecutar <em>uscan</em> para buscar automáticamente fuentes revisadas, descargarlas, y ejecutar uupdate</p>
+</div>
+<div class="section" id="nueva-version-de-las-fuentes-realista">
+<h3>Nueva versión de las fuentes (realista)<a class="headerlink" href="#nueva-version-de-las-fuentes-realista" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Cuando prepares paquetes para el archivo de Debian, debes comprobar los paquetes resultantes en detalle. A continuación, tienes un ejemplo más realista de este procedimiento.</p>
+<ul class="simple">
+<li>Verificar los cambios en las fuentes.</li>
+<li>De las fuentes, lee los ficheros changelog, NEWS, y cualquier otra documentación que se haya publicado con la nueva versión.</li>
+<li>Ejecuta «diff -urN» entre las fuentes viejas y las nuevas para obtener una visión del alcance de los cambios, donde se ha trabajado más activamente (y por tanto donde podrían aparecer nuevas erratas), y también busca cualquier cosa que pudiera parecer sospechosa.</li>
+<li>Porta el paquete Debian viejo a la nueva versión.</li>
+<li>Descomprime el código fuente original y renombra la raíz del árbol de las fuentes como &lt;nombrepaquete&gt;-&lt;versión_original&gt;/ y haz «cd» en este directorio.</li>
+<li>Copia el código fuente en el directorio padre y renombrarlo como &lt;nombrepaquete&gt;_&lt;versión_original&gt;.orig.tar.gz .</li>
+<li>Aplica el mismo tipo de modificación a el nuevo código que al viejo. Algunos posibles métodos son:</li>
+<li>orden «zcat /path/to/&lt;nombrepaquete&gt;_&lt;versión-vieja&gt;.diff.gz | patch -p1»,</li>
+<li>orden «uupdate»,</li>
+<li>orden «svn merge» si gestionas el código con un repositorio Subversion o,</li>
+<li>simplemente copia el directorio debian/ del árbol de código viejo si se empaquetó con dpatch o quilt.</li>
+<li>Conserva las entradas viejas del fichero <em>«changelog»</em> (puede parecer obvio, pero se han dado casos...)</li>
+<li>La nueva versión del paquete es la versión original añadiéndole el número de revisión de Canaima, por ejemplo, &#8220;0.9.13-canaima1&#8221;.</li>
+<li>Añade una entrada en el fichero <em>«changelog»</em> para esta nueva versión al comienzo <em>debian/changelog</em> que ponga <em>«New upstream release»</em> (nueva versión original). Por ejemplo, <em>«dch -v 0.9.13-1»</em>.</li>
+<li>Describe de forma resumida los cambios en la nueva versión del código fuente que arreglan fallos de los que ya se ha informado y cierra esos fallos en el fichero <em>«changelog»</em>.</li>
+<li>Describe de forma resumida los cambios hechos a la nueva versión del código por el mantenedor para arreglar fallos de los que se ha informado y cierra esos fallos en el fichero «changelog».</li>
+<li>Si el parche/fusión no se aplicó limpiamente, inspecciona la situación para determinar qué ha fallado (la clave está en los ficheros .rej). A menudo el problema es que un parche que has aplicado a las fuentes se ha integrado en el código fuente original, y, por lo tanto, el parche ya no es necesario.</li>
+<li>Las actualizacioens de versión deberían ser silenciosas y no intrusivas (los usuarios sólo deberían advertir la actualización al descubrir que se han arreglado viejos fallos y porque se han introducido algunas nuevas características).</li>
+<li>Si necesitas añadir plantillas eliminadas por alguna razón, puedes ejecutar dh_make otra vez en el mismo directorio ya «debianizado», con la opción -o. Una vez hecho esto edítalo como sea necesario.</li>
+<li>Deberías reconsiderar todos los cambios introducidos para Canaima: elimina aquello que el autor original haya incorporado (de una forma u otra) y recuerda mantener aquellos que no hayan sido incorporados, a menos que haya una razón convincente para no incluirlos.</li>
+<li>Si se ha realizado algún cambio en el sistema de construcción (esperemos que lo supieras desde el primer paso), actualiza los ficheros <em>debian/rules</em> y las dependencias de construcción en <em>debian/control</em> si es necesario.</li>
+<li>Construye el nuevo paquete como se describe en La orden <em>debuild</em>, o El paquete <em>pbuilder</em>. Es conveniente el uso de pbuilder.</li>
+<li>Comprueba que los paquetes nuevos se han construido correctamente.</li>
+<li>Ejecuta <em>Cómo comprobar tu paquete para encontrar fallos</em>.</li>
+<li>Ejecuta <em>Verificar actualizaciones del paquete</em>.</li>
+<li>Si realizaste algún cambio en el empaquetado durante el proceso, vuelve al segundo paso hasta que todo esté correcto.</li>
+<li>Si tu envío necesita que se patrocine, asegúrese de comentar cualquier opción especial que se requiera en la construcción del paquete (como <em>«dpkg-buildpackage -sa -v ...»</em>) y de informar a tu patrocinador, así podrá construirlo correctamente.</li>
+<li>Si lo envías tú, ejecuta <em>Enviar el paquete</em>.</li>
+</ul>
+</div>
+<div class="section" id="el-archivo-orig-tar-gz">
+<h3>El archivo orig.tar.gz<a class="headerlink" href="#el-archivo-orig-tar-gz" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Si intentas construir los paquetes sólo desde el nuevo código fuente con el directorio debian/, sin que exista el fichero orig.tar.gz en el directorio padre, acabarás creando un paquete de fuentes nativo sin querer. Estos paquetes se distribuyen sin el fichero diff.gz. Este tipo de empaquetamiento sólo debe hacerse para aquellos paquetes que son específicos de Debian, es decir, aquellos que no serían útiles en otra distribución. [5]</p>
+<p>Para obtener un paquete no nativo de fuentes que consista tanto en un archivo orig.tar.gz como en un archivo diff.gz, debes copiar manualmente el archivo tar del código fuente original al directorio padre con el nombre cambiado a &lt;nombrepaquete&gt;_&lt;versión&gt;.orig.tar.gz. Igual que como lo hizo la orden dh_make en «Debianización» inicial, Sección 2.4.</p>
+</div>
+<div class="section" id="la-orden-cvs-buildpackage-y-similares">
+<h3>La orden cvs-buildpackage y similares<a class="headerlink" href="#la-orden-cvs-buildpackage-y-similares" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Deberías considerar el utilizar algún sistema de administración de código para gestión del proceso de empaquetado. Hay varios guiones adaptados para que puedan utilizarse en algunos de los sistemas de control de versiones más populares.</p>
+<ul>
+<li><dl class="first docutils">
+<dt>CVS</dt>
+<dd><ul class="first last simple">
+<li>cvs-buildpackage</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Subversion</dt>
+<dd><ul class="first last simple">
+<li>svn-buildpackage</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>GIT</dt>
+<dd><ul class="first last simple">
+<li>git-buildpackage</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Estas órdenes también automatizan el empaquetado de nuevas versiones del código fuente.</p>
+</div>
+<div class="section" id="verificar-actualizaciones-del-paquete">
+<h3>Verificar actualizaciones del paquete<a class="headerlink" href="#verificar-actualizaciones-del-paquete" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Cuando construyas una nueva versión del paquete, deberías hacer lo siguiente para verificar que el paquete puede actualizarse de forma segura:</p>
+<ul class="simple">
+<li>actualiza el paquete a partir de la versión previa,</li>
+<li>vuelve a la versión anterior y elimínala,</li>
+<li>instala el paquete nuevo,</li>
+<li>elimínalo y reinstálalo de nuevo,</li>
+<li>púrgalo.</li>
+</ul>
+<p>Si el paquete hace uso de unos guiones pre/post/inst/rm complicados, asegúrate de probar éstos con las distintas rutas posibles en la actualización del paquete.</p>
+<p>Ten en cuenta que si tu paquete ha estado previamente en Canaima, lo más frecuente es que gente actualice el paquete desde la versión que estaba en la última versión de Canaima. Recuerda que debes probar también las actualizaciones desde esa versión.</p>
+</div>
+<div class="section" id="donde-pedir-ayuda">
+<h3>Dónde pedir ayuda<a class="headerlink" href="#donde-pedir-ayuda" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Antes de que te decidas a preguntar en lugares públicos, por favor, simplemente RTFM («Lee el dichoso manual»), que incluye la documentación en <em>/usr/share/doc/dpkg</em>, <em>/usr/share/doc/debian</em>, <em>/usr/share/doc/autotools-dev/README.Debian.gz</em>, <em>/usr/share/doc/package/*</em> y las páginas de <em>man/info</em> para todos los programas mencionados en este documento.</p>
+<p>Si tienes dudas sobre empaquetado a las que no has podido encontrar respuesta en la documentación, puedes preguntar en la lista de correo de desarrolladores: <a class="reference external" href="mailto:desarrolladores&#37;&#52;&#48;canaima&#46;softwarelibre&#46;gob&#46;ve">desarrolladores<span>&#64;</span>canaima<span>&#46;</span>softwarelibre<span>&#46;</span>gob<span>&#46;</span>ve</a></p>
+<p>Aunque todo funcione bien, es el momento de empezar a rezar. ¿Por qué? Por que en sólo unas horas (o días) usuarios de todo el mundo empezarán a usar tu paquete, y si cometiste algún error crítico centenares de usuarios furiosos de Canaima te bombardearán con correos... sólo bromeaba :-)</p>
+</div>
+<div class="section" id="ejemplos">
+<h3>Ejemplos<a class="headerlink" href="#ejemplos" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>En este ejemplo empaquetaremos el código fuente original gentoo-1.0.2.tar.gz y subiremos todos los paquetes al nm_objetivo.</p>
+<ul>
+<li><p class="first">A.1 Ejemplo de empaquetado sencillo:</p>
+<div class="highlight-python"><pre>$ mkdir -p /ruta/a # nuevo directorio vacío
+$ cd /ruta/a
+$ tar -xvzf /ruta/desde/gentoo-1.0.2.tar.gz # obtén la fuente
+$ cd gentoo-1.0.2
+$ dh_make -e nombre@dominio.com -f /ruta/desde/gentoo-1.0.2.tar.gz
+... Responde a las preguntas
+... Arregla el árbol de las fuentes
+... Si es un paquete que contiene programas guiones, indica en debian/control «Architecture: all»
+... No borres ../gentoo_1.0.2.orig.tar.gz
+$ debuild
+... Asegúrate de que no hay ningún aviso
+$ cd ..
+$ dupload -t nm_objetivo gentoo_1.0.2-1_i386.changes</pre>
+</div>
+</li>
+<li><p class="first">A.2 Ejemplo de empaquetado con dpatch y pbuilder:</p>
+<div class="highlight-python"><pre>$ mkdir -p /ruta/a # nuevo directorio vacío
+$ cd /ruta/a
+$ tar -xvzf /ruta/desde/gentoo-1.0.2.tar.gz
+$ cp -a  gentoo-1.0.2 gentoo-1.0.2-orig
+$ cd gentoo-1.0.2
+$ dh_make -e nombre@dominio.com -f /ruta/de/gentoo-1.0.2.tar.gz
+... Responde a las preguntas</pre>
+</div>
+</li>
+</ul>
+<p>En un principio, debian/rules es así:</p>
+<div class="highlight-python"><pre>configure: configure-stamp
+configure-stamp:
+        dh_testdir
+        # Add here commands to configure the package.
+        touch configure-stamp
+build: build-stamp
+build-stamp: configure-stamp
+        dh_testdir
+        # Add here commands to compile the package.
+        $(MAKE)
+        #docbook-to-man debian/gentoo.sgml &gt; gentoo.1
+        touch $@
+clean:
+        dh_testdir
+        dh_testroot
+        rm -f build-stamp configure-stamp
+        # Add here commands to clean up after the build process.
+        -$(MAKE) clean
+        dh_clean</pre>
+</div>
+<p>Cambia lo siguiente con un editor en debian/rules para usar dpatch y añade dpatch a la línea Build-Depends: en el fichero debian/control:</p>
+<div class="highlight-python"><pre>configure: configure-stamp
+configure-stamp: patch
+        dh_testdir
+        # Add here commands to configure the package.
+        touch configure-stamp
+build: build-stamp
+build-stamp: configure-stamp
+        dh_testdir
+        # Add here commands to compile the package.
+        $(MAKE)
+        #docbook-to-man debian/gentoo.sgml &gt; gentoo.1
+        touch $@
+clean: clean-patched unpatch
+        dh_testdir
+        dh_testroot
+        rm -f build-stamp configure-stamp
+        # Add here commands to clean up after the build process.
+        -$(MAKE) clean
+        dh_clean
+patch: patch-stamp
+patch-stamp:
+     dpatch apply-all
+     dpatch call-all -a=pkg-info &gt;patch-stamp
+unpatch:
+     dpatch deapply-all
+     rm -rf patch-stamp debian/patched</pre>
+</div>
+<p>Ahora está todo preparado para reempaquetar el árbol de código con el sistema dpatch y con la ayuda de dpatch-edit-patch:</p>
+<div class="highlight-python"><pre>$ dpatch-edit-patch patch 10_firstpatch
+... Arregla el arbol de fuentes con el editor
+$ exit 0
+... Intenta construir el paquete con «debuild -us -uc»
+... Limpia las fuentes con «debuild clean»
+... Repite con dpatch-edit-patch hasta que las fuentes compilen.
+$ sudo pbuilder update
+$ pdebuild
+$ cd /var/cache/pbuilder/result/
+$ dupload -t nm_objetivo gentoo_1.0.2-1_i386.changes</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Contenidos</a></h3>
+            <ul>
+<li><a class="reference external" href="#"><strong>Guía de Referencia para el Desarrollador</strong></a><ul>
+<li><a class="reference external" href="#programas-que-necesitas-para-el-desarrollo"><strong>Programas que necesitas para el desarrollo</strong></a></li>
+<li><a class="reference external" href="#desarrollador-oficial-de-canaima"><strong>Desarrollador oficial de Canaima</strong></a><ul>
+<li><a class="reference external" href="#mas-informacion">Más información</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#primeros-pasos"><strong>Primeros Pasos</strong></a><ul>
+<li><a class="reference external" href="#elige-el-programa">Elige el programa</a></li>
+<li><a class="reference external" href="#obten-el-programa-y-pruebalo">Obtén el programa y pruébalo</a></li>
+<li><a class="reference external" href="#nombre-del-paquete-y-version">Nombre del paquete y versión</a></li>
+<li><a class="reference external" href="#debianizacion-inicial">«Debianización» inicial</a></li>
+<li><a class="reference external" href="#modificar-las-fuentes">Modificar las fuentes</a></li>
+<li><a class="reference external" href="#instalacion-en-un-subdirectorio">Instalación en un subdirectorio</a></li>
+<li><a class="reference external" href="#bibliotecas-diferentes">Bibliotecas diferentes</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#las-cosas-necesarias-bajo-debian"><strong>Las cosas necesarias bajo debian</strong></a><ul>
+<li><a class="reference external" href="#el-fichero-control">El fichero «control»</a></li>
+<li><a class="reference external" href="#el-fichero-copyright">El fichero «copyright»</a></li>
+<li><a class="reference external" href="#el-fichero-changelog">El fichero «changelog»</a></li>
+<li><a class="reference external" href="#el-fichero-rules">El fichero «rules»</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#otros-ficheros-en-el-directorio-debian"><strong>Otros ficheros en el directorio debian</strong></a><ul>
+<li><a class="reference external" href="#readme-debian-leeme-debian">README.debian (LÉEME.debian)</a></li>
+<li><a class="reference external" href="#conffiles">conffiles</a></li>
+<li><a class="reference external" href="#cron-d-ex">cron.d.ex</a></li>
+<li><a class="reference external" href="#dirs">dirs</a></li>
+<li><a class="reference external" href="#docs">docs</a></li>
+<li><a class="reference external" href="#emacsen-ex">emacsen-*.ex</a></li>
+<li><a class="reference external" href="#init-d-ex">init.d.ex</a></li>
+<li><a class="reference external" href="#manpage-1-ex-manpage-sgml-es">manpage.1.ex, manpage.sgml.es</a></li>
+<li><a class="reference external" href="#menu-ex">menu.ex</a></li>
+<li><a class="reference external" href="#watch-ex">watch.ex</a></li>
+<li><a class="reference external" href="#ex-package-doc-base">ex.package.doc-base</a></li>
+<li><a class="reference external" href="#postinst-ex-preinst-ex-postrm-ex-y-prerm-ex">postinst.ex, preinst.ex, postrm.ex y prerm.ex</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#construir-el-paquete"><strong>Construir el paquete</strong></a><ul>
+<li><a class="reference external" href="#reconstruccion-completa">Reconstrucción completa</a></li>
+<li><a class="reference external" href="#reconstruccion-rapida">Reconstrucción rápida</a></li>
+<li><a class="reference external" href="#la-orden-debuild">La orden debuild</a></li>
+<li><a class="reference external" href="#los-sistemas-dpatch-y-quilt">Los sistemas dpatch y quilt</a></li>
+<li><a class="reference external" href="#incluir-orig-tar-gz-para-subir">Incluir orig.tar.gz para subir</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#como-comprobar-tu-paquete-para-encontrar-fallos"><strong>Cómo comprobar tu paquete para encontrar fallos</strong></a><ul>
+<li><a class="reference external" href="#los-paquetes-lintian">Los paquetes lintian</a></li>
+<li><a class="reference external" href="#la-orden-mc">La orden mc</a></li>
+<li><a class="reference external" href="#la-orden-debdiff">La orden debdiff</a></li>
+<li><a class="reference external" href="#la-orden-interdiff">La orden interdiff</a></li>
+<li><a class="reference external" href="#la-orden-debi">La orden debi</a></li>
+<li><a class="reference external" href="#el-paquete-pbuilder">El paquete pbuilder</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#actualizar-el-paquete"><strong>Actualizar el paquete</strong></a><ul>
+<li><a class="reference external" href="#nueva-revision-debian-del-paquete">Nueva revisión Debian del paquete</a></li>
+<li><a class="reference external" href="#nueva-version-del-programa-fuente-basico">Nueva versión del programa fuente (básico)</a></li>
+<li><a class="reference external" href="#nueva-version-de-las-fuentes-realista">Nueva versión de las fuentes (realista)</a></li>
+<li><a class="reference external" href="#el-archivo-orig-tar-gz">El archivo orig.tar.gz</a></li>
+<li><a class="reference external" href="#la-orden-cvs-buildpackage-y-similares">La orden cvs-buildpackage y similares</a></li>
+<li><a class="reference external" href="#verificar-actualizaciones-del-paquete">Verificar actualizaciones del paquete</a></li>
+<li><a class="reference external" href="#donde-pedir-ayuda">Dónde pedir ayuda</a></li>
+<li><a class="reference external" href="#ejemplos">Ejemplos</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h4>Tema anterior</h4>
+            <p class="topless"><a href="manual-desarrollador.html"
+                                  title="Capítulo anterior"><strong>Manual para el Desarrollador</strong></a></p>
+            <h3>Esta página</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/guia-referencia.txt"
+                     rel="nofollow">Enseñar el código</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Búsqueda rápida</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Ir a" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="manual-desarrollador.html" title="Manual para el Desarrollador"
+             >anterior</a> |</li>
+        <li><a href="index.html">Manual del Desarrollador para Canaima GNU/Linux</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2011, Equipo de Desarrollo de Canaima GNU/Linux.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.6.
+    </div>
+  </body>
+</html>
