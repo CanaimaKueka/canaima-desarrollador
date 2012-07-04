@@ -1,3 +1,10 @@
+canaima-desarrollador (1.1+40) testing; urgency=low
+
+  * [ab4e26f] Añadiendo devscripts a las dependencias y sustituyendo
+    canaima-curiara por sensible-browser. Resolviendo #445 y #364.
+
+ -- Luis Alejandro Martínez Faneyth <luis@huntingbears.com.ve>  Wed, 04 Jul 2012 17:19:17 -0430
+
 canaima-desarrollador (1.1+39) testing; urgency=low
 
   * [455b67d] Removiendo dependencia a un navegador y la creación de la
