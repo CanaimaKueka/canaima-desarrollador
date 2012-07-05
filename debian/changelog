@@ -1,4 +1,4 @@
-canaima-desarrollador (1.1+40) testing; urgency=low
+canaima-desarrollador (1.2-1) unstable; urgency=low
 
   * [ab4e26f] Añadiendo devscripts a las dependencias y sustituyendo
     canaima-curiara por sensible-browser. Resolviendo #445 y #364.
