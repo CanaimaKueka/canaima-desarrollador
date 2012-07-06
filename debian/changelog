@@ -1,3 +1,9 @@
+canaima-desarrollador (1.2-2) unstable; urgency=low
+
+  * [d53daa3] Corrigiendo mantenedor.
+
+ -- Luis Alejandro Martínez Faneyth <luis@huntingbears.com.ve>  Thu, 05 Jul 2012 22:32:13 -0430
+
 canaima-desarrollador (1.2-1) unstable; urgency=low
 
   * [ab4e26f] Añadiendo devscripts a las dependencias y sustituyendo
