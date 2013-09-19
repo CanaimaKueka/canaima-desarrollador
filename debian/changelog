@@ -1,3 +1,9 @@
+canaima-desarrollador (2.0~a2-1) unstable; urgency=low
+
+  * [a649f9d] Corrigiendo parámetros de dh_make.
+
+ -- Luis Alejandro Martínez Faneyth <luis@huntingbears.com.ve>  Thu, 19 Sep 2013 13:33:36 -0430
+
 canaima-desarrollador (2.0~a1-1) unstable; urgency=low
 
   * [00c0198] Removiendo pruebas a los scripts del mantenedor del
