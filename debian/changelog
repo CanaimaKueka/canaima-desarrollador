@@ -1,5 +1,6 @@
 canaima-desarrollador (2.0~a1-1) unstable; urgency=low
 
+  * [23cdc59] Deshabilitando creación de pdf momentáneamente.
   * [e759d8a] Actualizando TODO
   * [4d6199f] Corrigiendo mantenimiento para versión 2.0.
 
