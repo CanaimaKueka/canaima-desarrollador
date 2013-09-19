@@ -1,3 +1,10 @@
+canaima-desarrollador (2.0~a1-1) unstable; urgency=low
+
+  * [e759d8a] Actualizando TODO
+  * [4d6199f] Corrigiendo mantenimiento para versión 2.0.
+
+ -- Luis Alejandro Martínez Faneyth <luis@huntingbears.com.ve>  Thu, 19 Sep 2013 11:14:47 -0430
+
 canaima-desarrollador (1.2-2) unstable; urgency=low
 
   * [d53daa3] Corrigiendo mantenedor.
