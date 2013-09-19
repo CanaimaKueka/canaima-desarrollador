@@ -2,10 +2,7 @@
 
 SHELL := sh -e
 
-SCRIPTS =	"debian/preinst install" \
-		"debian/postinst configure" \
-		"debian/prerm remove" \
-		"debian/postrm remove" \
+SCRIPTS =	"debian/postinst configure" \
 		"scripts/canaima-desarrollador.sh" \
 		"scripts/funciones-desarrollador.sh" \
 		"scripts/manual-desarrollador.sh"
