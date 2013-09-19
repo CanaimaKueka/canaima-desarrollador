@@ -66,7 +66,7 @@ cd "${DEV_DIR}${nombre}-${version}"
 # Creamos el proyecto mediante dh_make. Lo pasamos a través de un pipe que le pasa una string
 # a stdin para saltarnos la confirmación que trae por defecto dh_make. También enviamos todas
 # las salidas a /dev/null para no ver las cosas en pantalla.
-echo "enter" | dh_make --createorig --cdbs --copyright ${licencia} --email ${DEV_MAIL} > /dev/null 2>&1
+echo "enter" | dh_make --createorig --single --copyright ${licencia} --email ${DEV_MAIL} > /dev/null 2>&1
 
 [ ! -d "${DEV_DIR}${nombre}-${version}/debian/" ] && ERROR "Algo salió mal con la creación de la carpeta debian." && exit 1
 # Presentamos alguna información en pantalla a modo de informe.
