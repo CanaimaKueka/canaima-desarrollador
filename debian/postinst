@@ -15,48 +15,30 @@
 # Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los
 # términos de la Licencia Pública General de GNU (versión 3).
 
-PKG="canaima-desarrollador"
 
 case ${1} in
+	configure|'')
+		# Para cada usuario en /home/ ...
+		for USERNAME in $( ls -1 "/home/" ); do
+			# Y en caso de que el usuario sea un usuario activo (existente en /etc/shadow) ...
+			if [ $( grep -c "${USERNAME}:.*:.*:.*:.*:.*:::" /etc/shadow ) -eq 1 ] \
+			&& [ $( grep -c "${USERNAME}:.*:.*:.*:.*:.*:/bin/.*sh" /etc/passwd ) -eq 1 ] \
+			&& [ -d "/home/${USERNAME}/.config" ] && [ -d "/home/${USERNAME}/Escritorio" ]; then
 
-	configure)
-	# Para cada usuario en /home/ ...
-	for usuario in /home/*? ;
-	do
+				if [ ! -e /home/${USERNAME}/.config/canaima-desarrollador/usuario.conf ]; then
+					ADVERTENCIA 'Instalando Canaima Desarrollador para el usuario "'${USERNAME}'"'
 
-		# Obteniendo sólo el nombre del usuario
-		usuario_min=$(basename ${usuario})
+					# Asegurando que el directorio .config/canaima-desarrollador/ existe
+					mkdir -p /home/${USERNAME}/.config/canaima-desarrollador/
 
-		# Y en caso de que el usuario sea un usuario activo (existente en /etc/shadow) ...
-		case  $(grep "${usuario_min}:.*:.*:.*:.*:.*:::" /etc/shadow) in
+					# Copia del archivo de configuración
+					cp /etc/skel/.config/canaima-desarrollador/usuario.conf /home/${USERNAME}/.config/canaima-desarrollador/
 
-			'')
-			# No hace nada si no se encuentra en /etc/shadow
-			;;
-
-			*)
-
-				# Asegurando que el directorio .config/canaima-desarrollador esté creado
-				mkdir -p /home/${usuario_min}/.config/canaima-desarrollador/
-				# con permisos apropiados
-				chown ${usuario_min}:${usuario_min} /home/${usuario_min}/.config/canaima-desarrollador/
-				#if [ -e /home/${usuario_min}/Escritorio/ ]; then
-				# Copiamos el lanzador de escritorio al escritorio de cada usuario
-				#cp /etc/skel/Escritorio/manual-desarrollador.desktop /home/${usuario_min}/Escritorio/
-				# con permisos apropiados
-				#chown ${usuario_min}:${usuario_min} /home/${usuario_min}/Escritorio/manual-desarrollador.desktop
-				#fi
-				# Copia del archivo de configuración si determina que no existe
-				if [ ! -e /home/${usuario_min}/.config/canaima-desarrollador/usuario.conf ]; then
-					cp /etc/skel/.config/canaima-desarrollador/usuario.conf /home/${usuario_min}/.config/canaima-desarrollador/
 					# con permisos apropiados
-					chown ${usuario_min}:${usuario_min} /home/${usuario_min}/.config/canaima-desarrollador/usuario.conf
+					chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}/.config/canaima-desarrollador/
 				fi
-			;;
-		esac
-
-	done
-
+			fi
+		done
 	;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
