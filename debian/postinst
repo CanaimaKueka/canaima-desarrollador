@@ -26,7 +26,7 @@ case ${1} in
 			&& [ -d "/home/${USERNAME}/.config" ] && [ -d "/home/${USERNAME}/Escritorio" ]; then
 
 				if [ ! -e /home/${USERNAME}/.config/canaima-desarrollador/usuario.conf ]; then
-					ADVERTENCIA 'Instalando Canaima Desarrollador para el usuario "'${USERNAME}'"'
+					echo 'Instalando Canaima Desarrollador para el usuario "'${USERNAME}'"'
 
 					# Asegurando que el directorio .config/canaima-desarrollador/ existe
 					mkdir -p /home/${USERNAME}/.config/canaima-desarrollador/
