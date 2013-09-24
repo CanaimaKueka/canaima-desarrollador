@@ -1,3 +1,10 @@
+canaima-desarrollador (2.0~a3-1) unstable; urgency=low
+
+  * [0a4a26e] Removiendo función utilizada pero no declarada en Post
+    Install.
+
+ -- Luis Alejandro Martínez Faneyth <luis@huntingbears.com.ve>  Tue, 24 Sep 2013 09:59:19 -0430
+
 canaima-desarrollador (2.0~a2-1) unstable; urgency=low
 
   * [a649f9d] Corrigiendo parámetros de dh_make.
